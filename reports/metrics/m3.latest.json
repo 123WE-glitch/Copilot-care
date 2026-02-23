@@ -1,0 +1,144 @@
+{
+  "generatedAt": "2026-02-22T17:27:45.840Z",
+  "planVersion": "v4.30",
+  "source": "A-F scenarios + runtime replay",
+  "thresholds": {
+    "highRiskRecallMin": 0.9,
+    "explainabilityRateMin": 0.95,
+    "averageLatencyMsMax": 120000,
+    "auditCoverageRateMin": 1,
+    "invalidInputInterceptRateMin": 1,
+    "scenarioPassRateMin": 0.9
+  },
+  "scenarioCount": 6,
+  "metrics": {
+    "highRiskRecall": 1,
+    "explainabilityRate": 1,
+    "averageLatencyMs": 0.82,
+    "auditCoverageRate": 1,
+    "invalidInputInterceptRate": 1,
+    "scenarioPassRate": 1
+  },
+  "metricLedger": [
+    {
+      "metricName": "highRiskRecall",
+      "targetValue": 0.9,
+      "actualValue": 1,
+      "deviation": 0.1,
+      "pass": true,
+      "correctiveAction": "maintain current baseline and continue monitoring"
+    },
+    {
+      "metricName": "explainabilityRate",
+      "targetValue": 0.95,
+      "actualValue": 1,
+      "deviation": 0.05,
+      "pass": true,
+      "correctiveAction": "maintain current baseline and continue monitoring"
+    },
+    {
+      "metricName": "averageLatencyMs",
+      "targetValue": 120000,
+      "actualValue": 0.82,
+      "deviation": -119999.18,
+      "pass": true,
+      "correctiveAction": "maintain current baseline and continue monitoring"
+    },
+    {
+      "metricName": "auditCoverageRate",
+      "targetValue": 1,
+      "actualValue": 1,
+      "deviation": 0,
+      "pass": true,
+      "correctiveAction": "maintain current baseline and continue monitoring"
+    },
+    {
+      "metricName": "invalidInputInterceptRate",
+      "targetValue": 1,
+      "actualValue": 1,
+      "deviation": 0,
+      "pass": true,
+      "correctiveAction": "maintain current baseline and continue monitoring"
+    },
+    {
+      "metricName": "scenarioPassRate",
+      "targetValue": 0.9,
+      "actualValue": 1,
+      "deviation": 0.1,
+      "pass": true,
+      "correctiveAction": "maintain current baseline and continue monitoring"
+    }
+  ],
+  "breachedMetrics": [],
+  "scenarioResults": [
+    {
+      "id": "T-001",
+      "caseCode": "Case-A-001",
+      "status": "OUTPUT",
+      "latencyMs": 3.73,
+      "explainable": true,
+      "auditCovered": true,
+      "highRiskTruth": false,
+      "highRiskPredicted": true,
+      "scenarioPass": true
+    },
+    {
+      "id": "T-002",
+      "caseCode": "Case-B-001",
+      "status": "OUTPUT",
+      "latencyMs": 0.4,
+      "explainable": true,
+      "auditCovered": true,
+      "highRiskTruth": true,
+      "highRiskPredicted": true,
+      "scenarioPass": true
+    },
+    {
+      "id": "T-003",
+      "caseCode": "Case-C-001",
+      "status": "ERROR",
+      "errorCode": "ERR_MISSING_REQUIRED_DATA",
+      "latencyMs": 0.08,
+      "explainable": true,
+      "auditCovered": true,
+      "highRiskTruth": false,
+      "highRiskPredicted": false,
+      "scenarioPass": true
+    },
+    {
+      "id": "T-004",
+      "caseCode": "Case-D-001",
+      "status": "OUTPUT",
+      "latencyMs": 0.44,
+      "explainable": true,
+      "auditCovered": true,
+      "highRiskTruth": true,
+      "highRiskPredicted": true,
+      "scenarioPass": true
+    },
+    {
+      "id": "T-005",
+      "caseCode": "Case-E-001",
+      "status": "OUTPUT",
+      "latencyMs": 0.17,
+      "explainable": true,
+      "auditCovered": true,
+      "highRiskTruth": false,
+      "highRiskPredicted": true,
+      "scenarioPass": true
+    },
+    {
+      "id": "T-006",
+      "caseCode": "Case-F-001",
+      "status": "ESCALATE_TO_OFFLINE",
+      "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "latencyMs": 0.08,
+      "explainable": true,
+      "auditCovered": true,
+      "highRiskTruth": true,
+      "highRiskPredicted": true,
+      "scenarioPass": true
+    }
+  ],
+  "overallPass": true
+}

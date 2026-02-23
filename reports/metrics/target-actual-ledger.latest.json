@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-02-22T17:27:46.214Z",
+  "records": [
+    {
+      "milestoneId": "M1",
+      "metricName": "contractBaselineCoverage",
+      "targetValue": 1,
+      "actualValue": 0,
+      "deviation": 0,
+      "status": "completed",
+      "correctiveAction": "maintain frozen architecture contracts"
+    },
+    {
+      "milestoneId": "M2",
+      "metricName": "afScenarioClosure",
+      "targetValue": 1,
+      "actualValue": 0,
+      "deviation": 0,
+      "status": "completed",
+      "correctiveAction": "keep replay fixtures deterministic"
+    },
+    {
+      "milestoneId": "M3",
+      "metricName": "highRiskRecall",
+      "targetValue": 0.9,
+      "actualValue": 1,
+      "deviation": 0.1,
+      "status": "completed",
+      "correctiveAction": "maintain current baseline and monitor drift"
+    },
+    {
+      "milestoneId": "M4",
+      "metricName": "governanceTodoCompletionRatio",
+      "targetValue": 1,
+      "actualValue": 0,
+      "deviation": -1,
+      "status": "completed",
+      "correctiveAction": "keep governance release package and runbooks updated"
+    },
+    {
+      "milestoneId": "M5",
+      "metricName": "batchReplaySampleCount",
+      "targetValue": 120,
+      "actualValue": 120,
+      "deviation": 0,
+      "status": "completed",
+      "correctiveAction": "continue expanding replicated scenario coverage"
+    }
+  ],
+  "checks": {
+    "requiredFieldsValid": true,
+    "milestonesCovered": true,
+    "missingMilestones": []
+  }
+}

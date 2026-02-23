@@ -1,0 +1,454 @@
+{
+  "version": "v6.00",
+  "source": {
+    "planDocument": "docs/process/competition-optimization-backlog.md",
+    "extractedText": "docs/process/competition-optimization-backlog.md",
+    "lockedAt": "2026-02-23",
+    "focusChapters": ["C1-C17"]
+  },
+  "principles": [
+    "Competition demo readiness first",
+    "Security hardening before feature expansion",
+    "User experience polish for presentation",
+    "Performance optimization as enhancement",
+    "All changes must pass gate checks"
+  ],
+  "milestones": [
+    {
+      "id": "M15",
+      "title": "Competition Demo Preparation",
+      "description": "Prepare demo scripts, videos, and presentation materials for competition defense.",
+      "requiredTodoIds": ["C1", "C2", "C3", "C4"],
+      "gateChecks": [
+        "npm run gate:workflow"
+      ]
+    },
+    {
+      "id": "M16",
+      "title": "Security Hardening",
+      "description": "Add rate limiting, audit logging, and error boundary handling.",
+      "requiredTodoIds": ["C5", "C6", "C7", "C8", "C9"],
+      "gateChecks": [
+        "npm run typecheck",
+        "npm test --workspace=@copilot-care/backend"
+      ]
+    },
+    {
+      "id": "M17",
+      "title": "User Experience Polish",
+      "description": "Improve loading states, responsive layout, and user guidance.",
+      "requiredTodoIds": ["C10", "C11", "C12", "C13"],
+      "gateChecks": [
+        "npm run test --workspace=@copilot-care/frontend",
+        "npm run build --workspace=@copilot-care/frontend"
+      ]
+    },
+    {
+      "id": "M18",
+      "title": "Performance Optimization",
+      "description": "Add caching, lazy loading, and request optimization.",
+      "requiredTodoIds": ["C14", "C15", "C16", "C17"],
+      "gateChecks": [
+        "npm run gate:all"
+      ]
+    }
+  ],
+  "todos": [
+    {
+      "id": "C1",
+      "title": "Write demo script for competition",
+      "milestone": "M15",
+      "priority": "P0",
+      "defaultState": "ready",
+      "dependsOn": [],
+      "owner": "plan",
+      "planRefs": ["M15"],
+      "goal": "Create 3-5 typical patient case demo scenarios with step-by-step operation guide.",
+      "nonGoals": ["Production deployment"],
+      "acceptance": [
+        "Demo script document created in docs/demo/",
+        "Script includes operation steps and expected outputs",
+        "Script covers: normal case, red-flag case, metabolic case"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": ["npm run gate:workflow"]
+      }
+    },
+    {
+      "id": "C2",
+      "title": "Record demo video",
+      "milestone": "M15",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["C1"],
+      "owner": "build",
+      "planRefs": ["M15"],
+      "goal": "Record a 3-5 minute system demo video showing core features.",
+      "nonGoals": ["Professional video production"],
+      "acceptance": [
+        "Video file generated in docs/demo/",
+        "Video covers: consultation input, reasoning trace, result display",
+        "Video duration 3-5 minutes"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": ["npm run gate:workflow"]
+      }
+    },
+    {
+      "id": "C3",
+      "title": "Create competition presentation PPT",
+      "milestone": "M15",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["C1"],
+      "owner": "plan",
+      "planRefs": ["M15"],
+      "goal": "Create technical architecture presentation PPT for competition defense.",
+      "nonGoals": ["Marketing materials"],
+      "acceptance": [
+        "PPT file created in docs/demo/",
+        "PPT includes: architecture diagram, key highlights, data evidence",
+        "PPT has 15-20 slides"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": ["npm run gate:workflow"]
+      }
+    },
+    {
+      "id": "C4",
+      "title": "Prepare Q&A for common questions",
+      "milestone": "M15",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["C3"],
+      "owner": "plan",
+      "planRefs": ["M15"],
+      "goal": "Prepare answers for common judge questions.",
+      "nonGoals": ["Predict all questions"],
+      "acceptance": [
+        "Q&A document created in docs/demo/",
+        "Document covers: technical, business, safety questions",
+        "At least 10 Q&A pairs prepared"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": ["npm run gate:workflow"]
+      }
+    },
+    {
+      "id": "C5",
+      "title": "Add API rate limiting middleware",
+      "milestone": "M16",
+      "priority": "P1",
+      "defaultState": "ready",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": ["M16"],
+      "goal": "Add request rate limiting middleware to prevent abuse.",
+      "nonGoals": ["DDoS protection"],
+      "acceptance": [
+        "Rate limiting middleware added to Express app",
+        "Configurable rate limits via environment variables",
+        "Unit tests for rate limiting behavior"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/backend",
+          "npm test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "C6",
+      "title": "Enhance API audit logging",
+      "milestone": "M16",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["C5"],
+      "owner": "build",
+      "planRefs": ["M16"],
+      "goal": "Enhance audit logging to include user, timestamp, operation, and result.",
+      "nonGoals": ["Log aggregation platform"],
+      "acceptance": [
+        "Audit logs include: requestId, userId, timestamp, operation, result",
+        "Logs are structured JSON format",
+        "Unit tests for audit logging"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/backend",
+          "npm test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "C7",
+      "title": "Add input length validation",
+      "milestone": "M16",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": ["M16"],
+      "goal": "Add maximum length validation for symptomText input.",
+      "nonGoals": ["Complex input sanitization"],
+      "acceptance": [
+        "symptomText limited to 2000 characters",
+        "Over-limit input returns ERR_INVALID_VITAL_SIGN",
+        "Unit tests for validation"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/backend",
+          "npm test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "C8",
+      "title": "Add Vue ErrorBoundary",
+      "milestone": "M16",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": ["M16"],
+      "goal": "Add Vue ErrorBoundary to catch rendering errors gracefully.",
+      "nonGoals": ["Error tracking service"],
+      "acceptance": [
+        "ErrorBoundary component created",
+        "Errors show friendly message instead of white screen",
+        "Component tests for error handling"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/frontend",
+          "npm run test --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C9",
+      "title": "Add DebateEngine session timeout",
+      "milestone": "M16",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": ["M16"],
+      "goal": "Add overall session timeout control to DebateEngine.",
+      "nonGoals": ["Per-round timeout"],
+      "acceptance": [
+        "Session timeout configurable via environment variable",
+        "Timeout returns conservative escalation result",
+        "Unit tests for timeout behavior"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/backend",
+          "npm test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "C10",
+      "title": "Add loading skeleton screens",
+      "milestone": "M17",
+      "priority": "P1",
+      "defaultState": "ready",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": ["M17"],
+      "goal": "Add skeleton loading states for main content areas.",
+      "nonGoals": ["Animation library integration"],
+      "acceptance": [
+        "Skeleton components created for: consultation panel, result panel",
+        "Skeleton shows during data loading",
+        "CSS-only animation for skeleton pulse"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C11",
+      "title": "Optimize mobile responsive layout",
+      "milestone": "M17",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["C10"],
+      "owner": "build",
+      "planRefs": ["M17"],
+      "goal": "Optimize layout for mobile browser display.",
+      "nonGoals": ["Native mobile app"],
+      "acceptance": [
+        "Layout adapts to screen widths 320px-768px",
+        "Touch-friendly button sizes",
+        "No horizontal scroll on mobile"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C12",
+      "title": "Add first-time user guidance",
+      "milestone": "M17",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["C11"],
+      "owner": "build",
+      "planRefs": ["M17"],
+      "goal": "Add onboarding guidance for first-time users.",
+      "nonGoals": ["Full tutorial system"],
+      "acceptance": [
+        "Guidance tooltip shows on first visit",
+        "Guidance can be dismissed",
+        "Guidance state persisted in localStorage"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/frontend",
+          "npm run test --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C13",
+      "title": "Improve error message friendliness",
+      "milestone": "M17",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["C8"],
+      "owner": "build",
+      "planRefs": ["M17"],
+      "goal": "Improve error messages to be more user-friendly.",
+      "nonGoals": ["Multi-language support"],
+      "acceptance": [
+        "Error messages use plain Chinese",
+        "Error messages suggest next actions",
+        "No technical jargon in user-facing messages"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/frontend",
+          "npm run test --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C14",
+      "title": "Add Redis caching layer",
+      "milestone": "M18",
+      "priority": "P2",
+      "defaultState": "ready",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": ["M18"],
+      "goal": "Add Redis caching for hot data (idempotency cache, expert wiring snapshot).",
+      "nonGoals": ["Distributed cache cluster"],
+      "acceptance": [
+        "Redis client configured with fallback to memory cache",
+        "Idempotency results cached for 24h",
+        "Cache hit/miss metrics logged"
+      ],
+      "adrTrigger": true,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/backend",
+          "npm test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "C15",
+      "title": "Add Vue route lazy loading",
+      "milestone": "M18",
+      "priority": "P2",
+      "defaultState": "backlog",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": ["M18"],
+      "goal": "Implement Vue async component lazy loading for routes.",
+      "nonGoals": ["Code splitting optimization"],
+      "acceptance": [
+        "Route components loaded lazily",
+        "Initial bundle size reduced",
+        "No regression in navigation behavior"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C16",
+      "title": "Optimize API request merging",
+      "milestone": "M18",
+      "priority": "P2",
+      "defaultState": "backlog",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": ["M18"],
+      "goal": "Merge duplicate API requests to reduce network overhead.",
+      "nonGoals": ["GraphQL migration"],
+      "acceptance": [
+        "Duplicate requests within 100ms merged",
+        "Request deduplication tested",
+        "No regression in response time"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck --workspace=@copilot-care/frontend",
+          "npm run test --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C17",
+      "title": "Optimize static assets",
+      "milestone": "M18",
+      "priority": "P2",
+      "defaultState": "backlog",
+      "dependsOn": ["C15"],
+      "owner": "build",
+      "planRefs": ["M18"],
+      "goal": "Optimize static assets: image compression, caching headers.",
+      "nonGoals": ["CDN deployment"],
+      "acceptance": [
+        "Images compressed with appropriate quality",
+        "Cache headers configured in Vite",
+        "Asset sizes logged in build output"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run build --workspace=@copilot-care/frontend",
+          "npm run perf:check --workspace=@copilot-care/frontend"
+        ]
+      }
+    }
+  ]
+}

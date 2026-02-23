@@ -1,0 +1,125 @@
+{
+  "generatedAt": "2026-02-23T15:03:41.880Z",
+  "budget": {
+    "totalJsMaxBytes": 2600000,
+    "totalCssMaxBytes": 150000,
+    "consultationChunkMaxBytes": 120000,
+    "largestChunkMaxBytes": 500000
+  },
+  "source": {
+    "distDir": "src/frontend/dist",
+    "manifestPath": "src/frontend/dist/manifest.json",
+    "measuredBy": "vite-manifest-entry-graph"
+  },
+  "summary": {
+    "totalAssets": 20,
+    "totalJsBytes": 2108669,
+    "totalCssBytes": 92002,
+    "largestAssetPath": "dist/assets/reportExport-f8856ab2.js",
+    "largestAssetBytes": 425335,
+    "consultationChunkPath": "dist/assets/ConsultationView-7989a029.js",
+    "consultationChunkBytes": 102467
+  },
+  "assets": [
+    {
+      "path": "dist/assets/api-12c34ddd.js",
+      "ext": ".js",
+      "bytes": 37880
+    },
+    {
+      "path": "dist/assets/ConsultationView-7989a029.js",
+      "ext": ".js",
+      "bytes": 102467
+    },
+    {
+      "path": "dist/assets/ConsultationView-e350fa03.css",
+      "ext": ".css",
+      "bytes": 44546
+    },
+    {
+      "path": "dist/assets/echarts-charts-cd80b9f0.js",
+      "ext": ".js",
+      "bytes": 371363
+    },
+    {
+      "path": "dist/assets/echarts-components-06fd13f1.js",
+      "ext": ".js",
+      "bytes": 232916
+    },
+    {
+      "path": "dist/assets/echarts-core-04291051.js",
+      "ext": ".js",
+      "bytes": 389741
+    },
+    {
+      "path": "dist/assets/echarts-renderers-7aaffba4.js",
+      "ext": ".js",
+      "bytes": 33098
+    },
+    {
+      "path": "dist/assets/FhirExplorerView-8b8a7739.js",
+      "ext": ".js",
+      "bytes": 6886
+    },
+    {
+      "path": "dist/assets/FhirExplorerView-e5163e51.css",
+      "ext": ".css",
+      "bytes": 5610
+    },
+    {
+      "path": "dist/assets/GovernanceView-dcbd2717.css",
+      "ext": ".css",
+      "bytes": 15562
+    },
+    {
+      "path": "dist/assets/GovernanceView-dd4b1b4a.js",
+      "ext": ".js",
+      "bytes": 16239
+    },
+    {
+      "path": "dist/assets/html2canvas.esm-e0a7d97b.js",
+      "ext": ".js",
+      "bytes": 202309
+    },
+    {
+      "path": "dist/assets/index-8a2a2d70.js",
+      "ext": ".js",
+      "bytes": 6600
+    },
+    {
+      "path": "dist/assets/index-da291014.css",
+      "ext": ".css",
+      "bytes": 18696
+    },
+    {
+      "path": "dist/assets/index.es-3b5e66eb.js",
+      "ext": ".js",
+      "bytes": 151157
+    },
+    {
+      "path": "dist/assets/PatientDashboardView-0980ac84.css",
+      "ext": ".css",
+      "bytes": 7588
+    },
+    {
+      "path": "dist/assets/PatientDashboardView-843e728a.js",
+      "ext": ".js",
+      "bytes": 12348
+    },
+    {
+      "path": "dist/assets/purify.es-ce17b1ad.js",
+      "ext": ".js",
+      "bytes": 22742
+    },
+    {
+      "path": "dist/assets/reportExport-f8856ab2.js",
+      "ext": ".js",
+      "bytes": 425335
+    },
+    {
+      "path": "dist/assets/vue-vendor-a40ef1e9.js",
+      "ext": ".js",
+      "bytes": 97588
+    }
+  ]
+}

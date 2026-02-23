@@ -1,0 +1,38 @@
+{
+  "mappings": [
+    {
+      "western_disease": "Hypertension",
+      "required_symptoms": ["Dizziness", "RedFace", "Irritability"],
+      "tcm_pattern": "Liver-Yang Hyperactivity",
+      "pathogenesis": "Yin deficiency affecting Yang",
+      "recommended_tcm_actions": ["Acupoint: LR3 (Taichong)", "Tea: Cassia Seed", "Exercise: Baduanjin"]
+    },
+    {
+      "western_disease": "Hypertension",
+      "required_symptoms": ["HeavyHead", "ChestTightness", "GreasyTongue"],
+      "tcm_pattern": "Phlegm-Dampness",
+      "pathogenesis": "Spleen dysfunction generating phlegm",
+      "recommended_tcm_actions": ["Acupoint: ST40 (Fenglong)", "Tea: Tangerine Peel", "Diet: Avoid greasy food"]
+    }
+  ],
+  "drug_herb_conflicts": [
+    {
+      "western_drug_class": "Anticoagulant",
+      "examples": ["Warfarin", "Aspirin"],
+      "tcm_herb_class": "Blood-Activating",
+      "examples": ["Danshen", "Angelica"],
+      "risk_level": "High",
+      "consequence": "Increased bleeding risk",
+      "action": "BLOCK"
+    },
+    {
+      "western_drug_class": "Diuretic",
+      "examples": ["Furosemide", "Hydrochlorothiazide"],
+      "tcm_herb_class": "Licorice",
+      "examples": ["GanCao"],
+      "risk_level": "Medium",
+      "consequence": "Potassium loss / Pseudo-aldosteronism",
+      "action": "ALERT"
+    }
+  ]
+}

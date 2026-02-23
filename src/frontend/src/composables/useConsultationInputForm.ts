@@ -1,0 +1,246 @@
+import { ref, type Ref } from 'vue';
+import type {
+  HealthSignal,
+  PatientProfile,
+  TriageRequest,
+} from '@copilot-care/shared/types';
+
+export type OptionalNumericInput = string | number | null | undefined;
+
+export interface ConsultationInputForm {
+  symptomText: string;
+  age: number;
+  sex: 'male' | 'female' | 'other';
+  chronicDiseasesText: string;
+  medicationHistoryText: string;
+  systolicBPText: OptionalNumericInput;
+  diastolicBPText: OptionalNumericInput;
+  consentToken: string;
+}
+
+export interface ConsultationQuickInput {
+  label: string;
+  symptomText: string;
+  age: number;
+  sex: 'male' | 'female' | 'other';
+  systolicBPText?: OptionalNumericInput;
+  diastolicBPText?: OptionalNumericInput;
+  chronicDiseasesText?: string;
+  medicationHistoryText?: string;
+}
+
+interface ConsultationInputValidationMessages {
+  symptomRequired: string;
+  ageInvalid: string;
+  systolicNotGreaterThanDiastolic: string;
+}
+
+interface UseConsultationInputFormOptions {
+  contextVersion?: string;
+  defaultForm?: Partial<ConsultationInputForm>;
+  validationMessages?: Partial<ConsultationInputValidationMessages>;
+}
+
+interface BuildPatientProfileOptions {
+  fallbackPatientId: string;
+}
+
+export interface ConsultationInputFormState {
+  form: Ref<ConsultationInputForm>;
+  showAdvancedInputs: Ref<boolean>;
+  setAdvancedInputsVisible: (visible: boolean) => void;
+  toggleAdvancedInputs: () => void;
+  applyQuickInput: (input: ConsultationQuickInput, disabled?: boolean) => void;
+  buildProfile: () => PatientProfile;
+  buildSignals: () => HealthSignal[];
+  buildRequestPayload: () => TriageRequest;
+  buildExportPatientProfile: () => PatientProfile;
+  validateInput: () => string | null;
+}
+
+const DEFAULT_FORM: ConsultationInputForm = {
+  symptomText: '',
+  age: 45,
+  sex: 'other',
+  chronicDiseasesText: '',
+  medicationHistoryText: '',
+  systolicBPText: '',
+  diastolicBPText: '',
+  consentToken: 'consent_local_demo',
+};
+
+const DEFAULT_VALIDATION_MESSAGES: ConsultationInputValidationMessages = {
+  symptomRequired: 'Please describe current symptoms first.',
+  ageInvalid: 'Age must be a valid positive number.',
+  systolicNotGreaterThanDiastolic:
+    'Systolic BP must be greater than diastolic BP.',
+};
+
+function parseTagText(value: string): string[] {
+  return value
+    .replace(/\uFF0C/g, ',')
+    .replace(/\u3001/g, ',')
+    .split(/[,\n]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function parseOptionalNumber(value: unknown): number | undefined {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? value : undefined;
+  }
+
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return undefined;
+  }
+
+  const parsed = Number(trimmed);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function buildPatientProfile(
+  form: ConsultationInputForm,
+  options: BuildPatientProfileOptions,
+): PatientProfile {
+  const symptomText = form.symptomText.trim();
+  const systolicBP = parseOptionalNumber(form.systolicBPText);
+  const diastolicBP = parseOptionalNumber(form.diastolicBPText);
+
+  return {
+    patientId: options.fallbackPatientId,
+    age: form.age,
+    sex: form.sex,
+    chiefComplaint: symptomText,
+    symptoms: parseTagText(symptomText),
+    chronicDiseases: parseTagText(form.chronicDiseasesText),
+    medicationHistory: parseTagText(form.medicationHistoryText),
+    allergyHistory: [],
+    lifestyleTags: [],
+    vitals:
+      typeof systolicBP === 'number' || typeof diastolicBP === 'number'
+        ? { systolicBP, diastolicBP }
+        : undefined,
+  };
+}
+
+export function useConsultationInputForm(
+  options: UseConsultationInputFormOptions = {},
+): ConsultationInputFormState {
+  const validationMessages: ConsultationInputValidationMessages = {
+    ...DEFAULT_VALIDATION_MESSAGES,
+    ...options.validationMessages,
+  };
+
+  const contextVersion = options.contextVersion ?? 'v4.30';
+  const form = ref<ConsultationInputForm>({
+    ...DEFAULT_FORM,
+    ...options.defaultForm,
+  });
+  const showAdvancedInputs = ref<boolean>(false);
+
+  function setAdvancedInputsVisible(visible: boolean): void {
+    showAdvancedInputs.value = visible;
+  }
+
+  function toggleAdvancedInputs(): void {
+    showAdvancedInputs.value = !showAdvancedInputs.value;
+  }
+
+  function applyQuickInput(
+    input: ConsultationQuickInput,
+    disabled = false,
+  ): void {
+    if (disabled) {
+      return;
+    }
+    form.value.symptomText = input.symptomText;
+    form.value.age = input.age;
+    form.value.sex = input.sex;
+    form.value.systolicBPText = input.systolicBPText ?? '';
+    form.value.diastolicBPText = input.diastolicBPText ?? '';
+    form.value.chronicDiseasesText = input.chronicDiseasesText ?? '';
+    form.value.medicationHistoryText = input.medicationHistoryText ?? '';
+  }
+
+  function buildProfile(): PatientProfile {
+    return buildPatientProfile(form.value, {
+      fallbackPatientId: `demo-${Date.now()}`,
+    });
+  }
+
+  function buildSignals(): HealthSignal[] {
+    const systolicBP = parseOptionalNumber(form.value.systolicBPText);
+    const diastolicBP = parseOptionalNumber(form.value.diastolicBPText);
+
+    if (typeof systolicBP !== 'number' && typeof diastolicBP !== 'number') {
+      return [];
+    }
+
+    return [
+      {
+        timestamp: new Date().toISOString(),
+        source: 'manual',
+        systolicBP,
+        diastolicBP,
+      },
+    ];
+  }
+
+  function buildRequestPayload(): TriageRequest {
+    return {
+      requestId: `req-${Date.now()}`,
+      profile: buildProfile(),
+      signals: buildSignals(),
+      symptomText: form.value.symptomText.trim(),
+      contextVersion,
+      consentToken: form.value.consentToken.trim() || undefined,
+    };
+  }
+
+  function buildExportPatientProfile(): PatientProfile {
+    const fallbackPatientId = form.value.age
+      ? `demo-${Date.now()}`
+      : 'demo';
+    return buildPatientProfile(form.value, { fallbackPatientId });
+  }
+
+  function validateInput(): string | null {
+    if (!form.value.symptomText.trim()) {
+      return validationMessages.symptomRequired;
+    }
+
+    if (!Number.isFinite(form.value.age) || form.value.age <= 0) {
+      return validationMessages.ageInvalid;
+    }
+
+    const systolicBP = parseOptionalNumber(form.value.systolicBPText);
+    const diastolicBP = parseOptionalNumber(form.value.diastolicBPText);
+    if (
+      typeof systolicBP === 'number'
+      && typeof diastolicBP === 'number'
+      && systolicBP <= diastolicBP
+    ) {
+      return validationMessages.systolicNotGreaterThanDiastolic;
+    }
+
+    return null;
+  }
+
+  return {
+    form,
+    showAdvancedInputs,
+    setAdvancedInputsVisible,
+    toggleAdvancedInputs,
+    applyQuickInput,
+    buildProfile,
+    buildSignals,
+    buildRequestPayload,
+    buildExportPatientProfile,
+    validateInput,
+  };
+}

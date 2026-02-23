@@ -1,0 +1,497 @@
+{
+  "version": "v6.00",
+  "source": {
+    "planDocument": "国创赛冲刺计划",
+    "extractedText": "演示优先方案A",
+    "lockedAt": "2026-02-24",
+    "competitionTarget": "国创赛决赛",
+    "timeWindow": "4周"
+  },
+  "principles": [
+    "演示稳定性第一",
+    "可解释性体验优先",
+    "材料准备与开发并行",
+    "每日门禁检查不间断",
+    "全流程演练验证"
+  ],
+  "milestones": [
+    {
+      "id": "W1",
+      "title": "Week 1: 稳定基线与演示脚本",
+      "description": "修复门禁告警，完善演示模式，创建演示脚本框架",
+      "requiredTodoIds": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+      ],
+      "gateChecks": [
+        "npm run gate:safety",
+        "npm run gate:workflow",
+        "npm run test --workspace=@copilot-care/frontend",
+        "npm run build --workspace=@copilot-care/frontend"
+      ]
+    },
+    {
+      "id": "W2",
+      "title": "Week 2: 可解释性增强与材料初稿",
+      "description": "打磨决策驾驶舱，完善推理轨迹，产出技术材料初稿",
+      "requiredTodoIds": [
+        "C05",
+        "C06",
+        "C07",
+        "C08"
+      ],
+      "gateChecks": [
+        "npm run gate:scenarios",
+        "npm run gate:metrics",
+        "npm run test --workspace=@copilot-care/frontend",
+        "npm run typecheck --workspace=@copilot-care/frontend"
+      ]
+    },
+    {
+      "id": "W3",
+      "title": "Week 3: 全流程演练与材料定稿",
+      "description": "完整流程演练，问题修复，材料定稿",
+      "requiredTodoIds": [
+        "C09",
+        "C10",
+        "C11",
+        "C12"
+      ],
+      "gateChecks": [
+        "npm run gate:all",
+        "npm run devwf:full",
+        "npm run check:copy --workspace=@copilot-care/frontend"
+      ]
+    },
+    {
+      "id": "W4",
+      "title": "Week 4: 压力测试与最终打磨",
+      "description": "压力测试，性能优化，演示最终打磨",
+      "requiredTodoIds": [
+        "C13",
+        "C14",
+        "C15",
+        "C16"
+      ],
+      "gateChecks": [
+        "npm run gate:all",
+        "npm run perf:check --workspace=@copilot-care/frontend",
+        "npm run security:secrets"
+      ]
+    }
+  ],
+  "todos": [
+    {
+      "id": "C01",
+      "title": "修复门禁告警和工作流问题",
+      "milestone": "W1",
+      "priority": "P0",
+      "defaultState": "in_progress",
+      "dependsOn": [],
+      "owner": "build",
+      "goal": "修复gate:workflow告警（operation guide命令版本、manifest版本）",
+      "nonGoals": [
+        "大规模重构"
+      ],
+      "acceptance": [
+        "npm run gate:workflow 通过",
+        "门禁命令全部绿色"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "C02",
+      "title": "检查并完善演示模式",
+      "milestone": "W1",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C01"
+      ],
+      "owner": "build",
+      "goal": "验证演示模式功能完整，添加竞赛答辩所需的回放控制",
+      "nonGoals": [
+        "新增复杂功能"
+      ],
+      "acceptance": [
+        "演示模式可回放预设场景",
+        "支持答辩节奏控制"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/composables/useDemoMode.test.ts",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C03",
+      "title": "创建竞赛演示脚本框架",
+      "milestone": "W1",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C02"
+      ],
+      "owner": "plan",
+      "goal": "创建国创赛演示脚本，定义每个展示环节和时间控制",
+      "nonGoals": [
+        "完整PPT制作"
+      ],
+      "acceptance": [
+        "演示脚本文档创建",
+        "关键展示点清单"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "ls docs/process/competition-demo-script.md"
+        ]
+      }
+    },
+    {
+      "id": "C04",
+      "title": "代码质量基线检查",
+      "milestone": "W1",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C01"
+      ],
+      "owner": "build",
+      "goal": "执行完整代码质量检查，确保基线稳定",
+      "nonGoals": [
+        "大规模重构"
+      ],
+      "acceptance": [
+        "前后端测试全通过",
+        "构建无警告"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend",
+          "npm run test --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/backend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C05",
+      "title": "决策驾驶舱细节打磨",
+      "milestone": "W2",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C04"
+      ],
+      "owner": "build",
+      "goal": "优化决策驾驶舱的置信度展示、贡献因子可视化",
+      "nonGoals": [
+        "架构变更"
+      ],
+      "acceptance": [
+        "置信度数值清晰可读",
+        "贡献因子卡片美观"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/composables/useDecisionReasoningCockpit.test.ts",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C06",
+      "title": "推理轨迹叙事化优化",
+      "milestone": "W2",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C05"
+      ],
+      "owner": "build",
+      "goal": "优化推理轨迹展示，使其更适合竞赛答辩叙事",
+      "nonGoals": [
+        "后端逻辑变更"
+      ],
+      "acceptance": [
+        "推理步骤时间线清晰",
+        "支持关键步骤高亮"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/composables/useConsultationReasoningMap.test.ts",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C07",
+      "title": "技术材料初稿产出",
+      "milestone": "W2",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C03"
+      ],
+      "owner": "plan",
+      "goal": "产出技术架构文档、创新点说明等初稿",
+      "nonGoals": [
+        "完整PPT"
+      ],
+      "acceptance": [
+        "技术架构图完成",
+        "创新点清单完成"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "ls docs/architecture.md"
+        ]
+      }
+    },
+    {
+      "id": "C08",
+      "title": "报告导出中文优化",
+      "milestone": "W2",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C04"
+      ],
+      "owner": "build",
+      "goal": "优化报告导出的中文显示，确保无乱码",
+      "nonGoals": [
+        "报告模板重构"
+      ],
+      "acceptance": [
+        "中文内容正常显示",
+        "PDF导出无乱码"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/services/reportExport.test.ts",
+          "npm run check:copy --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C09",
+      "title": "完整流程演练验证",
+      "milestone": "W3",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C06",
+        "C08"
+      ],
+      "owner": "build",
+      "goal": "从输入到报告导出的完整流程演练，发现并修复问题",
+      "nonGoals": [
+        "新增功能"
+      ],
+      "acceptance": [
+        "完整流程无报错",
+        "关键路径测试通过"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/views/ConsultationView.integration.test.ts",
+          "npm run gate:all"
+        ]
+      }
+    },
+    {
+      "id": "C10",
+      "title": "红旗场景上转分支验证",
+      "milestone": "W3",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C09"
+      ],
+      "owner": "build",
+      "goal": "验证红旗场景下上转分支正确激活",
+      "nonGoals": [
+        "新增红旗规则"
+      ],
+      "acceptance": [
+        "红旗场景正确上转",
+        "阈值走廊解释一致"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend",
+          "npm run gate:scenarios"
+        ]
+      }
+    },
+    {
+      "id": "C11",
+      "title": "材料定稿",
+      "milestone": "W3",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C07"
+      ],
+      "owner": "plan",
+      "goal": "技术材料定稿，完成竞赛所需文档",
+      "nonGoals": [
+        "排版美化"
+      ],
+      "acceptance": [
+        "技术文档完整",
+        "创新点清晰"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "C12",
+      "title": "演示脚本最终版",
+      "milestone": "W3",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C03",
+        "C09"
+      ],
+      "owner": "plan",
+      "goal": "根据演练结果完善演示脚本",
+      "nonGoals": [
+        "PPT制作"
+      ],
+      "acceptance": [
+        "演示脚本完整",
+        "时间控制合理"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "ls docs/process/competition-demo-script.md"
+        ]
+      }
+    },
+    {
+      "id": "C13",
+      "title": "前端性能压力测试",
+      "milestone": "W4",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C10"
+      ],
+      "owner": "build",
+      "goal": "执行前端性能检查，确保演示流畅",
+      "nonGoals": [
+        "深度性能优化"
+      ],
+      "acceptance": [
+        "性能基线通过",
+        "构建大小合理"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run perf:check --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "C14",
+      "title": "敏感信息检查",
+      "milestone": "W4",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C13"
+      ],
+      "owner": "build",
+      "goal": "执行敏感信息泄露检查，确保代码安全",
+      "nonGoals": [
+        "修复已知漏洞"
+      ],
+      "acceptance": [
+        "无敏感信息泄露",
+        "门禁命令通过"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run security:secrets"
+        ]
+      }
+    },
+    {
+      "id": "C15",
+      "title": "演示最终打磨",
+      "milestone": "W4",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C12"
+      ],
+      "owner": "build",
+      "goal": "根据演练反馈进行最终演示打磨",
+      "nonGoals": [
+        "功能变更"
+      ],
+      "acceptance": [
+        "演示流程顺畅",
+        "问题全部修复"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:all"
+        ]
+      }
+    },
+    {
+      "id": "C16",
+      "title": "最终门禁检查",
+      "milestone": "W4",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "C14",
+        "C15"
+      ],
+      "owner": "build",
+      "goal": "执行完整门禁检查，确保交付质量",
+      "nonGoals": [],
+      "acceptance": [
+        "所有门禁通过",
+        "测试全部通过"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:all",
+          "npm run devwf:full"
+        ]
+      }
+    }
+  ]
+}

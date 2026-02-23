@@ -1,0 +1,133 @@
+{
+  "version": "v7.00",
+  "source": {
+    "planDocument": "CoPilot_Care_Plan_Submission_V4_30_With_Figures.pdf",
+    "extractedText": "计划书第4-7章系统增强",
+    "lockedAt": "2026-02-24",
+    "focusChapters": [
+      "第4章: 系统架构设计",
+      "第5章: 核心模块设计",
+      "第6章: 接口与运行时",
+      "第7章: A-F六维评估体系"
+    ]
+  },
+  "createdAt": "2026-02-21T16:37:39.786Z",
+  "updatedAt": "2026-02-23T17:18:39.854Z",
+  "todos": {
+    "E01": {
+      "state": "done",
+      "updatedAt": "2026-02-23T16:58:53.417Z",
+      "notes": "完成动态任务拆解，包含患者情况分析、Provider选择、子任务生成",
+      "evidence": [
+        "src/backend/src/infrastructure/orchestration/CoordinatorSnapshotService.ts",
+        "src/shared/types.ts"
+      ]
+    },
+    "E02": {
+      "state": "done",
+      "updatedAt": "2026-02-23T17:02:13.613Z",
+      "notes": "完成多Provider并行调用引擎，包含并行调用、超时控制、失败切换",
+      "evidence": [
+        "src/backend/src/infrastructure/orchestration/ParallelAgentInvoker.ts",
+        "src/backend/src/agents/AgentBase.ts"
+      ]
+    },
+    "E03": {
+      "state": "done",
+      "updatedAt": "2026-02-23T17:05:26.181Z",
+      "notes": "完成辩论引擎任务分配，包含动态Agent选择、Provider映射、任务优先级",
+      "evidence": [
+        "src/backend/src/infrastructure/orchestration/DebateTaskDispatcher.ts"
+      ]
+    },
+    "E04": {
+      "state": "done",
+      "updatedAt": "2026-02-23T17:08:43.887Z",
+      "notes": "完成后端单元测试覆盖，新增11个测试，覆盖ParallelAgentInvoker和DebateTaskDispatcher",
+      "evidence": [
+        "src/backend/src/infrastructure/orchestration/__tests__/ParallelAgentInvoker.test.ts",
+        "src/backend/src/infrastructure/orchestration/__tests__/DebateTaskDispatcher.test.ts"
+      ]
+    },
+    "E05": {
+      "state": "done",
+      "updatedAt": "2026-02-23T17:13:40.998Z",
+      "notes": "完成ThinkChainPanel组件，创建秘塔AI风格的深度思考面板",
+      "evidence": [
+        "src/frontend/src/components/ThinkChainPanel.vue"
+      ]
+    },
+    "E06": {
+      "state": "done",
+      "updatedAt": "2026-02-23T17:13:54.992Z",
+      "notes": "已完成思考步骤时间线渲染，ThinkChainPanel组件包含完整的时间线展示",
+      "evidence": [
+        "src/frontend/src/components/ThinkChainPanel.vue"
+      ]
+    },
+    "E07": {
+      "state": "done",
+      "updatedAt": "2026-02-23T17:15:45.414Z",
+      "notes": "完成实时思考过程流集成，创建useThinkChainState composable",
+      "evidence": [
+        "src/frontend/src/composables/useThinkChainState.ts"
+      ]
+    },
+    "E08": {
+      "state": "done",
+      "updatedAt": "2026-02-23T17:18:39.853Z",
+      "notes": "完成思考面板测试覆盖，新增6个测试，覆盖useThinkChainState",
+      "evidence": [
+        "src/frontend/src/composables/useThinkChainState.test.ts"
+      ]
+    },
+    "E09": {
+      "state": "backlog",
+      "updatedAt": "2026-02-23T16:49:38.498Z",
+      "notes": "",
+      "evidence": []
+    },
+    "E10": {
+      "state": "backlog",
+      "updatedAt": "2026-02-23T16:49:38.498Z",
+      "notes": "",
+      "evidence": []
+    },
+    "E11": {
+      "state": "backlog",
+      "updatedAt": "2026-02-23T16:49:38.498Z",
+      "notes": "",
+      "evidence": []
+    },
+    "E12": {
+      "state": "backlog",
+      "updatedAt": "2026-02-23T16:49:38.498Z",
+      "notes": "",
+      "evidence": []
+    },
+    "E13": {
+      "state": "backlog",
+      "updatedAt": "2026-02-23T16:49:38.498Z",
+      "notes": "",
+      "evidence": []
+    },
+    "E14": {
+      "state": "backlog",
+      "updatedAt": "2026-02-23T16:49:38.498Z",
+      "notes": "",
+      "evidence": []
+    },
+    "E15": {
+      "state": "backlog",
+      "updatedAt": "2026-02-23T16:49:38.498Z",
+      "notes": "",
+      "evidence": []
+    },
+    "E16": {
+      "state": "backlog",
+      "updatedAt": "2026-02-23T16:49:38.498Z",
+      "notes": "",
+      "evidence": []
+    }
+  }
+}

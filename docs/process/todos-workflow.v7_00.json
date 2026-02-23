@@ -1,0 +1,484 @@
+{
+  "version": "v7.00",
+  "source": {
+    "planDocument": "CoPilot_Care_Plan_Submission_V4_30_With_Figures.pdf",
+    "extractedText": "计划书第4-7章系统增强",
+    "lockedAt": "2026-02-24",
+    "focusChapters": [
+      "第4章: 系统架构设计",
+      "第5章: 核心模块设计",
+      "第6章: 接口与运行时",
+      "第7章: A-F六维评估体系"
+    ]
+  },
+  "principles": [
+    "动态Agent编排 - 像西西弗斯一样调度AI任务",
+    "思考过程可视化 - 秘塔AI风格深度思考面板",
+    "多Provider并行 - DeepSeek/Gemini/Kimi动态选择",
+    "实时流程图 - ECharts动态渲染任务图",
+    "计划书七层架构保持不变，仅增强实现"
+  ],
+  "milestones": [
+    {
+      "id": "E1",
+      "title": "Week 1: 动态Coordinator + 并行Agent调用",
+      "description": "增强总Agent的动态任务拆解能力，实现多Provider并行调用",
+      "requiredTodoIds": [
+        "E01",
+        "E02",
+        "E03",
+        "E04"
+      ],
+      "gateChecks": [
+        "npm run gate:safety",
+        "npm run gate:workflow",
+        "npm run test --workspace=@copilot-care/backend",
+        "npm run build --workspace=@copilot-care/backend"
+      ]
+    },
+    {
+      "id": "E2",
+      "title": "Week 2: 秘塔AI风格思考面板",
+      "description": "实现类似秘塔AI的深度思考过程可视化面板",
+      "requiredTodoIds": [
+        "E05",
+        "E06",
+        "E07",
+        "E08"
+      ],
+      "gateChecks": [
+        "npm run test --workspace=@copilot-care/frontend",
+        "npm run typecheck --workspace=@copilot-care/frontend",
+        "npm run build --workspace=@copilot-care/frontend"
+      ]
+    },
+    {
+      "id": "E3",
+      "title": "Week 3: 动态流程图渲染",
+      "description": "实现ECharts动态流程图，实时展示Agent任务分配和执行状态",
+      "requiredTodoIds": [
+        "E09",
+        "E10",
+        "E11",
+        "E12"
+      ],
+      "gateChecks": [
+        "npm run test --workspace=@copilot-care/frontend",
+        "npm run build --workspace=@copilot-care/frontend",
+        "npm run gate:scenarios"
+      ]
+    },
+    {
+      "id": "E4",
+      "title": "Week 4: 高级决策展示优化",
+      "description": "增强决策驾驶舱、复杂度路由树、报告导出的高级展示效果",
+      "requiredTodoIds": [
+        "E13",
+        "E14",
+        "E15",
+        "E16"
+      ],
+      "gateChecks": [
+        "npm run gate:all",
+        "npm run perf:check --workspace=@copilot-care/frontend",
+        "npm run security:secrets"
+      ]
+    }
+  ],
+  "todos": [
+    {
+      "id": "E01",
+      "title": "增强Coordinator动态任务拆解",
+      "milestone": "E1",
+      "priority": "P0",
+      "defaultState": "in_progress",
+      "dependsOn": [],
+      "owner": "build",
+      "goal": "基于计划书第4章架构，增强Coordinator的任务拆解能力，支持动态子任务生成",
+      "nonGoals": [
+        "改变七层架构"
+      ],
+      "acceptance": [
+        "Coordinator可根据输入动态生成子任务列表",
+        "任务拆解结果可追溯"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend",
+          "npm run build --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "E02",
+      "title": "实现多Provider并行调用引擎",
+      "milestone": "E1",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E01"
+      ],
+      "owner": "build",
+      "goal": "实现DeepSeek/Gemini/Kimi的并行调用，根据任务类型动态选择最合适的Provider",
+      "nonGoals": [
+        "新增Provider"
+      ],
+      "acceptance": [
+        "多个Agent可并行调用不同Provider",
+        "失败时自动切换Provider"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend",
+          "npm run build --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "E03",
+      "title": "增强辩论引擎的任务分配逻辑",
+      "milestone": "E1",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E02"
+      ],
+      "owner": "build",
+      "goal": "基于计划书第5章模块C，增强多Agent仲裁的任务分配，支持动态DI计算",
+      "nonGoals": [
+        "改变仲裁算法核心"
+      ],
+      "acceptance": [
+        "辩论过程记录完整",
+        "DI计算可解释"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "E04",
+      "title": "后端单元测试覆盖",
+      "milestone": "E1",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E01",
+        "E02",
+        "E03"
+      ],
+      "owner": "build",
+      "goal": "为新增强的后端功能添加单元测试",
+      "nonGoals": [
+        "E2E测试"
+      ],
+      "acceptance": [
+        "核心逻辑测试覆盖",
+        "边界条件测试"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "E05",
+      "title": "创建ThinkChainPanel组件",
+      "milestone": "E2",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E04"
+      ],
+      "owner": "build",
+      "goal": "创建秘塔AI风格的深度思考面板组件，展示多步思考过程",
+      "nonGoals": [
+        "改变后端逻辑"
+      ],
+      "acceptance": [
+        "组件可接收思考步骤数据",
+        "支持展开/折叠"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "E06",
+      "title": "实现思考步骤时间线渲染",
+      "milestone": "E2",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E05"
+      ],
+      "owner": "build",
+      "goal": "实现思考步骤的时间线渲染，包含步骤编号、Agent名称、思考内容",
+      "nonGoals": [
+        "后端实现"
+      ],
+      "acceptance": [
+        "时间线展示美观",
+        "动画流畅"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "E07",
+      "title": "集成实时思考过程流",
+      "milestone": "E2",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E06"
+      ],
+      "owner": "build",
+      "goal": "将后端的实时推理过程流集成到前端思考面板",
+      "nonGoals": [
+        "改变数据格式"
+      ],
+      "acceptance": [
+        "实时更新思考过程",
+        "打字机效果"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "E08",
+      "title": "思考面板测试覆盖",
+      "milestone": "E2",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E07"
+      ],
+      "owner": "build",
+      "goal": "为思考面板组件添加测试",
+      "nonGoals": [],
+      "acceptance": [
+        "关键交互测试覆盖"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "E09",
+      "title": "创建DynamicFlowChart组件",
+      "milestone": "E3",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E08"
+      ],
+      "owner": "build",
+      "goal": "基于ECharts创建动态流程图组件，展示Agent任务分配和执行状态",
+      "nonGoals": [
+        "使用其他图表库"
+      ],
+      "acceptance": [
+        "流程图可渲染",
+        "节点可点击"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "E10",
+      "title": "实现任务节点动态更新",
+      "milestone": "E3",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E09"
+      ],
+      "owner": "build",
+      "goal": "实现流程图节点的实时状态更新，包含pending/running/done状态",
+      "nonGoals": [],
+      "acceptance": [
+        "状态更新实时",
+        "动画平滑"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "E11",
+      "title": "实现任务分配边动画",
+      "milestone": "E3",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E10"
+      ],
+      "owner": "build",
+      "goal": "实现任务分配时的边动画效果，展示任务从Coordinator到Agent的分配过程",
+      "nonGoals": [],
+      "acceptance": [
+        "动画效果流畅",
+        "可配置速度"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "E12",
+      "title": "流程图交互增强",
+      "milestone": "E3",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E11"
+      ],
+      "owner": "build",
+      "goal": "增强流程图交互，支持节点悬停详情、点击跳转等",
+      "nonGoals": [],
+      "acceptance": [
+        "交互体验良好"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "E13",
+      "title": "决策驾驶舱高级展示",
+      "milestone": "E4",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E12"
+      ],
+      "owner": "build",
+      "goal": "增强决策驾驶舱的展示效果，增加置信度动画、贡献因子可视化",
+      "nonGoals": [
+        "改变决策逻辑"
+      ],
+      "acceptance": [
+        "视觉效果高级",
+        "数据展示清晰"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "E14",
+      "title": "复杂度路由树增强",
+      "milestone": "E4",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E13"
+      ],
+      "owner": "build",
+      "goal": "增强复杂度路由树展示，增加阈值走廊可视化、因子分解",
+      "nonGoals": [],
+      "acceptance": [
+        "展示效果直观"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "E15",
+      "title": "报告导出高级优化",
+      "milestone": "E4",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E14"
+      ],
+      "owner": "build",
+      "goal": "优化报告导出效果，增加思考过程摘要、图表嵌入",
+      "nonGoals": [
+        "改变报告模板"
+      ],
+      "acceptance": [
+        "导出格式美观"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/services/reportExport.test.ts"
+        ]
+      }
+    },
+    {
+      "id": "E16",
+      "title": "最终门禁检查与优化",
+      "milestone": "E4",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "E15"
+      ],
+      "owner": "build",
+      "goal": "执行完整门禁检查，优化性能和体验",
+      "nonGoals": [],
+      "acceptance": [
+        "所有门禁通过",
+        "性能达标"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:all",
+          "npm run perf:check --workspace=@copilot-care/frontend",
+          "npm run security:secrets"
+        ]
+      }
+    }
+  ]
+}

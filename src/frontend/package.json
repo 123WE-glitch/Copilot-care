@@ -1,0 +1,34 @@
+{
+  "name": "@copilot-care/frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/clean-dist.cjs && vite build",
+    "typecheck": "vue-tsc --noEmit",
+    "preview": "vite preview",
+    "check:copy": "node scripts/check-copy-encoding.cjs",
+    "perf:check": "node scripts/check-build-budget.cjs",
+    "perf:baseline": "node scripts/check-build-budget.cjs --write-baseline",
+    "test": "node scripts/run-vitest.cjs run",
+    "test:watch": "node scripts/run-vitest.cjs",
+    "test:coverage": "node scripts/run-vitest.cjs run --coverage"
+  },
+  "dependencies": {
+    "@copilot-care/shared": "1.0.0",
+    "axios": "^1.4.0",
+    "echarts": "^5.4.0",
+    "jspdf": "^4.2.0",
+    "pinia": "^2.1.0",
+    "vue": "^3.3.0",
+    "vue-router": "^4.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.0",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^28.1.0",
+    "typescript": "^5.0.0",
+    "vite": "^4.3.0",
+    "vitest": "^4.0.18",
+    "vue-tsc": "^2.2.0"
+  }
+}

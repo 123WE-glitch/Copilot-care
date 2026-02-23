@@ -1,0 +1,20 @@
+version: "1.0"
+usage: "documentation-source-only"
+notes:
+  - "This file is a reference architecture mapping source."
+  - "Runtime entrypoint remains opencode.json."
+agents:
+  plan:
+    role: "Planner"
+    constraints:
+      - "read-only"
+      - "no mutating shell"
+  build:
+    role: "Builder"
+    constraints:
+      - "implementation role"
+  reviewer:
+    role: "Reviewer"
+    constraints:
+      - "strict read-only"
+      - "findings-first review"

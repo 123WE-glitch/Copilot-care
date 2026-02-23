@@ -1,0 +1,16 @@
+version: "1.0"
+usage: "documentation-source-only"
+scope: "medical-governance"
+hard_limits:
+  - "no direct prescription decision"
+  - "no replacement of clinician final diagnosis"
+  - "no non-escalation with red flags"
+mandatory_checks:
+  - "MIS completeness"
+  - "red-flag short-circuit"
+  - "Dissent Index threshold check"
+  - "audit trace completeness"
+dissent_thresholds:
+  consensus: 0.2
+  light_debate: 0.4
+  deep_debate: 0.7

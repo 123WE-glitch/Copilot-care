@@ -1,0 +1,301 @@
+{
+  "version": "v4.30",
+  "source": {
+    "planDocument": "docs/CoPilot_Care_Plan_Submission_V4_30_With_Figures.pdf",
+    "extractedText": "docs/process/plan-extracts/CoPilot_Care_Plan_v4_30.extracted.txt",
+    "lockedAt": "2026-02-21",
+    "focusChapters": [
+      "4.5",
+      "5.2",
+      "5.3",
+      "6.4",
+      "6.14",
+      "7.1",
+      "7.2",
+      "7.14",
+      "8.3",
+      "9.4",
+      "9.8",
+      "10.1",
+      "10.6"
+    ]
+  },
+  "createdAt": "2026-02-21T09:26:41.333Z",
+  "updatedAt": "2026-02-21T10:20:05.736Z",
+  "todos": {
+    "T1": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:33:51.854Z",
+      "notes": "accepted after workflow gate pass",
+      "evidence": [
+        "docs/architecture.md",
+        "docs/process/todos-workflow.v4_30.json"
+      ]
+    },
+    "T2": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:34:34.352Z",
+      "notes": "accepted after gate workflow verification",
+      "evidence": [
+        "docs/architecture.md"
+      ]
+    },
+    "T3": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:36:13.002Z",
+      "notes": "accepted after shared/backend verification",
+      "evidence": [
+        "src/shared/types.ts",
+        "src/backend/src/llm/http.ts",
+        "docs/architecture.md"
+      ]
+    },
+    "T4": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:38:32.932Z",
+      "notes": "accepted after backend runtime semantics test pass",
+      "evidence": [
+        "src/backend/src/application/usecases/RunTriageSessionUseCase.ts",
+        "src/backend/src/tests/architecture/usecase-idempotency.test.ts",
+        "src/backend/src/llm/http.ts",
+        "docs/architecture.md"
+      ]
+    },
+    "T5": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:41:51.446Z",
+      "notes": "accepted after backend scenario replay test pass",
+      "evidence": [
+        "src/backend/src/tests/scenarios/fixtures/af-scenarios.ts",
+        "src/backend/src/tests/scenarios/af-scenario-replay.test.ts",
+        "docs/architecture.md"
+      ]
+    },
+    "T6": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:34:11.085Z",
+      "notes": "accepted with doctor verification",
+      "evidence": [
+        "scripts/todos-workflow.cjs",
+        "docs/process/todos-workflow.md",
+        "docs/process/todos-workflow.v4_30.json",
+        "package.json"
+      ]
+    },
+    "T7": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:42:53.437Z",
+      "notes": "accepted after devwf:arch verification",
+      "evidence": [
+        "src/backend/src/tests/architecture/http-integration.test.ts",
+        "src/backend/src/tests/scenarios/af-scenario-replay.test.ts",
+        "scripts/dev-workflow.cjs"
+      ]
+    },
+    "T8": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:43:52.823Z",
+      "notes": "accepted after backend governance routing verification",
+      "evidence": [
+        "src/backend/src/tests/architecture/debate-governance-routing.test.ts",
+        "src/backend/src/core/DebateEngine.ts"
+      ]
+    },
+    "T9": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:44:18.744Z",
+      "notes": "accepted after DI routing verification",
+      "evidence": [
+        "src/backend/src/tests/architecture/debate-governance-routing.test.ts",
+        "src/backend/src/core/DebateEngine.ts"
+      ]
+    },
+    "T10": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:44:46.112Z",
+      "notes": "accepted after audit-trace verification",
+      "evidence": [
+        "src/backend/src/tests/architecture/debate-governance-routing.test.ts",
+        "src/shared/types.ts",
+        "src/backend/src/core/DebateEngine.ts"
+      ]
+    },
+    "T11": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:45:32.786Z",
+      "notes": "accepted after gate:scenarios pass",
+      "evidence": [
+        "src/backend/src/tests/scenarios/fixtures/af-scenarios.ts",
+        "src/backend/src/tests/scenarios/af-scenario-replay.test.ts",
+        "scripts/gate-checks.cjs"
+      ]
+    },
+    "T12": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:45:55.869Z",
+      "notes": "accepted after frontend build verification",
+      "evidence": [
+        "src/frontend/src/views/ConsultationView.vue",
+        "src/frontend/src/services/triageApi.ts",
+        "src/frontend/package.json"
+      ]
+    },
+    "T13": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:46:46.398Z",
+      "notes": "accepted with M2 evidence package and architecture gate pass",
+      "evidence": [
+        "docs/process/m2-evidence-bundle.md",
+        "src/backend/src/tests/scenarios/af-scenario-replay.test.ts",
+        "src/frontend/src/views/ConsultationView.vue"
+      ]
+    },
+    "T14": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:57:09.049Z",
+      "notes": "accepted with m3 metrics pipeline and report generation",
+      "evidence": [
+        "scripts/m3-metrics.cjs",
+        "reports/metrics/m3.latest.json",
+        "docs/process/m3-metrics-report.md",
+        "package.json",
+        "docs/process/todos-workflow.v4_30.json"
+      ]
+    },
+    "T15": {
+      "state": "done",
+      "updatedAt": "2026-02-21T09:59:23.013Z",
+      "notes": "accepted with enforced metrics gate and breached-indicator output",
+      "evidence": [
+        "scripts/m3-metrics.cjs",
+        ".opencode/rules/workflow-gates.md",
+        "docs/process/opencode-operation-guide.md",
+        "package.json"
+      ]
+    },
+    "T16": {
+      "state": "done",
+      "updatedAt": "2026-02-21T10:00:25.642Z",
+      "notes": "accepted with reviewer PASS/BLOCK + failedGateIds hard checks",
+      "evidence": [
+        "docs/process/reviewer-findings-template.md",
+        ".opencode/rules/agent-roles.md",
+        "scripts/gate-checks.cjs"
+      ]
+    },
+    "T17": {
+      "state": "done",
+      "updatedAt": "2026-02-21T10:03:46.014Z",
+      "notes": "accepted with enhanced governance scenario replay and rollback governance logic",
+      "evidence": [
+        "src/backend/src/tests/scenarios/enhanced-governance-replay.test.ts",
+        "src/backend/src/infrastructure/governance/KnowledgeVersionGovernor.ts"
+      ]
+    },
+    "T18": {
+      "state": "done",
+      "updatedAt": "2026-02-21T10:09:10.480Z",
+      "notes": "accepted with pilot role matrix and checklist runbook",
+      "evidence": [
+        "docs/process/pilot-runbook-role-matrix.md",
+        "scripts/gate-checks.cjs"
+      ]
+    },
+    "T19": {
+      "state": "done",
+      "updatedAt": "2026-02-21T10:06:38.422Z",
+      "notes": "accepted with machine-checkable risk-trigger matrix and documented ERR mapping",
+      "evidence": [
+        "src/backend/src/infrastructure/governance/riskTriggerMatrix.ts",
+        "src/backend/src/tests/architecture/risk-trigger-matrix.test.ts",
+        "docs/process/risk-trigger-matrix.md",
+        "scripts/gate-checks.cjs"
+      ]
+    },
+    "T20": {
+      "state": "done",
+      "updatedAt": "2026-02-21T10:08:26.765Z",
+      "notes": "accepted with explicit stop-loss policy, rollback guard logic, and retest runbook",
+      "evidence": [
+        "src/backend/src/infrastructure/governance/stopLossGuard.ts",
+        "src/backend/src/tests/architecture/stop-loss-guard.test.ts",
+        "docs/process/stop-loss-rollback-runbook.md",
+        ".opencode/rules/workflow-gates.md",
+        "scripts/gate-checks.cjs"
+      ]
+    },
+    "T21": {
+      "state": "done",
+      "updatedAt": "2026-02-21T10:10:02.760Z",
+      "notes": "accepted with governance release checklist and reviewer evidence-based block rules",
+      "evidence": [
+        "docs/process/governance-release-package.md",
+        "docs/process/reviewer-findings-template.md",
+        ".opencode/rules/agent-roles.md",
+        "docs/process/opencode-operation-guide.md",
+        "scripts/gate-checks.cjs"
+      ]
+    },
+    "T22": {
+      "state": "done",
+      "updatedAt": "2026-02-21T10:13:39.819Z",
+      "notes": "accepted with >=120 replay samples and batch pass/fail breakdown report",
+      "evidence": [
+        "scripts/m5-batch-replay.cjs",
+        "reports/scenarios/m5-batch.latest.json",
+        "docs/process/m5-batch-replay-report.md",
+        "package.json",
+        ".opencode/rules/workflow-gates.md",
+        "docs/process/opencode-operation-guide.md"
+      ]
+    },
+    "T23": {
+      "state": "done",
+      "updatedAt": "2026-02-21T10:14:50.800Z",
+      "notes": "accepted with interoperability mapping document, validation record, and ADR",
+      "evidence": [
+        "docs/process/fhir-smart-mapping.md",
+        "docs/process/fhir-smart-validation-record.md",
+        "docs/adr/0002-governance-automation-and-interoperability-baseline.md",
+        "scripts/gate-checks.cjs"
+      ]
+    },
+    "T24": {
+      "state": "done",
+      "updatedAt": "2026-02-21T10:16:44.444Z",
+      "notes": "accepted with replication command, docs, and one replicated set passing baseline",
+      "evidence": [
+        "scripts/scenario-replicate.cjs",
+        "docs/process/scenario-replication-pipeline.md",
+        "reports/scenarios/replicated/site-alpha.json",
+        "package.json",
+        "scripts/gate-checks.cjs",
+        "docs/process/opencode-operation-guide.md"
+      ]
+    },
+    "T25": {
+      "state": "done",
+      "updatedAt": "2026-02-21T10:18:33.680Z",
+      "notes": "accepted with target/actual/deviation/action ledger and M1-M5 completed coverage",
+      "evidence": [
+        "scripts/metric-ledger.cjs",
+        "reports/metrics/target-actual-ledger.latest.json",
+        "docs/process/metric-ledger.md",
+        "package.json",
+        ".opencode/rules/workflow-gates.md",
+        "docs/process/governance-release-package.md"
+      ]
+    },
+    "T26": {
+      "state": "done",
+      "updatedAt": "2026-02-21T10:20:05.735Z",
+      "notes": "accepted with milestone closeout report and next-cycle backlog from residual risks",
+      "evidence": [
+        "docs/process/m5-closeout-report.md",
+        "docs/process/next-iteration-backlog.md",
+        "docs/process/opencode-operation-guide.md",
+        "scripts/gate-checks.cjs"
+      ]
+    }
+  }
+}

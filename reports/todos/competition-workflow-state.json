@@ -1,0 +1,29 @@
+{
+  "version": "v6.00",
+  "source": {
+    "planDocument": "docs/process/competition-optimization-backlog.md",
+    "extractedText": "docs/process/competition-optimization-backlog.md",
+    "lockedAt": "2026-02-23"
+  },
+  "createdAt": "2026-02-23T10:30:00.000Z",
+  "updatedAt": "2026-02-23T10:30:00.000Z",
+  "todos": {
+    "C1": { "state": "ready", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C2": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C3": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C4": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C5": { "state": "ready", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C6": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C7": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C8": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C9": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C10": { "state": "ready", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C11": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C12": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C13": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C14": { "state": "ready", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C15": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C16": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" },
+    "C17": { "state": "backlog", "updatedAt": "2026-02-23T10:30:00.000Z" }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "build",
+  "model": "anthropic/claude-sonnet-4-5",
+  "agent": {
+    "plan": {
+      "description": "Clarify goals, scope, and risks. Produce executable plans only.",
+      "model": "anthropic/claude-sonnet-4-5",
+      "mode": "all",
+      "temperature": 0.1,
+      "permission": {
+        "read": "allow",
+        "list": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "edit": "deny",
+        "bash": "deny",
+        "task": "allow",
+        "todoread": "allow",
+        "todowrite": "allow"
+      }
+    },
+    "build": {
+      "description": "Implement and validate changes with small, test-first steps.",
+      "model": "anthropic/claude-sonnet-4-5",
+      "mode": "primary",
+      "temperature": 0.2
+    },
+    "reviewer": {
+      "description": "Review only: security, performance, boundaries, maintainability, and test adequacy.",
+      "model": "anthropic/claude-sonnet-4-5",
+      "mode": "all",
+      "temperature": 0.1,
+      "prompt": "You are a strict code reviewer. Do not modify files. Review for security, performance, maintainability, edge cases, and test adequacy.",
+      "permission": {
+        "read": "allow",
+        "list": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "todoread": "allow",
+        "question": "allow",
+        "edit": "deny",
+        "bash": "deny",
+        "task": "deny",
+        "todowrite": "deny",
+        "external_directory": "deny"
+      }
+    }
+  },
+  "permission": {
+    "read": "allow",
+    "list": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "lsp": "allow",
+    "todoread": "allow",
+    "question": "allow",
+    "edit": "ask",
+    "bash": "ask",
+    "task": "ask",
+    "todowrite": "ask",
+    "external_directory": "ask",
+    "websearch": "ask",
+    "webfetch": "ask",
+    "skill": "ask"
+  },
+  "instructions": [
+    "CONTRIBUTING.md",
+    "README.md",
+    "docs/architecture.md",
+    "docs/process/ch3-6-architecture-blueprint.md",
+    "docs/process/opencode-operation-guide.md",
+    "docs/process/todos-workflow.md",
+    "docs/process/development-workflow.md",
+    "docs/process/opencode-command-mapping.md",
+    ".opencode/rules/*.md"
+  ]
+}

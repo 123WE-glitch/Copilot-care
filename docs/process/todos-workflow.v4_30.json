@@ -1,0 +1,689 @@
+{
+  "version": "v4.30",
+  "source": {
+    "planDocument": "docs/CoPilot_Care_Plan_Submission_V4_30_With_Figures.pdf",
+    "extractedText": "docs/process/plan-extracts/CoPilot_Care_Plan_v4_30.extracted.txt",
+    "lockedAt": "2026-02-21",
+    "focusChapters": [
+      "4.5",
+      "5.2",
+      "5.3",
+      "6.4",
+      "6.14",
+      "7.1",
+      "7.2",
+      "7.14",
+      "8.3",
+      "9.4",
+      "9.8",
+      "10.1",
+      "10.6"
+    ]
+  },
+  "principles": [
+    "Safety-first before enhancement",
+    "Frozen contracts and explicit runtime semantics",
+    "Scenario evidence must gate release decisions",
+    "Metrics must be measured against thresholds",
+    "Governance actions must map to executable commands"
+  ],
+  "milestones": [
+    {
+      "id": "M1",
+      "title": "Interface and metric freeze",
+      "description": "Align chapter 6 contract freeze with chapter 7 metric definitions and lock architecture baseline.",
+      "requiredTodoIds": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T6"
+      ],
+      "gateChecks": [
+        "npm run gate:safety",
+        "npm run gate:workflow",
+        "npm run todos:doctor"
+      ]
+    },
+    {
+      "id": "M2",
+      "title": "A-F end-to-end closure",
+      "description": "Run A-F scenarios through full chain and produce replayable evidence artifacts.",
+      "requiredTodoIds": [
+        "T7",
+        "T8",
+        "T9",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "gateChecks": [
+        "npm run gate:workflow",
+        "npm run devwf:arch"
+      ]
+    },
+    {
+      "id": "M3",
+      "title": "Key metric threshold pass",
+      "description": "Ensure recall, explainability, latency and safety gates are measurable and enforced.",
+      "requiredTodoIds": [
+        "T14",
+        "T15",
+        "T16",
+        "T17"
+      ],
+      "gateChecks": [
+        "npm run gate:all",
+        "npm run devwf:full"
+      ]
+    },
+    {
+      "id": "M4",
+      "title": "Pilot governance validation",
+      "description": "Lock risk-trigger, stop-loss and release governance before pilot expansion.",
+      "requiredTodoIds": [
+        "T18",
+        "T19",
+        "T20",
+        "T21"
+      ],
+      "gateChecks": [
+        "npm run gate:all",
+        "npm run devwf:full"
+      ]
+    },
+    {
+      "id": "M5",
+      "title": "Scaled validation and transfer",
+      "description": "Expand sample size, verify portability, and produce reusable next-iteration baseline.",
+      "requiredTodoIds": [
+        "T22",
+        "T23",
+        "T24",
+        "T25",
+        "T26"
+      ],
+      "gateChecks": [
+        "npm run gate:all",
+        "npm run devwf:full"
+      ]
+    }
+  ],
+  "todos": [
+    {
+      "id": "T1",
+      "title": "Freeze architecture boundaries and dependency direction",
+      "milestone": "M1",
+      "priority": "P0",
+      "defaultState": "ready",
+      "dependsOn": [],
+      "owner": "plan",
+      "planRefs": ["4.1", "8.3"],
+      "goal": "Make module boundaries executable and reviewable.",
+      "nonGoals": ["Business algorithm tuning"],
+      "acceptance": [
+        "Architecture boundary document is updated",
+        "Workflow gate validates baseline files"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "T2",
+      "title": "Standardize module contract template",
+      "milestone": "M1",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T1"],
+      "owner": "plan",
+      "planRefs": ["5.3"],
+      "goal": "Apply input-process-output-error-done contract format consistently.",
+      "nonGoals": ["Adding new modules"],
+      "acceptance": [
+        "Core modules expose contract fields",
+        "Contract references are linked in docs"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "T3",
+      "title": "Freeze shared types and error-code catalog",
+      "milestone": "M1",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T2"],
+      "owner": "build",
+      "planRefs": ["6.1", "6.4", "6.13"],
+      "goal": "Keep request/response and ERR_* semantics stable across layers.",
+      "nonGoals": ["Expanding v1.1 optional fields"],
+      "acceptance": [
+        "Shared types compile and are imported by backend/frontend",
+        "No raw string throws at boundaries"
+      ],
+      "adrTrigger": true,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/shared",
+          "npm run test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "T4",
+      "title": "Freeze runtime semantics",
+      "milestone": "M1",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T3"],
+      "owner": "build",
+      "planRefs": ["6.14", "6.15"],
+      "goal": "Lock idempotency, timeout, retry, consistency and degrade behavior.",
+      "nonGoals": ["Provider-specific optimization"],
+      "acceptance": [
+        "requestId idempotency behavior is documented and tested",
+        "Timeout and retry defaults are explicit"
+      ],
+      "adrTrigger": true,
+      "commands": {
+        "verify": [
+          "npm run metrics:m3"
+        ]
+      }
+    },
+    {
+      "id": "T5",
+      "title": "Build A-F scenario source-of-truth",
+      "milestone": "M1",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T2"],
+      "owner": "build",
+      "planRefs": ["7.2", "7.6", "Appendix-C"],
+      "goal": "Create replayable scenario fixtures aligned with plan definitions.",
+      "nonGoals": ["Large-scale sampling"],
+      "acceptance": [
+        "A-F fixtures exist with deterministic expected outputs",
+        "Scenario IDs map to T-001 to T-006"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "T6",
+      "title": "Enable plan-constrained todo automation",
+      "milestone": "M1",
+      "priority": "P0",
+      "defaultState": "ready",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": ["8.3", "10.1"],
+      "goal": "Provide script + manifest + docs + npm command entry points.",
+      "nonGoals": ["Replacing dev workflow scripts"],
+      "acceptance": [
+        "todos script supports doctor/init/status/next/milestone",
+        "Manifest and operation docs are linked"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run todos:doctor"
+        ]
+      }
+    },
+    {
+      "id": "T7",
+      "title": "Run minimal backend core chain",
+      "milestone": "M2",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T3", "T4"],
+      "owner": "build",
+      "planRefs": ["5.2", "6.2"],
+      "goal": "Guarantee orchestrate_triage input-to-output path is runnable.",
+      "nonGoals": ["Complex model-routing strategy"],
+      "acceptance": [
+        "Core backend request returns stable triage payload",
+        "No hidden global state in orchestration path"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run devwf:arch"
+        ]
+      }
+    },
+    {
+      "id": "T8",
+      "title": "Implement red-flag short-circuit and conservative escalation",
+      "milestone": "M2",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T7"],
+      "owner": "build",
+      "planRefs": ["5.2.2", "6.9"],
+      "goal": "Hard-stop unsafe outputs when emergency boundary is hit.",
+      "nonGoals": ["Fine-grained triage optimization"],
+      "acceptance": [
+        "Emergency conditions bypass debate loop",
+        "Offline escalation path is returned"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "T9",
+      "title": "Implement DI-based conflict routing",
+      "milestone": "M2",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T7"],
+      "owner": "build",
+      "planRefs": ["3.3", "5.2.3"],
+      "goal": "Map dissent bands to deterministic handling branches.",
+      "nonGoals": ["Model consensus optimization"],
+      "acceptance": [
+        "DI thresholds route to light/deep/escalate branches",
+        "Max debate rounds are bounded"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "T10",
+      "title": "Complete audit-event and decision-trace pipeline",
+      "milestone": "M2",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T7"],
+      "owner": "build",
+      "planRefs": ["6.8", "7.6"],
+      "goal": "Guarantee full-chain traceability for every critical decision.",
+      "nonGoals": ["Long-term log storage optimization"],
+      "acceptance": [
+        "Decision phases emit structured audit records",
+        "Reviewers can map output to decision trace"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "T11",
+      "title": "Automate T-001 to T-006 scenario tests",
+      "milestone": "M2",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T5", "T8", "T9", "T10"],
+      "owner": "build",
+      "planRefs": ["7.3", "7.14"],
+      "goal": "Turn A-F scenario validation into repeatable CI checks.",
+      "nonGoals": ["V1.1 enhanced scenarios"],
+      "acceptance": [
+        "Scenario tests are executable by one command",
+        "Failure output points to scenario ID and cause"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:scenarios"
+        ]
+      }
+    },
+    {
+      "id": "T12",
+      "title": "Finish frontend minimal closed loop",
+      "milestone": "M2",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["T7"],
+      "owner": "build",
+      "planRefs": ["5.2", "10.1"],
+      "goal": "Support symptom input, backend call and core result rendering.",
+      "nonGoals": ["UI visual polish"],
+      "acceptance": [
+        "User can submit symptoms and view conclusion/status",
+        "Error and low-confidence states are visible"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T13",
+      "title": "Publish M2 evidence bundle",
+      "milestone": "M2",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["T11", "T12"],
+      "owner": "reviewer",
+      "planRefs": ["8.3"],
+      "goal": "Produce replay logs and acceptance proof for M2 closure.",
+      "nonGoals": ["Metric deep analysis"],
+      "acceptance": [
+        "A-F replay evidence is documented",
+        "Reviewer decision is PASS/BLOCK with findings"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run devwf:arch"
+        ]
+      }
+    },
+    {
+      "id": "T14",
+      "title": "Implement metrics computation pipeline",
+      "milestone": "M3",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T11"],
+      "owner": "build",
+      "planRefs": ["4.5", "7.1"],
+      "goal": "Compute recall, explainability, latency and governance indicators.",
+      "nonGoals": ["Forecasting future trend"],
+      "acceptance": [
+        "Metrics report includes target and measured values",
+        "Computation is reproducible"
+      ],
+      "adrTrigger": true,
+      "commands": {
+        "verify": [
+          "npm run metrics:m3"
+        ]
+      }
+    },
+    {
+      "id": "T15",
+      "title": "Enforce threshold gates for key indicators",
+      "milestone": "M3",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T14"],
+      "owner": "build",
+      "planRefs": ["4.5", "7.5", "8.3"],
+      "goal": "Block release when metrics are below threshold.",
+      "nonGoals": ["Manual exception approvals"],
+      "acceptance": [
+        "Gate checks fail on threshold violations",
+        "Failure output includes breached indicator"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:all"
+        ]
+      }
+    },
+    {
+      "id": "T16",
+      "title": "Bind reviewer decision to gate outcomes",
+      "milestone": "M3",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T15"],
+      "owner": "reviewer",
+      "planRefs": ["7.14"],
+      "goal": "Reviewer must block when tests/ADR/metrics are unmet.",
+      "nonGoals": ["Auto-merge logic"],
+      "acceptance": [
+        "Reviewer template includes explicit PASS/BLOCK",
+        "Gate failure IDs are included in findings"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "T17",
+      "title": "Automate T-007 to T-010 enhanced governance tests",
+      "milestone": "M3",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["T9", "T10", "T15"],
+      "owner": "build",
+      "planRefs": ["7.10"],
+      "goal": "Validate baseline guard, evidence use, abstain and rollback behavior.",
+      "nonGoals": ["Production-scale adversarial benchmark"],
+      "acceptance": [
+        "T-007~T-010 are runnable",
+        "Governance chain has auditable output"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:scenarios"
+        ]
+      }
+    },
+    {
+      "id": "T18",
+      "title": "Prepare pilot runbook and role matrix",
+      "milestone": "M4",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["T13", "T16"],
+      "owner": "plan",
+      "planRefs": ["8.4", "9.2"],
+      "goal": "Lock pilot responsibilities, inputs and expected outputs.",
+      "nonGoals": ["Multi-site rollout"],
+      "acceptance": [
+        "Runbook includes owner/collaborator/input/output",
+        "Pilot acceptance evidence checklist is defined"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "T19",
+      "title": "Implement risk-trigger matrix automation",
+      "milestone": "M4",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T15"],
+      "owner": "build",
+      "planRefs": ["9.4"],
+      "goal": "Translate risk triggers into executable controls.",
+      "nonGoals": ["Organization-level incident tooling"],
+      "acceptance": [
+        "Risk trigger to action mapping is machine-checkable",
+        "ERR path mapping is documented"
+      ],
+      "adrTrigger": true,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "T20",
+      "title": "Implement stop-loss and rollback guard",
+      "milestone": "M4",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": ["T19"],
+      "owner": "build",
+      "planRefs": ["6.12", "9.8"],
+      "goal": "Freeze expansion and rollback when repeated key failures occur.",
+      "nonGoals": ["Long-term AIOps automation"],
+      "acceptance": [
+        "Stop-loss trigger is explicit and testable",
+        "Rollback and re-test path is documented"
+      ],
+      "adrTrigger": true,
+      "commands": {
+        "verify": [
+          "npm run gate:safety"
+        ]
+      }
+    },
+    {
+      "id": "T21",
+      "title": "Build governance release package",
+      "milestone": "M4",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["T18", "T20"],
+      "owner": "reviewer",
+      "planRefs": ["8.3", "10.1"],
+      "goal": "Require ADR/audit/gate evidence before pilot release.",
+      "nonGoals": ["Commercial deployment artifacts"],
+      "acceptance": [
+        "Release checklist contains gates + ADR + audit links",
+        "Reviewer block logic references missing evidence"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "T22",
+      "title": "Expand replay sample set to >=120",
+      "milestone": "M5",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["T17", "T21"],
+      "owner": "build",
+      "planRefs": ["7.12", "10.6"],
+      "goal": "Support scaled validation with reproducible sampling evidence.",
+      "nonGoals": ["Cross-region deployment"],
+      "acceptance": [
+        "Replay sample count reaches or exceeds 120",
+        "Batch report includes pass/fail breakdown"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:scenarios"
+        ]
+      }
+    },
+    {
+      "id": "T23",
+      "title": "Produce FHIR/SMART mapping validation",
+      "milestone": "M5",
+      "priority": "P2",
+      "defaultState": "backlog",
+      "dependsOn": ["T21"],
+      "owner": "plan",
+      "planRefs": ["4.9", "6.17"],
+      "goal": "Keep interoperability mapping auditable without changing core boundaries.",
+      "nonGoals": ["Full HIS integration"],
+      "acceptance": [
+        "Mapping document covers required core objects",
+        "Validation record is attached"
+      ],
+      "adrTrigger": true,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "T24",
+      "title": "Build scenario replication pipeline",
+      "milestone": "M5",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["T22", "T23"],
+      "owner": "build",
+      "planRefs": ["8.2", "10.7"],
+      "goal": "Make scenario migration and replay reproducible for next sites.",
+      "nonGoals": ["Production multi-tenant platform"],
+      "acceptance": [
+        "Replication command and docs exist",
+        "At least one replicated set passes baseline checks"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run devwf:full"
+        ]
+      }
+    },
+    {
+      "id": "T25",
+      "title": "Track target-vs-actual metric ledger",
+      "milestone": "M5",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["T14", "T22"],
+      "owner": "reviewer",
+      "planRefs": ["10.6"],
+      "goal": "Maintain target, measured value, deviation and corrective action records.",
+      "nonGoals": ["Predictive analytics dashboard"],
+      "acceptance": [
+        "Ledger includes target/actual/deviation/action fields",
+        "Each milestone has at least one completed record"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:all"
+        ]
+      }
+    },
+    {
+      "id": "T26",
+      "title": "Finalize closeout and seed next iteration",
+      "milestone": "M5",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": ["T24", "T25"],
+      "owner": "plan",
+      "planRefs": ["8.3", "10.1", "10.6"],
+      "goal": "Close current cycle with auditable evidence and bootstrap next cycle backlog.",
+      "nonGoals": ["Defining full long-term roadmap"],
+      "acceptance": [
+        "Milestone closeout report is published",
+        "Next-cycle backlog is created from unresolved risks"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run devwf:full"
+        ]
+      }
+    }
+  ]
+}

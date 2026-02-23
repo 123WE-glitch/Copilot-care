@@ -1,0 +1,21 @@
+version: "1.0"
+usage: "documentation-source-only"
+notes:
+  - "This file maps reference process intent to the current repository."
+  - "Runtime workflow control is enforced via gate scripts and OpenCode config."
+workflow:
+  sequence:
+    - "plan"
+    - "build"
+    - "review"
+  gates:
+    - "gate:safety"
+    - "gate:workflow"
+    - "gate:scenarios"
+  scenario_suite:
+    - "A"
+    - "B"
+    - "C"
+    - "D"
+    - "E"
+    - "F"

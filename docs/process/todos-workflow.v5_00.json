@@ -1,0 +1,1025 @@
+{
+  "version": "v5.12",
+  "source": {
+    "planDocument": "docs/process/next-iteration-backlog.md",
+    "extractedText": "docs/process/next-iteration-backlog.md",
+    "lockedAt": "2026-02-22",
+    "focusChapters": [
+      "N1-N18"
+    ]
+  },
+  "principles": [
+    "Safety-first before enhancement",
+    "Frozen contracts and explicit runtime semantics",
+    "Scenario evidence must gate release decisions",
+    "Metrics must be measured against thresholds",
+    "Governance actions must map to executable commands",
+    "Type-safety gates are mandatory before release gates"
+  ],
+  "milestones": [
+    {
+      "id": "M6",
+      "title": "Core Expert & Safety",
+      "description": "Enhance core expert routing and expand adversarial safety coverage.",
+      "requiredTodoIds": [
+        "T27",
+        "T28"
+      ],
+      "gateChecks": [
+        "npm run gate:scenarios"
+      ]
+    },
+    {
+      "id": "M7",
+      "title": "Interoperability & Scale",
+      "description": "Implement FHIR/SMART runtime adapters and verify multi-site replication.",
+      "requiredTodoIds": [
+        "T29",
+        "T30",
+        "T31"
+      ],
+      "gateChecks": [
+        "npm run gate:workflow",
+        "npm run scenarios:replicate"
+      ]
+    },
+    {
+      "id": "M8",
+      "title": "Experience & Governance",
+      "description": "Improve clinician workflow and governance visibility.",
+      "requiredTodoIds": [
+        "T32",
+        "T33",
+        "T34"
+      ],
+      "gateChecks": [
+        "npm run gate:metrics"
+      ]
+    },
+    {
+      "id": "M9",
+      "title": "Pilot Readiness",
+      "description": "Finalize performance profiling and pilot cutover checklists.",
+      "requiredTodoIds": [
+        "T35",
+        "T36"
+      ],
+      "gateChecks": [
+        "npm run gate:all"
+      ]
+    },
+    {
+      "id": "M10",
+      "title": "Engineering Reliability",
+      "description": "Harden workspace type-safety and build hygiene checks.",
+      "requiredTodoIds": [
+        "T37",
+        "T38",
+        "T39"
+      ],
+      "gateChecks": [
+        "npm run typecheck",
+        "npm run gate:workflow"
+      ]
+    },
+    {
+      "id": "M11",
+      "title": "Architecture & Quality Guardrails",
+      "description": "Enforce dependency boundaries and reduce contract drift.",
+      "requiredTodoIds": [
+        "T40",
+        "T41",
+        "T42"
+      ],
+      "gateChecks": [
+        "npm run gate:safety",
+        "npm run gate:metrics"
+      ]
+    },
+    {
+      "id": "M12",
+      "title": "Release Workflow Readiness",
+      "description": "Add release composite gates and align governance docs.",
+      "requiredTodoIds": [
+        "T43",
+        "T44"
+      ],
+      "gateChecks": [
+        "npm run gate:all"
+      ]
+    },
+    {
+      "id": "M13",
+      "title": "Competition Explainability Experience",
+      "description": "Deliver competition-grade decision explainability, routing transparency, and workflow stageboard UX.",
+      "requiredTodoIds": [
+        "T45",
+        "T46",
+        "T47",
+        "T48"
+      ],
+      "gateChecks": [
+        "npm run test --workspace=@copilot-care/frontend",
+        "npm run typecheck --workspace=@copilot-care/frontend",
+        "npm run build --workspace=@copilot-care/frontend"
+      ]
+    },
+    {
+      "id": "M14",
+      "title": "Frontend Architecture Hardening",
+      "description": "Reduce coupling, add integration regression safety nets, and stabilize presentation quality for demo delivery.",
+      "requiredTodoIds": [
+        "T49",
+        "T50",
+        "T51",
+        "T52"
+      ],
+      "gateChecks": [
+        "npm run test --workspace=@copilot-care/frontend",
+        "npm run typecheck --workspace=@copilot-care/frontend",
+        "npm run build --workspace=@copilot-care/frontend"
+      ]
+    },
+    {
+      "id": "M15",
+      "title": "Competition Demo Reliability & Delivery",
+      "description": "Improve first-interaction responsiveness, reduce view complexity, harden export critical path, and enforce secret-leak guardrails.",
+      "requiredTodoIds": [
+        "T53",
+        "T54",
+        "T55",
+        "T56"
+      ],
+      "gateChecks": [
+        "npm run test --workspace=@copilot-care/frontend",
+        "npm run typecheck --workspace=@copilot-care/frontend",
+        "npm run build --workspace=@copilot-care/frontend",
+        "npm run perf:check --workspace=@copilot-care/frontend",
+        "npm run security:secrets"
+      ]
+    }
+  ],
+  "todos": [
+    {
+      "id": "T27",
+      "title": "Define expert-role provider routing strategy",
+      "milestone": "M6",
+      "priority": "P0",
+      "defaultState": "ready",
+      "dependsOn": [],
+      "owner": "plan",
+      "planRefs": [
+        "N1"
+      ],
+      "goal": "Define expert-role provider routing strategy (cardio/gp/metabolic/safety) with measurable quality KPIs.",
+      "nonGoals": [
+        "Full model fine-tuning"
+      ],
+      "acceptance": [
+        "Routing strategy document created",
+        "KPIs defined and measurable"
+      ],
+      "adrTrigger": true,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "T28",
+      "title": "Add adversarial scenario expansion set",
+      "milestone": "M6",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T27"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N2"
+      ],
+      "goal": "Add adversarial scenario expansion set and red-team replay bundle.",
+      "nonGoals": [
+        "Production penetration testing"
+      ],
+      "acceptance": [
+        "Adversarial scenarios added to test suite",
+        "Red-team replay bundle created"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:scenarios"
+        ]
+      }
+    },
+    {
+      "id": "T29",
+      "title": "Implement runtime FHIR adapter spike",
+      "milestone": "M7",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T27"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N3"
+      ],
+      "goal": "Implement runtime FHIR adapter spike (Patient/Observation/Provenance).",
+      "nonGoals": [
+        "Full FHIR server implementation"
+      ],
+      "acceptance": [
+        "FHIR adapter spike implemented",
+        "Basic mapping verified"
+      ],
+      "adrTrigger": true,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "T30",
+      "title": "Implement SMART auth scope enforcement plan",
+      "milestone": "M7",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T29"
+      ],
+      "owner": "plan",
+      "planRefs": [
+        "N4"
+      ],
+      "goal": "Implement SMART auth scope enforcement plan (design + mock integration).",
+      "nonGoals": [
+        "Production IdP integration"
+      ],
+      "acceptance": [
+        "Auth scope enforcement plan documented",
+        "Mock integration verified"
+      ],
+      "adrTrigger": true,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "T31",
+      "title": "Add multi-site replication verification",
+      "milestone": "M7",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T30"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N5"
+      ],
+      "goal": "Add multi-site replication verification (site-beta and site-gamma).",
+      "nonGoals": [
+        "Real multi-site deployment"
+      ],
+      "acceptance": [
+        "Replication verified for site-beta",
+        "Replication verified for site-gamma"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run scenarios:replicate"
+        ]
+      }
+    },
+    {
+      "id": "T32",
+      "title": "Add frontend clinician workflow enhancements",
+      "milestone": "M8",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T27"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N6"
+      ],
+      "goal": "Add frontend clinician workflow enhancements (review queue + evidence drawer).",
+      "nonGoals": [
+        "Complete EMR UI"
+      ],
+      "acceptance": [
+        "Review queue implemented",
+        "Evidence drawer implemented"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run check:copy --workspace=@copilot-care/frontend",
+          "npm run test --workspace=@copilot-care/frontend",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T33",
+      "title": "Add governance dashboard draft",
+      "milestone": "M8",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T32"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N7"
+      ],
+      "goal": "Add governance dashboard draft from ledger + trigger matrix outputs.",
+      "nonGoals": [
+        "Real-time analytics platform"
+      ],
+      "acceptance": [
+        "Dashboard draft implemented",
+        "Ledger data visualized"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:metrics"
+        ]
+      }
+    },
+    {
+      "id": "T34",
+      "title": "Add longitudinal follow-up scenario family",
+      "milestone": "M8",
+      "priority": "P2",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T33"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N9"
+      ],
+      "goal": "Add longitudinal follow-up scenario family (week-over-week progression).",
+      "nonGoals": [
+        "Chronic disease management system"
+      ],
+      "acceptance": [
+        "Longitudinal scenarios added",
+        "Progression logic verified"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:scenarios"
+        ]
+      }
+    },
+    {
+      "id": "T35",
+      "title": "Add performance profiling for replicated replay pipeline",
+      "milestone": "M9",
+      "priority": "P2",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T31"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N8"
+      ],
+      "goal": "Add performance profiling for replicated replay pipeline.",
+      "nonGoals": [
+        "Performance optimization"
+      ],
+      "acceptance": [
+        "Profiling tools integrated",
+        "Baseline performance metrics recorded"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:metrics"
+        ]
+      }
+    },
+    {
+      "id": "T36",
+      "title": "Define pilot-to-production cutover checklist",
+      "milestone": "M9",
+      "priority": "P2",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T35"
+      ],
+      "owner": "plan",
+      "planRefs": [
+        "N10"
+      ],
+      "goal": "Define pilot-to-production cutover checklist version 1.",
+      "nonGoals": [
+        "Actual cutover execution"
+      ],
+      "acceptance": [
+        "Cutover checklist documented",
+        "Reviewer approval obtained"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "T37",
+      "title": "Establish workspace typecheck gate command",
+      "milestone": "M10",
+      "priority": "P0",
+      "defaultState": "ready",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": [
+        "N11"
+      ],
+      "goal": "Establish workspace-level typecheck as a required engineering gate.",
+      "nonGoals": [
+        "Introduce new language/toolchain"
+      ],
+      "acceptance": [
+        "Root command executes workspace type checks consistently",
+        "Backend/frontend/shared expose explicit typecheck scripts",
+        "Typecheck gate passes on current codebase"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run typecheck"
+        ]
+      }
+    },
+    {
+      "id": "T38",
+      "title": "Add frontend workflow/event typing regression coverage",
+      "milestone": "M10",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T37"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N12"
+      ],
+      "goal": "Add regression coverage for workflow stage status and stream event typing.",
+      "nonGoals": [
+        "Full visual regression platform"
+      ],
+      "acceptance": [
+        "Tests cover stream status and event shape boundaries",
+        "Typecheck remains green with stricter event typing"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T39",
+      "title": "Add backend dist hygiene guard command",
+      "milestone": "M10",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T37"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N13"
+      ],
+      "goal": "Prevent nested build output and test artifact leakage in backend dist.",
+      "nonGoals": [
+        "Change deployment topology"
+      ],
+      "acceptance": [
+        "Dist hygiene guard command exists and fails on malformed output",
+        "Backend build passes hygiene checks in clean run"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run build --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "T40",
+      "title": "Implement backend import-boundary guard checks",
+      "milestone": "M11",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T37"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N14"
+      ],
+      "goal": "Add enforceable checks for application/domain layering boundaries.",
+      "nonGoals": [
+        "Large-scale folder restructure"
+      ],
+      "acceptance": [
+        "Guard command detects forbidden imports",
+        "Current tree passes guard checks"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "T41",
+      "title": "Unify shared package artifact generation workflow",
+      "milestone": "M11",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T40"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N15"
+      ],
+      "goal": "Reduce risk of shared type drift by unifying generated artifacts and source of truth.",
+      "nonGoals": [
+        "Publish external npm package"
+      ],
+      "acceptance": [
+        "Shared package build/typecheck workflow is explicit",
+        "Backend/frontend imports resolve without relative cross-package paths"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/shared",
+          "npm run build --workspace=@copilot-care/backend"
+        ]
+      }
+    },
+    {
+      "id": "T42",
+      "title": "Create dependency vulnerability baseline and triage workflow",
+      "milestone": "M11",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T37"
+      ],
+      "owner": "plan",
+      "planRefs": [
+        "N16"
+      ],
+      "goal": "Define repeatable vulnerability baseline, triage ownership, and remediation cadence.",
+      "nonGoals": [
+        "Force-upgrade all dependencies in one change"
+      ],
+      "acceptance": [
+        "Baseline output path and triage template documented",
+        "Workflow command mapping added to process docs"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:workflow"
+        ]
+      }
+    },
+    {
+      "id": "T43",
+      "title": "Add composite release gate command",
+      "milestone": "M12",
+      "priority": "P2",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T37",
+        "T41"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N17"
+      ],
+      "goal": "Add a single release command aggregating typecheck/test/build/gate checks.",
+      "nonGoals": [
+        "Replace all existing fine-grained commands"
+      ],
+      "acceptance": [
+        "Composite command executes full release gate path",
+        "Command is referenced by workflow docs"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run gate:all"
+        ]
+      }
+    },
+    {
+      "id": "T44",
+      "title": "Refresh workflow/governance documentation for v5.10",
+      "milestone": "M12",
+      "priority": "P2",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T42",
+        "T43"
+      ],
+      "owner": "plan",
+      "planRefs": [
+        "N18"
+      ],
+      "goal": "Align operation guides and governance templates with new quality gates.",
+      "nonGoals": [
+        "Rewrite historical milestone documents"
+      ],
+      "acceptance": [
+        "Workflow docs reflect updated gate sequence",
+        "Reviewer blocking template references new checks"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run todos:doctor"
+        ]
+      }
+    },
+    {
+      "id": "T45",
+      "title": "Build decision reasoning cockpit foundation",
+      "milestone": "M13",
+      "priority": "P0",
+      "defaultState": "ready",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": [
+        "N19"
+      ],
+      "goal": "Build a competition-grade reasoning cockpit with evidence contribution cards, confidence visibility, and scenario simulation controls.",
+      "nonGoals": [
+        "Backend model orchestration redesign"
+      ],
+      "acceptance": [
+        "Decision reasoning panel shows contribution score, confidence tag, and evidence summary",
+        "UI handles missing/partial runtime data without rendering failure",
+        "Core interaction logic has frontend regression tests"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/composables/useDecisionReasoningCockpit.test.ts src/composables/useConsultationReasoningMap.test.ts src/composables/useConsultationSessionRunner.test.ts",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T46",
+      "title": "Upgrade complexity routing visualization with factor breakdown",
+      "milestone": "M13",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T45"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N20"
+      ],
+      "goal": "Upgrade routing view into a transparent score breakdown panel with factor scores, threshold corridor, and route-boundary distance.",
+      "nonGoals": [
+        "Route policy algorithm change"
+      ],
+      "acceptance": [
+        "Routing panel displays factorized complexity scores and threshold corridor",
+        "Current route and boundary distance are visible and interpretable",
+        "Rendering logic remains stable in unit tests"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/components/ComplexityRoutingTree.test.ts src/composables/useComplexityRoutingBreakdown.test.ts",
+          "npm run typecheck --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T47",
+      "title": "Upgrade workflow chart to multi-lane agent stageboard",
+      "milestone": "M13",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T46"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N21"
+      ],
+      "goal": "Replace linear flowchart perception with multi-lane stageboard that highlights agent runtime, durations, retries, and escalation path.",
+      "nonGoals": [
+        "Full observability backend integration"
+      ],
+      "acceptance": [
+        "Workflow panel includes lane-level runtime status and stage metrics",
+        "Escalation branch and safety block states are visually explicit",
+        "Component tests cover key state transitions"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/components/WorkflowStateMachine.test.ts src/composables/useConsultationViewModel.test.ts",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T48",
+      "title": "Add competition demo replay and explainability regression bundle",
+      "milestone": "M13",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T47"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N22"
+      ],
+      "goal": "Finalize a polished demo replay path and a regression test bundle to prevent explainability UX regressions before competition demos.",
+      "nonGoals": [
+        "Full E2E browser automation platform"
+      ],
+      "acceptance": [
+        "Demo mode supports scripted replay narrative for judging presentation",
+        "Regression bundle covers decision, routing, and workflow critical states",
+        "README includes operator steps for competition demo runbook"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend",
+          "npm run typecheck --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T49",
+      "title": "Decouple retired flow-chart runtime from consultation view",
+      "milestone": "M14",
+      "priority": "P0",
+      "defaultState": "ready",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": [
+        "N23"
+      ],
+      "goal": "Remove obsolete flow-chart runtime coupling from ConsultationView and make sync hooks optional to reduce runtime and complexity.",
+      "nonGoals": [
+        "Reintroduce legacy linear flowchart panel"
+      ],
+      "acceptance": [
+        "ConsultationView no longer depends on flow chart runtime plumbing",
+        "useConsultationViewSync supports optional flow hook without behavioral regressions",
+        "Frontend tests/typecheck/build all pass"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/composables/useConsultationViewSync.test.ts src/views/PatientDashboardView.test.ts",
+          "npm run typecheck --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T50",
+      "title": "Add consultation view integration smoke regression suite",
+      "milestone": "M14",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T49"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N24"
+      ],
+      "goal": "Add a lightweight integration smoke suite for key consultation interactions and error boundaries.",
+      "nonGoals": [
+        "Full E2E browser automation"
+      ],
+      "acceptance": [
+        "Consultation submit happy-path and validation failure are covered",
+        "Regression catches common runtime handler errors"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/views/ConsultationView.integration.test.ts"
+        ]
+      }
+    },
+    {
+      "id": "T51",
+      "title": "Create frontend copy registry and encoding guard checks",
+      "milestone": "M14",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T50"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N25"
+      ],
+      "goal": "Consolidate top-level UI copy and add guard checks to reduce text drift/garbled strings.",
+      "nonGoals": [
+        "Full i18n framework migration"
+      ],
+      "acceptance": [
+        "Key consultation copy extracted to shared constants",
+        "Guard script/test flags malformed UTF-8/garbled literals"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run check:copy --workspace=@copilot-care/frontend",
+          "npm run test --workspace=@copilot-care/frontend",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T52",
+      "title": "Add frontend demo performance baseline and budget guard",
+      "milestone": "M14",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T51"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N26"
+      ],
+      "goal": "Track build-size/perf baseline for demo page and enforce a lightweight budget warning command.",
+      "nonGoals": [
+        "Advanced runtime profiling infrastructure"
+      ],
+      "acceptance": [
+        "Performance baseline artifact exists",
+        "Budget guard command integrated in workflow docs"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run build --workspace=@copilot-care/frontend",
+          "npm run perf:check --workspace=@copilot-care/frontend",
+          "npm run perf:baseline --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T53",
+      "title": "Prefetch and cache report-export runtime module",
+      "milestone": "M15",
+      "priority": "P0",
+      "defaultState": "ready",
+      "dependsOn": [],
+      "owner": "build",
+      "planRefs": [
+        "N27"
+      ],
+      "goal": "Reduce first-click export latency by prefetching and caching report-export runtime dependencies before operator click.",
+      "nonGoals": [
+        "Replace PDF export implementation or redesign report template"
+      ],
+      "acceptance": [
+        "Report export composable exposes prefetch hook and module cache behavior",
+        "Consultation view triggers one-time prefetch when export becomes available",
+        "Targeted tests cover prefetch + export happy path"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/composables/useConsultationReportExport.test.ts",
+          "npm run typecheck --workspace=@copilot-care/frontend",
+          "npm run build --workspace=@copilot-care/frontend",
+          "npm run perf:check --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T54",
+      "title": "Split ConsultationView into section-level presentation modules",
+      "milestone": "M15",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T53"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N28"
+      ],
+      "goal": "Reduce single-file complexity in ConsultationView by extracting stable section-level presentation modules.",
+      "nonGoals": [
+        "Change core triage workflow semantics"
+      ],
+      "acceptance": [
+        "ConsultationView script/template size reduced by extracting reusable sections",
+        "Component contracts remain typed and existing integration tests stay green"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/views/ConsultationView.integration.test.ts src/composables/useConsultationViewModel.test.ts",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T55",
+      "title": "Expand consultation critical-path integration regression suite",
+      "milestone": "M15",
+      "priority": "P1",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T54"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N29"
+      ],
+      "goal": "Add integration regressions for export fallback, red-flag escalation, and workflow-stage transitions on ConsultationView.",
+      "nonGoals": [
+        "Introduce full browser E2E infrastructure"
+      ],
+      "acceptance": [
+        "Integration suite covers export success/fallback and red-flag escalation branch",
+        "Regression suite runs in workspace frontend test pipeline"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run test --workspace=@copilot-care/frontend -- src/views/ConsultationView.integration.test.ts src/services/reportExport.test.ts",
+          "npm run typecheck --workspace=@copilot-care/frontend"
+        ]
+      }
+    },
+    {
+      "id": "T56",
+      "title": "Add repository secret-leak guard command and workflow wiring",
+      "milestone": "M15",
+      "priority": "P0",
+      "defaultState": "backlog",
+      "dependsOn": [
+        "T53"
+      ],
+      "owner": "build",
+      "planRefs": [
+        "N30"
+      ],
+      "goal": "Provide an executable guard command to detect probable committed secrets and wire it into milestone gates.",
+      "nonGoals": [
+        "Replace enterprise secret management platform"
+      ],
+      "acceptance": [
+        "security:secrets command exists and fails on high-risk token patterns",
+        "Operation docs include command usage and remediation guidance"
+      ],
+      "adrTrigger": false,
+      "commands": {
+        "verify": [
+          "npm run security:secrets",
+          "npm run todos:doctor"
+        ]
+      }
+    }
+  ]
+}

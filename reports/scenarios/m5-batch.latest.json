@@ -1,0 +1,1137 @@
+{
+  "generatedAt": "2026-02-22T17:27:41.537Z",
+  "targetMinimum": 120,
+  "sampleCount": 120,
+  "passCount": 120,
+  "failCount": 0,
+  "passRate": 1,
+  "sourceBreakdown": [
+    {
+      "sourceScenarioId": "T-001",
+      "total": 20,
+      "pass": 20,
+      "fail": 0
+    },
+    {
+      "sourceScenarioId": "T-002",
+      "total": 20,
+      "pass": 20,
+      "fail": 0
+    },
+    {
+      "sourceScenarioId": "T-003",
+      "total": 20,
+      "pass": 20,
+      "fail": 0
+    },
+    {
+      "sourceScenarioId": "T-004",
+      "total": 20,
+      "pass": 20,
+      "fail": 0
+    },
+    {
+      "sourceScenarioId": "T-005",
+      "total": 20,
+      "pass": 20,
+      "fail": 0
+    },
+    {
+      "sourceScenarioId": "T-006",
+      "total": 20,
+      "pass": 20,
+      "fail": 0
+    }
+  ],
+  "statusBreakdown": {
+    "OUTPUT": 80,
+    "ERROR": 20,
+    "ESCALATE_TO_OFFLINE": 20
+  },
+  "acceptance": {
+    "sampleCountReached": true,
+    "breakdownAvailable": true
+  },
+  "sampleResults": [
+    {
+      "sampleId": "T-001-r01",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r02",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r03",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r04",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r05",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r06",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r07",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r08",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r09",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r10",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r11",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r12",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r13",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r14",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r15",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r16",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r17",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r18",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r19",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-001-r20",
+      "sourceScenarioId": "T-001",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r01",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r02",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r03",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r04",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r05",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r06",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r07",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r08",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r09",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r10",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r11",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r12",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r13",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r14",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r15",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r16",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r17",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r18",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r19",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-002-r20",
+      "sourceScenarioId": "T-002",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r01",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r02",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r03",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r04",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r05",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r06",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r07",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r08",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r09",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r10",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r11",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r12",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r13",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r14",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r15",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r16",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r17",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r18",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r19",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-003-r20",
+      "sourceScenarioId": "T-003",
+      "expectedStatus": "ERROR",
+      "actualStatus": "ERROR",
+      "expectedErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "actualErrorCode": "ERR_MISSING_REQUIRED_DATA",
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r01",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r02",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r03",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r04",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r05",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r06",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r07",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r08",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r09",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r10",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r11",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r12",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r13",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r14",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r15",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r16",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r17",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r18",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r19",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-004-r20",
+      "sourceScenarioId": "T-004",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r01",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r02",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r03",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r04",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r05",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r06",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r07",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r08",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r09",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r10",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r11",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r12",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r13",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r14",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r15",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r16",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r17",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r18",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r19",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-005-r20",
+      "sourceScenarioId": "T-005",
+      "expectedStatus": "OUTPUT",
+      "actualStatus": "OUTPUT",
+      "expectedErrorCode": null,
+      "actualErrorCode": null,
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r01",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r02",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r03",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r04",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r05",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r06",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r07",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r08",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r09",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r10",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r11",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r12",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r13",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r14",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r15",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r16",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r17",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r18",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r19",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    },
+    {
+      "sampleId": "T-006-r20",
+      "sourceScenarioId": "T-006",
+      "expectedStatus": "ESCALATE_TO_OFFLINE",
+      "actualStatus": "ESCALATE_TO_OFFLINE",
+      "expectedErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "actualErrorCode": "ERR_ESCALATE_TO_OFFLINE",
+      "passed": true
+    }
+  ]
+}

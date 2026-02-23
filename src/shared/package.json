@@ -1,0 +1,30 @@
+{
+  "name": "@copilot-care/shared",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types.ts",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./types.ts",
+      "default": "./dist/types.js"
+    }
+  },
+  "files": [
+    "dist",
+    "index.ts",
+    "types.ts"
+  ],
+  "scripts": {
+    "clean": "node scripts/clean-dist.cjs",
+    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "npm run build && npm run typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

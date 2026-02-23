@@ -1,0 +1,472 @@
+import { ref, type Ref } from 'vue';
+import type {
+  AgentOpinion,
+  DebateRound,
+  ExplainableReport,
+  OrchestrationSnapshot,
+  StructuredTriageResult,
+  TriageApiResponse,
+  TriageErrorResponse,
+  TriageRequest,
+  TriageRoutingInfo,
+  TriageStreamEvent,
+  TriageStreamStageStatus,
+  WorkflowStage,
+} from '@copilot-care/shared/types';
+import {
+  orchestrateTriageStream,
+  type StreamOptions,
+} from '../services/triageApi';
+import type { DemoStep } from './useDemoMode';
+
+export type ConsultationRunnerUiStatus =
+  | 'IDLE'
+  | 'OUTPUT'
+  | 'ESCALATE_TO_OFFLINE'
+  | 'ABSTAIN'
+  | 'ERROR';
+
+export type ConsultationRunnerReasoningKind =
+  | 'system'
+  | 'evidence'
+  | 'decision'
+  | 'warning'
+  | 'query';
+
+export interface ConsultationChatMessage {
+  role: 'user' | 'system';
+  content: string;
+}
+
+export interface ConsultationInputForm {
+  symptomText: string;
+  age: number;
+  sex: 'male' | 'female' | 'other';
+  chronicDiseasesText: string;
+  medicationHistoryText: string;
+  systolicBPText: string;
+  diastolicBPText: string;
+  consentToken: string;
+}
+
+interface StageRuntimeState {
+  status: TriageStreamStageStatus;
+  message: string;
+  startTime?: string;
+  endTime?: string;
+  durationMs?: number;
+}
+
+interface RoutingPreviewState {
+  routeMode?: string;
+  department?: string;
+  collaborationMode?: string;
+  complexityScore?: number;
+}
+
+interface StageUpdateEvent {
+  stage: WorkflowStage;
+  status: TriageStreamStageStatus;
+  message: string;
+}
+
+interface SnapshotPhaseLabels {
+  assignment: string;
+  analysis: string;
+  execution: string;
+  synthesis: string;
+  complete: string;
+}
+
+interface StreamStateBindings {
+  clarificationQuestion: Ref<string>;
+  requiredFields: Ref<string[]>;
+  systemError: Ref<string>;
+  stageRuntime: Ref<Record<WorkflowStage, StageRuntimeState>>;
+  reasoningItems: Ref<
+    Array<{
+      kind: ConsultationRunnerReasoningKind;
+      text: string;
+      stage?: WorkflowStage;
+    }>
+  >;
+  rounds: Ref<DebateRound[]>;
+  finalConsensus: Ref<AgentOpinion | null>;
+  triageResult: Ref<StructuredTriageResult | null>;
+  routeInfo: Ref<TriageRoutingInfo | null>;
+  routingPreview: Ref<RoutingPreviewState>;
+  explainableReport: Ref<ExplainableReport | null>;
+  resultNotes: Ref<string[]>;
+  orchestrationSnapshot: Ref<OrchestrationSnapshot | null>;
+  captureRoutingFromText: (text: string) => void;
+  rememberStageEvent: (event: StageUpdateEvent) => boolean;
+  rememberReasoning: (message: string) => boolean;
+  shouldPushStageNarrative: (event: StageUpdateEvent) => boolean;
+  pushReasoning: (
+    kind: ConsultationRunnerReasoningKind,
+    text: string,
+    stage?: WorkflowStage,
+  ) => void;
+  updateStage: (
+    stage: WorkflowStage,
+    statusValue: TriageStreamStageStatus,
+    message: string,
+  ) => void;
+  resetStreamStateCore: () => void;
+}
+
+export interface UseConsultationSessionRunnerOptions {
+  status: Ref<ConsultationRunnerUiStatus>;
+  microStatus: Ref<string>;
+  showAdvancedInputs: Ref<boolean>;
+  messages: Ref<ConsultationChatMessage[]>;
+  streamState: StreamStateBindings;
+  validateInput: () => string | null;
+  buildRequestPayload: () => TriageRequest;
+  classifyReasoningKind: (
+    message: string,
+  ) => ConsultationRunnerReasoningKind;
+  formatRequiredField: (field: string) => string;
+  stageLabels: Record<WorkflowStage, string>;
+  statusLabels: Record<ConsultationRunnerUiStatus, string>;
+  snapshotPhaseLabels: SnapshotPhaseLabels;
+  createDemoSteps: (
+    reasoningItems: Array<{ kind: string; text: string; stage?: string }>,
+    stageRuntime: Record<string, { status: string; message: string }>,
+  ) => DemoStep[];
+  initDemoSteps: (steps: DemoStep[]) => void;
+  onResetView?: () => void;
+  streamRequest?: (
+    payload: TriageRequest,
+    options: StreamOptions,
+  ) => Promise<void>;
+}
+
+export interface ConsultationSessionRunnerState {
+  loading: Ref<boolean>;
+  loadingSeconds: Ref<number>;
+  typedOutput: Ref<string>;
+  submitConsultation: () => Promise<void>;
+  disposeSessionRunner: () => void;
+}
+
+function isErrorResponse(
+  payload: TriageApiResponse,
+): payload is TriageErrorResponse {
+  return payload.status === 'ERROR';
+}
+
+function buildFallbackTypedSummary(
+  payload: Exclude<TriageApiResponse, { status: 'ERROR' }>,
+): string {
+  const lines: string[] = [];
+  if (payload.explainableReport?.conclusion) {
+    lines.push(`结论：${payload.explainableReport.conclusion}`);
+  }
+  if (payload.triageResult) {
+    lines.push(
+      `分诊：${payload.triageResult.triageLevel} / 去向：${payload.triageResult.destination}`,
+    );
+  }
+  if (payload.explainableReport?.actions?.length) {
+    lines.push(`建议：${payload.explainableReport.actions.join('；')}`);
+  }
+  return lines.join('\n');
+}
+
+export function useConsultationSessionRunner(
+  options: UseConsultationSessionRunnerOptions,
+): ConsultationSessionRunnerState {
+  const streamRequest = options.streamRequest ?? orchestrateTriageStream;
+
+  const loading = ref<boolean>(false);
+  const loadingSeconds = ref<number>(0);
+  const typedOutput = ref<string>('');
+  const tokenQueue = ref<string[]>([]);
+
+  let typewriterTimer: ReturnType<typeof setInterval> | null = null;
+  let loadingTimer: ReturnType<typeof setInterval> | null = null;
+  let activeController: AbortController | null = null;
+
+  function startTypewriter(): void {
+    if (typewriterTimer) {
+      return;
+    }
+    typewriterTimer = setInterval(() => {
+      const token = tokenQueue.value.shift();
+      if (typeof token !== 'string') {
+        clearInterval(typewriterTimer as ReturnType<typeof setInterval>);
+        typewriterTimer = null;
+        return;
+      }
+      typedOutput.value += token;
+    }, 20);
+  }
+
+  function enqueueTokens(text: string): void {
+    for (const token of text) {
+      tokenQueue.value.push(token);
+    }
+    startTypewriter();
+  }
+
+  function clearTypewriter(): void {
+    typedOutput.value = '';
+    tokenQueue.value = [];
+    if (typewriterTimer) {
+      clearInterval(typewriterTimer);
+      typewriterTimer = null;
+    }
+  }
+
+  function resetRuntimeView(): void {
+    options.streamState.resetStreamStateCore();
+    options.onResetView?.();
+    clearTypewriter();
+  }
+
+  function applyFinalResult(payload: TriageApiResponse): void {
+    if (isErrorResponse(payload)) {
+      options.status.value = 'ERROR';
+      options.streamState.requiredFields.value = payload.requiredFields ?? [];
+      options.streamState.resultNotes.value = payload.notes;
+      options.streamState.systemError.value = payload.errorCode;
+      options.microStatus.value = `会诊未完成：${payload.notes.join('；')}`;
+      options.streamState.pushReasoning('warning', options.microStatus.value);
+      if (payload.requiredFields && payload.requiredFields.length > 0) {
+        options.streamState.clarificationQuestion.value = `请补充：${payload.requiredFields
+          .map(options.formatRequiredField)
+          .join('、')}`;
+        options.streamState.pushReasoning(
+          'query',
+          options.streamState.clarificationQuestion.value,
+        );
+      }
+      options.messages.value.push({
+        role: 'system',
+        content: options.microStatus.value,
+      });
+      return;
+    }
+
+    options.status.value = payload.status as ConsultationRunnerUiStatus;
+    options.streamState.rounds.value = payload.rounds;
+    options.streamState.routeInfo.value = payload.routing ?? null;
+    if (payload.routing) {
+      options.streamState.routingPreview.value = {
+        routeMode: payload.routing.routeMode,
+        department: payload.routing.department,
+        collaborationMode: payload.routing.collaborationMode,
+        complexityScore: payload.routing.complexityScore,
+      };
+    }
+    options.streamState.triageResult.value = payload.triageResult ?? null;
+    options.streamState.explainableReport.value = payload.explainableReport ?? null;
+    options.streamState.finalConsensus.value = payload.finalConsensus ?? null;
+    options.streamState.resultNotes.value = payload.notes;
+    options.microStatus.value = `会诊完成：${options.statusLabels[options.status.value]}`;
+    options.streamState.pushReasoning('decision', options.microStatus.value);
+
+    if (typedOutput.value.trim().length === 0) {
+      const fallback = buildFallbackTypedSummary(payload);
+      if (fallback) {
+        enqueueTokens(fallback);
+      }
+    }
+
+    options.messages.value.push({
+      role: 'system',
+      content: options.microStatus.value,
+    });
+
+    const demoSteps = options.createDemoSteps(
+      options.streamState.reasoningItems.value.map((item) => ({
+        kind: item.kind,
+        text: item.text,
+        stage: item.stage,
+      })),
+      options.streamState.stageRuntime.value as Record<
+        string,
+        { status: string; message: string }
+      >,
+    );
+
+    if (demoSteps.length > 0) {
+      options.initDemoSteps(demoSteps);
+    }
+  }
+
+  function handleStreamEvent(event: TriageStreamEvent): void {
+    if (event.type === 'stage_update') {
+      if (!options.streamState.rememberStageEvent(event)) {
+        return;
+      }
+      options.streamState.updateStage(event.stage, event.status, event.message);
+      options.streamState.captureRoutingFromText(event.message);
+      options.microStatus.value = `${options.stageLabels[event.stage]}：${event.message}`;
+      if (options.streamState.shouldPushStageNarrative(event)) {
+        options.streamState.pushReasoning(
+          'system',
+          options.microStatus.value,
+          event.stage,
+        );
+      }
+      return;
+    }
+
+    if (event.type === 'orchestration_snapshot') {
+      options.streamState.orchestrationSnapshot.value = event.snapshot;
+      const summary = event.snapshot.summary.trim();
+      const activeTask = event.snapshot.tasks.find(
+        (item) => item.status === 'running',
+      );
+      if (summary) {
+        options.microStatus.value = `总Agent(${options.snapshotPhaseLabels[event.snapshot.phase]})：${summary}${activeTask ? ` · ${activeTask.roleName}` : ''}`;
+        if (options.streamState.rememberReasoning(`snapshot:${summary}`)) {
+          options.streamState.pushReasoning('system', `总Agent：${summary}`);
+        }
+      }
+      return;
+    }
+
+    if (event.type === 'reasoning_step') {
+      if (!options.streamState.rememberReasoning(event.message)) {
+        return;
+      }
+      options.streamState.captureRoutingFromText(event.message);
+      options.streamState.pushReasoning(
+        options.classifyReasoningKind(event.message),
+        event.message,
+      );
+      return;
+    }
+
+    if (event.type === 'clarification_request') {
+      options.streamState.clarificationQuestion.value = event.question;
+      options.streamState.requiredFields.value = event.requiredFields;
+      options.showAdvancedInputs.value = true;
+      options.streamState.pushReasoning('query', `补充信息请求：${event.question}`);
+      options.microStatus.value = event.question;
+      return;
+    }
+
+    if (event.type === 'token') {
+      enqueueTokens(event.token);
+      return;
+    }
+
+    if (event.type === 'heartbeat') {
+      if (event.message) {
+        options.microStatus.value = event.message;
+      }
+      return;
+    }
+
+    if (event.type === 'error') {
+      options.status.value = 'ERROR';
+      options.streamState.systemError.value = event.errorCode;
+      if (event.requiredFields && event.requiredFields.length > 0) {
+        options.streamState.requiredFields.value = event.requiredFields;
+        options.showAdvancedInputs.value = true;
+      }
+      options.microStatus.value = event.message;
+      options.streamState.pushReasoning('warning', `错误：${event.message}`);
+      return;
+    }
+
+    if (event.type === 'final_result') {
+      applyFinalResult(event.result);
+    }
+  }
+
+  async function submitConsultation(): Promise<void> {
+    if (loading.value) {
+      return;
+    }
+
+    const validationError = options.validateInput();
+    if (validationError) {
+      options.microStatus.value = validationError;
+      options.messages.value.push({ role: 'system', content: validationError });
+      return;
+    }
+
+    if (activeController) {
+      activeController.abort();
+      activeController = null;
+    }
+
+    const payload = options.buildRequestPayload();
+    options.messages.value.push({
+      role: 'user',
+      content: payload.symptomText ?? '',
+    });
+
+    resetRuntimeView();
+    loading.value = true;
+    options.status.value = 'IDLE';
+    options.microStatus.value = '正在启动会诊流程...';
+    options.streamState.pushReasoning(
+      'system',
+      '已提交需求，系统开始执行状态机流程。',
+    );
+
+    loadingSeconds.value = 0;
+    if (loadingTimer) {
+      clearInterval(loadingTimer);
+    }
+    loadingTimer = setInterval(() => {
+      loadingSeconds.value += 1;
+    }, 1000);
+
+    activeController = new AbortController();
+
+    try {
+      await streamRequest(payload, {
+        signal: activeController.signal,
+        onEvent: handleStreamEvent,
+      });
+    } catch (cause: unknown) {
+      options.status.value = 'ERROR';
+      options.microStatus.value =
+        cause instanceof Error
+          ? `会诊流中断：${cause.message}`
+          : '会诊流中断，请稍后重试。';
+      options.streamState.pushReasoning('warning', options.microStatus.value);
+      options.messages.value.push({
+        role: 'system',
+        content: options.microStatus.value,
+      });
+    } finally {
+      loading.value = false;
+      if (loadingTimer) {
+        clearInterval(loadingTimer);
+        loadingTimer = null;
+      }
+      activeController = null;
+    }
+  }
+
+  function disposeSessionRunner(): void {
+    if (activeController) {
+      activeController.abort();
+      activeController = null;
+    }
+    if (loadingTimer) {
+      clearInterval(loadingTimer);
+      loadingTimer = null;
+    }
+    if (typewriterTimer) {
+      clearInterval(typewriterTimer);
+      typewriterTimer = null;
+    }
+  }
+
+  return {
+    loading,
+    loadingSeconds,
+    typedOutput,
+    submitConsultation,
+    disposeSessionRunner,
+  };
+}

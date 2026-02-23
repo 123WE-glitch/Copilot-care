@@ -1,0 +1,317 @@
+﻿import { Server } from 'http';
+import { AddressInfo } from 'net';
+import { app } from '../../index';
+
+describe('Architecture Smoke - HTTP integration', () => {
+  let server: Server;
+  let baseUrl = '';
+
+  beforeAll((done) => {
+    server = app.listen(0, () => {
+      const address = server.address() as AddressInfo;
+      baseUrl = `http://127.0.0.1:${address.port}`;
+      done();
+    });
+  });
+
+  afterAll((done) => {
+    server.close(done);
+  });
+
+  it('returns health status for GET /health', async () => {
+    const response = await fetch(`${baseUrl}/health`);
+    const payload = await response.json() as { status: string };
+
+    expect(response.status).toBe(200);
+    expect(payload.status).toBe('ok');
+  });
+
+  it('returns expert architecture snapshot for GET /architecture/experts', async () => {
+    const response = await fetch(`${baseUrl}/architecture/experts`);
+    const payload = await response.json() as {
+      experts: Record<string, { provider: string; llmEnabled: boolean }>;
+    };
+
+    expect(response.status).toBe(200);
+    expect(payload.experts).toBeDefined();
+    expect(payload.experts.cardiology).toBeDefined();
+    expect(payload.experts.generalPractice).toBeDefined();
+    expect(payload.experts.metabolic).toBeDefined();
+    expect(payload.experts.safety).toBeDefined();
+  });
+
+  it('returns 400 for POST /orchestrate_triage when profile is missing', async () => {
+    const response = await fetch(`${baseUrl}/orchestrate_triage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    const payload = await response.json() as { errorCode: string };
+
+    expect(response.status).toBe(400);
+    expect(payload.errorCode).toBe('ERR_MISSING_REQUIRED_DATA');
+  });
+
+  it('returns typed triage status for POST /orchestrate_triage', async () => {
+    const response = await fetch(`${baseUrl}/orchestrate_triage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        requestId: 'http-smoke-typed-001',
+        consentToken: 'consent_local_demo',
+        symptomText: 'fatigue',
+        profile: {
+          patientId: 'http-smoke-001',
+          age: 52,
+          sex: 'male',
+          symptoms: ['fatigue'],
+          chronicDiseases: ['Hypertension'],
+          medicationHistory: ['none'],
+          vitals: {
+            systolicBP: 150,
+            diastolicBP: 95,
+          },
+        },
+      }),
+    });
+    const payload = await response.json() as { status: string };
+
+    expect(response.status).toBe(200);
+    expect(['OUTPUT', 'ESCALATE_TO_OFFLINE', 'ABSTAIN', 'ERROR']).toContain(
+      payload.status,
+    );
+  });
+
+  it('replays the same result for repeated sessionId requests', async () => {
+    const requestBody = {
+      requestId: 'http-smoke-idempotent-001',
+      consentToken: 'consent_local_demo',
+      symptomText: 'fatigue',
+      sessionId: 'http-smoke-idempotent-001',
+      profile: {
+        patientId: 'http-smoke-idempotent-001',
+        age: 58,
+        sex: 'female',
+        symptoms: ['fatigue'],
+        chronicDiseases: ['Hypertension'],
+        medicationHistory: ['amlodipine'],
+        vitals: {
+          systolicBP: 148,
+          diastolicBP: 94,
+        },
+      },
+    };
+
+    const firstResponse = await fetch(`${baseUrl}/orchestrate_triage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(requestBody),
+    });
+    const firstPayload = await firstResponse.json() as { status: string };
+
+    const secondResponse = await fetch(`${baseUrl}/orchestrate_triage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(requestBody),
+    });
+    const secondPayload = await secondResponse.json() as { status: string };
+
+    expect(firstResponse.status).toBe(200);
+    expect(secondResponse.status).toBe(200);
+    expect(secondPayload).toEqual(firstPayload);
+  });
+
+  it('returns requiredFields when consentToken is missing', async () => {
+    const response = await fetch(`${baseUrl}/orchestrate_triage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        requestId: 'http-smoke-consent-missing-001',
+        symptomText: 'fatigue',
+        profile: {
+          patientId: 'http-smoke-consent-missing-001',
+          age: 50,
+          sex: 'male',
+          symptoms: ['fatigue'],
+          chronicDiseases: ['Hypertension'],
+          medicationHistory: ['none'],
+          vitals: {
+            systolicBP: 146,
+            diastolicBP: 94,
+          },
+        },
+      }),
+    });
+    const payload = await response.json() as {
+      errorCode: string;
+      requiredFields?: string[];
+    };
+
+    expect(response.status).toBe(400);
+    expect(payload.errorCode).toBe('ERR_MISSING_REQUIRED_DATA');
+    expect(payload.requiredFields).toEqual(expect.arrayContaining(['consentToken']));
+  });
+
+  it('streams stage updates and final result for POST /orchestrate_triage/stream', async () => {
+    const response = await fetch(`${baseUrl}/orchestrate_triage/stream`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        requestId: 'http-stream-typed-001',
+        consentToken: 'consent_local_demo',
+        symptomText: 'fatigue',
+        profile: {
+          patientId: 'http-stream-001',
+          age: 52,
+          sex: 'male',
+          symptoms: ['fatigue'],
+          chronicDiseases: ['Hypertension'],
+          medicationHistory: ['none'],
+          vitals: {
+            systolicBP: 150,
+            diastolicBP: 95,
+          },
+        },
+      }),
+    });
+    const contentType = response.headers.get('content-type') ?? '';
+    const text = await response.text();
+    const events = text
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) =>
+        JSON.parse(line) as {
+          type: string;
+          stage?: string;
+          snapshot?: {
+            coordinator: string;
+            tasks: unknown[];
+            graph: {
+              nodes: unknown[];
+              edges: unknown[];
+            };
+          };
+        },
+      );
+    const snapshotEvent = events.find(
+      (event) => event.type === 'orchestration_snapshot',
+    );
+    const snapshotEvents = events.filter(
+      (event) => event.type === 'orchestration_snapshot',
+    );
+    const latestSnapshot = snapshotEvents[snapshotEvents.length - 1]?.snapshot;
+    const reviewTask = Array.isArray(latestSnapshot?.tasks)
+      ? latestSnapshot.tasks.find((task) => {
+          if (!task || typeof task !== 'object') {
+            return false;
+          }
+          const candidate = task as {
+            roleId?: string;
+            roleName?: string;
+            status?: string;
+            progress?: number;
+          };
+          return candidate.roleId === 'reviewer_agent'
+            || candidate.roleName === '安全审校Agent';
+        }) as
+          | {
+              status?: string;
+              progress?: number;
+            }
+          | undefined
+      : undefined;
+
+    expect(response.status).toBe(200);
+    expect(contentType).toContain('application/x-ndjson');
+    expect(events.some((event) => event.type === 'stage_update')).toBe(true);
+    expect(snapshotEvent).toBeDefined();
+    expect(snapshotEvent?.snapshot?.coordinator).toBe('总Agent');
+    expect((snapshotEvent?.snapshot?.tasks?.length ?? 0) > 0).toBe(true);
+    expect((snapshotEvent?.snapshot?.graph?.nodes?.length ?? 0) > 0).toBe(true);
+    expect(snapshotEvents.length).toBeGreaterThan(0);
+    expect(reviewTask).toBeDefined();
+    expect(reviewTask?.status).not.toBe('pending');
+    expect((reviewTask?.progress ?? 0)).toBeGreaterThan(0);
+    expect(
+      events.some(
+        (event) => event.type === 'stage_update' && event.stage === 'REVIEW',
+      ),
+    ).toBe(true);
+    expect(events.some((event) => event.type === 'final_result')).toBe(true);
+  });
+
+  it('streams clarification request when required fields are missing', async () => {
+    const response = await fetch(`${baseUrl}/orchestrate_triage/stream`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        requestId: 'http-stream-missing-001',
+        symptomText: 'fatigue',
+        profile: {
+          patientId: 'http-stream-missing-001',
+          age: 52,
+          sex: 'male',
+          symptoms: ['fatigue'],
+          chronicDiseases: ['Hypertension'],
+          medicationHistory: ['none'],
+          vitals: {
+            systolicBP: 150,
+            diastolicBP: 95,
+          },
+        },
+      }),
+    });
+    const text = await response.text();
+    const events = text
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => JSON.parse(line) as {
+        type: string;
+        requiredFields?: string[];
+        snapshot?: {
+          tasks: unknown[];
+        };
+      });
+
+    const clarification = events.find(
+      (event) => event.type === 'clarification_request',
+    );
+    const latestSnapshot = events
+      .filter((event) => event.type === 'orchestration_snapshot')
+      .map((event) => event.snapshot)
+      .filter(Boolean)
+      .pop();
+    const reviewTask = Array.isArray(latestSnapshot?.tasks)
+      ? latestSnapshot.tasks.find((task) => {
+          if (!task || typeof task !== 'object') {
+            return false;
+          }
+          const candidate = task as {
+            roleId?: string;
+            roleName?: string;
+            status?: string;
+            progress?: number;
+          };
+          return candidate.roleId === 'reviewer_agent'
+            || candidate.roleName === '安全审校Agent';
+        }) as
+          | {
+              status?: string;
+              progress?: number;
+            }
+          | undefined
+      : undefined;
+
+    expect(response.status).toBe(200);
+    expect(clarification).toBeDefined();
+    expect(clarification?.requiredFields).toEqual(
+      expect.arrayContaining(['consentToken']),
+    );
+    expect(reviewTask).toBeDefined();
+    expect(reviewTask?.status).not.toBe('pending');
+    expect((reviewTask?.progress ?? 0)).toBeGreaterThan(0);
+    expect(events.some((event) => event.type === 'final_result')).toBe(true);
+  });
+});

@@ -1,0 +1,3810 @@
+{
+  "setId": "site-beta",
+  "generatedAt": "2026-02-22T06:56:05.278Z",
+  "source": "A-F baseline scenarios",
+  "repeatPerSourceScenario": 20,
+  "sourceScenarioCount": 6,
+  "sampleCount": 120,
+  "samples": [
+    {
+      "sampleId": "T-001-site-beta-r001",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r001",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r001",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r002",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r002",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r002",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r003",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r003",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r003",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r004",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r004",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r004",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r005",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r005",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r005",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r006",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r006",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r006",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r007",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r007",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r007",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r008",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r008",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r008",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r009",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r009",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r009",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r010",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r010",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r010",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r011",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r011",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r011",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r012",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r012",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r012",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r013",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r013",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r013",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r014",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r014",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r014",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r015",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r015",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r015",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r016",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r016",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r016",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r017",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r017",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r017",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r018",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r018",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r018",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r019",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r019",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r019",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-001-site-beta-r020",
+      "sourceScenarioId": "T-001",
+      "sourceCaseCode": "Case-A-001",
+      "request": {
+        "sessionId": "case-a-001-site-beta-r020",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-a-001-site-beta-r020",
+          "age": 55,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 145,
+            "diastolicBP": 92
+          },
+          "symptoms": [
+            "mild dizziness"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r001",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r001",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r001",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r002",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r002",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r002",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r003",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r003",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r003",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r004",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r004",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r004",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r005",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r005",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r005",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r006",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r006",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r006",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r007",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r007",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r007",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r008",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r008",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r008",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r009",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r009",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r009",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r010",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r010",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r010",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r011",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r011",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r011",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r012",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r012",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r012",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r013",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r013",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r013",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r014",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r014",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r014",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r015",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r015",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r015",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r016",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r016",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r016",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r017",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r017",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r017",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r018",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r018",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r018",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r019",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r019",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r019",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-002-site-beta-r020",
+      "sourceScenarioId": "T-002",
+      "sourceCaseCode": "Case-B-001",
+      "request": {
+        "sessionId": "case-b-001-site-beta-r020",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-b-001-site-beta-r020",
+          "age": 60,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "none"
+          ],
+          "vitals": {
+            "systolicBP": 172,
+            "diastolicBP": 108
+          },
+          "symptoms": [
+            "headache"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r001",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r001",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r001",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r002",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r002",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r002",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r003",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r003",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r003",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r004",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r004",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r004",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r005",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r005",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r005",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r006",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r006",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r006",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r007",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r007",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r007",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r008",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r008",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r008",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r009",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r009",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r009",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r010",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r010",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r010",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r011",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r011",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r011",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r012",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r012",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r012",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r013",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r013",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r013",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r014",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r014",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r014",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r015",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r015",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r015",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r016",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r016",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r016",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r017",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r017",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r017",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r018",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r018",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r018",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r019",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r019",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r019",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-003-site-beta-r020",
+      "sourceScenarioId": "T-003",
+      "sourceCaseCode": "Case-C-001",
+      "request": {
+        "sessionId": "case-c-001-site-beta-r020",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-c-001-site-beta-r020",
+          "age": 46,
+          "sex": "female",
+          "chronicDiseases": []
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "errorCode": "ERR_MISSING_REQUIRED_DATA",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r001",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r001",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r001",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r002",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r002",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r002",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r003",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r003",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r003",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r004",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r004",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r004",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r005",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r005",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r005",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r006",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r006",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r006",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r007",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r007",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r007",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r008",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r008",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r008",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r009",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r009",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r009",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r010",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r010",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r010",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r011",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r011",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r011",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r012",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r012",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r012",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r013",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r013",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r013",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r014",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r014",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r014",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r015",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r015",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r015",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r016",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r016",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r016",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r017",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r017",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r017",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r018",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r018",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r018",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r019",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r019",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r019",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-004-site-beta-r020",
+      "sourceScenarioId": "T-004",
+      "sourceCaseCode": "Case-D-001",
+      "request": {
+        "sessionId": "case-d-001-site-beta-r020",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-d-001-site-beta-r020",
+          "age": 70,
+          "sex": "female",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes",
+            "Dyslipidemia"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 165,
+            "diastolicBP": 98
+          },
+          "symptoms": [
+            "fatigue",
+            "thirst"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 3
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r001",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r001",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r001",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r002",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r002",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r002",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r003",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r003",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r003",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r004",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r004",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r004",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r005",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r005",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r005",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r006",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r006",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r006",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r007",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r007",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r007",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r008",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r008",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r008",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r009",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r009",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r009",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r010",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r010",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r010",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r011",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r011",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r011",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r012",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r012",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r012",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r013",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r013",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r013",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r014",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r014",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r014",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r015",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r015",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r015",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r016",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r016",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r016",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r017",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r017",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r017",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r018",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r018",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r018",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r019",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r019",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r019",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-005-site-beta-r020",
+      "sourceScenarioId": "T-005",
+      "sourceCaseCode": "Case-E-001",
+      "request": {
+        "sessionId": "case-e-001-site-beta-r020",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-e-001-site-beta-r020",
+          "age": 58,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension"
+          ],
+          "medicationHistory": [
+            "amlodipine"
+          ],
+          "vitals": {
+            "systolicBP": 132,
+            "diastolicBP": 84
+          },
+          "symptoms": [
+            "stable"
+          ]
+        }
+      },
+      "expected": {
+        "status": "OUTPUT",
+        "requireFinalConsensus": true,
+        "minRounds": 1,
+        "maxRounds": 2,
+        "expectIdempotentReplay": true
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r001",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r001",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r001",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r002",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r002",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r002",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r003",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r003",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r003",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r004",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r004",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r004",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r005",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r005",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r005",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r006",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r006",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r006",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r007",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r007",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r007",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r008",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r008",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r008",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r009",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r009",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r009",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r010",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r010",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r010",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r011",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r011",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r011",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r012",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r012",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r012",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r013",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r013",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r013",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r014",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r014",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r014",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r015",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r015",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r015",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r016",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r016",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r016",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r017",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r017",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r017",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r018",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r018",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r018",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r019",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r019",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r019",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    },
+    {
+      "sampleId": "T-006-site-beta-r020",
+      "sourceScenarioId": "T-006",
+      "sourceCaseCode": "Case-F-001",
+      "request": {
+        "sessionId": "case-f-001-site-beta-r020",
+        "consentToken": "consent_local_demo",
+        "profile": {
+          "patientId": "case-f-001-site-beta-r020",
+          "age": 68,
+          "sex": "male",
+          "chronicDiseases": [
+            "Hypertension",
+            "Diabetes"
+          ],
+          "medicationHistory": [
+            "metformin"
+          ],
+          "vitals": {
+            "systolicBP": 182,
+            "diastolicBP": 112
+          },
+          "symptoms": [
+            "chest pain",
+            "shortness of breath"
+          ]
+        }
+      },
+      "expected": {
+        "status": "ESCALATE_TO_OFFLINE",
+        "errorCode": "ERR_ESCALATE_TO_OFFLINE",
+        "maxRounds": 0
+      }
+    }
+  ]
+}
