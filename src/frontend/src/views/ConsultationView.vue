@@ -37,7 +37,6 @@ import DemoModePanel from '../components/DemoModePanel.vue';
 import ConsultationResultPanel from '../components/ConsultationResultPanel.vue';
 import ConsultationInputPanel from '../components/consultation/ConsultationInputPanel.vue';
 import ConsultationReasoningCockpitCard from '../components/consultation/ConsultationReasoningCockpitCard.vue';
-import ConsultationExecutionMetricsCard from '../components/consultation/ConsultationExecutionMetricsCard.vue';
 import {
   COLLABORATION_LABELS,
   DEPARTMENT_LABELS,
@@ -132,6 +131,12 @@ const QUICK_INPUTS: ConsultationQuickInput[] = [
   },
 ];
 
+const SPLIT_PANE_MIN_RATIO = 30;
+const SPLIT_PANE_MAX_RATIO = 70;
+const SPLIT_PANE_DEFAULT_RATIO = 42;
+const SPLIT_PANE_KEYBOARD_STEP = 2;
+const SPLIT_PANE_KEYBOARD_FAST_STEP = 5;
+
 function createInitialStageRuntime(): Record<WorkflowStage, StageRuntimeState> {
   return {
     START: { status: 'pending', message: '等待启动' },
@@ -161,15 +166,19 @@ function classifyReasoningKind(message: string): ReasoningKind {
 
 const {
   layoutRef,
+  leftRatio,
+  isDragging,
   leftPaneStyle,
   startDragging,
   handleDragging,
   stopDragging,
+  nudgeRatio,
+  resetRatio,
 } = useSplitPaneLayout({
   storageKey: 'copilot-care.split-left-ratio',
-  minRatio: 30,
-  maxRatio: 70,
-  defaultRatio: 42,
+  minRatio: SPLIT_PANE_MIN_RATIO,
+  maxRatio: SPLIT_PANE_MAX_RATIO,
+  defaultRatio: SPLIT_PANE_DEFAULT_RATIO,
 });
 
 let reasoningMapNodeClickDelegate: ((nodeId: string) => void) | null = null;
@@ -244,6 +253,9 @@ const messages = ref<ChatMessage[]>([
 
 const patientInsights = ref<string[]>([]);
 const patientId = ref<string>('');
+const inputPanelAnchorRef = ref<HTMLElement | null>(null);
+const resultPanelAnchorRef = ref<HTMLElement | null>(null);
+const inputPanelStyle = Object.freeze<{ width: string }>({ width: '100%' });
 
 const demoMode = useDemoMode();
 const competitionDemoScript = createCompetitionDemoScript();
@@ -369,14 +381,6 @@ const {
   orchestrationSnapshot,
 });
 
-const doneStageCount = computed<number>(() => {
-  return stageLegend.value.filter((item) => item.status === 'done').length;
-});
-
-const runningStageCount = computed<number>(() => {
-  return stageLegend.value.filter((item) => item.status === 'running').length;
-});
-
 const blockedStageCount = computed<number>(() => {
   return stageLegend.value.filter((item) => {
     return item.status === 'blocked' || item.status === 'failed';
@@ -414,6 +418,10 @@ const completedTaskCount = computed<number>(() => {
   return coordinatorTasks.value.filter((task) => task.status === 'done').length;
 });
 
+const hasResultPanel = computed<boolean>(() => {
+  return !!routeInfo.value || !!triageResult.value || !!finalConsensus.value;
+});
+
 const showMissionEmptyState = computed<boolean>(() => {
   const hasGraphNodes = (orchestrationSnapshot.value?.graph?.nodes?.length ?? 0) > 0;
   const hasGraphEdges = (orchestrationSnapshot.value?.graph?.edges?.length ?? 0) > 0;
@@ -429,6 +437,36 @@ const showMissionEmptyState = computed<boolean>(() => {
     && !hasStream
     && !hasResult
     && !hasOutput;
+});
+
+const nextActionText = computed<string>(() => {
+  if (showMissionEmptyState.value) {
+    return '先完成左侧症状输入并提交会诊。';
+  }
+
+  if (riskSignal.value === 'critical') {
+    return '已触发高风险阻断，请优先进入复核并安排线下转诊。';
+  }
+
+  if (loading.value) {
+    return '会诊执行中，请关注流程节点推进和风险信号变化。';
+  }
+
+  if (status.value === 'OUTPUT') {
+    if (canExportReport.value) {
+      return '建议已生成，可完成复核后导出报告并进行临床交接。';
+    }
+    return '建议已生成，请补全必要信息后再执行交接。';
+  }
+
+  return '建议继续补充信息，保证推理链与证据链完整。';
+});
+
+const runtimeDurationLabel = computed<string>(() => {
+  if (!loading.value || loadingSeconds.value <= 0) {
+    return '--';
+  }
+  return `${loadingSeconds.value}s`;
 });
 
 const {
@@ -522,15 +560,44 @@ function toggleDemoMode(): void {
   demoMode.startDemo();
 }
 
-function formatStageDuration(stage: WorkflowStage): string {
-  const duration = stageRuntime.value[stage]?.durationMs;
-  if (typeof duration !== 'number' || duration <= 0) {
-    return '--';
+function handleSplitterKeydown(event: KeyboardEvent): void {
+  const step = event.shiftKey
+    ? SPLIT_PANE_KEYBOARD_FAST_STEP
+    : SPLIT_PANE_KEYBOARD_STEP;
+
+  if (event.key === 'ArrowLeft') {
+    event.preventDefault();
+    nudgeRatio(-step);
+    return;
   }
-  if (duration < 1000) {
-    return `${duration}ms`;
+
+  if (event.key === 'ArrowRight') {
+    event.preventDefault();
+    nudgeRatio(step);
+    return;
   }
-  return `${(duration / 1000).toFixed(1)}s`;
+
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    resetRatio();
+  }
+}
+
+function scrollToInputPanel(): void {
+  inputPanelAnchorRef.value?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  });
+}
+
+function scrollToResultPanel(): void {
+  if (!hasResultPanel.value) {
+    return;
+  }
+  resultPanelAnchorRef.value?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  });
 }
 
 async function initializeConsultationCharts(): Promise<void> {
@@ -542,16 +609,28 @@ async function initializeConsultationCharts(): Promise<void> {
 onMounted(() => {
   void initializeConsultationCharts();
   window.addEventListener('resize', onResize);
-  window.addEventListener('mousemove', handleDragging);
-  window.addEventListener('mouseup', stopDragging);
+  window.addEventListener('pointermove', handleDragging);
+  window.addEventListener('pointerup', stopDragging);
+  window.addEventListener('pointercancel', stopDragging);
 });
 
 onBeforeUnmount(() => {
   disposeSessionRunner();
   window.removeEventListener('resize', onResize);
-  window.removeEventListener('mousemove', handleDragging);
-  window.removeEventListener('mouseup', stopDragging);
+  window.removeEventListener('pointermove', handleDragging);
+  window.removeEventListener('pointerup', stopDragging);
+  window.removeEventListener('pointercancel', stopDragging);
+  if (typeof document !== 'undefined') {
+    document.body.classList.remove('splitter-drag-active');
+  }
   disposeCharts();
+});
+
+watch(isDragging, (dragging) => {
+  if (typeof document === 'undefined') {
+    return;
+  }
+  document.body.classList.toggle('splitter-drag-active', dragging);
 });
 </script>
 
@@ -561,32 +640,47 @@ onBeforeUnmount(() => {
     class="split-layout"
     :class="[`scene-${sceneLevel}`, `risk-${riskSignal}`]"
   >
-    <ConsultationInputPanel
-      :left-pane-style="leftPaneStyle"
-      :loading="loading"
-      :quick-inputs="QUICK_INPUTS"
-      :form="form"
-      :show-advanced-inputs="showAdvancedInputs"
-      :clarification-question="clarificationQuestion"
-      :required-fields="requiredFields"
-      :messages="messages"
-      :micro-status="microStatus"
-      :loading-seconds="loadingSeconds"
-      :current-stage-label="currentStageInfo.label"
-      :progress-percent="progressPercent"
-      :risk-signal="riskSignal"
-      :demo-mode-enabled="demoMode.isDemoMode.value"
-      :is-field-required="isFieldRequired"
-      :format-required-field="formatRequiredField"
-      @apply-quick-input="applyQuickInput"
-      @toggle-advanced-inputs="toggleAdvancedInputs"
-      @submit-consultation="submitConsultation"
-      @toggle-demo-mode="toggleDemoMode"
-      @patient-selected="handlePatientSelected"
-      @insights-loaded="handleInsightsLoaded"
-    />
+    <div ref="inputPanelAnchorRef" class="input-panel-anchor" :style="leftPaneStyle">
+      <ConsultationInputPanel
+        :left-pane-style="inputPanelStyle"
+        :loading="loading"
+        :quick-inputs="QUICK_INPUTS"
+        :form="form"
+        :show-advanced-inputs="showAdvancedInputs"
+        :clarification-question="clarificationQuestion"
+        :required-fields="requiredFields"
+        :messages="messages"
+        :micro-status="microStatus"
+        :loading-seconds="loadingSeconds"
+        :current-stage-label="currentStageInfo.label"
+        :progress-percent="progressPercent"
+        :risk-signal="riskSignal"
+        :demo-mode-enabled="demoMode.isDemoMode.value"
+        :is-field-required="isFieldRequired"
+        :format-required-field="formatRequiredField"
+        @apply-quick-input="applyQuickInput"
+        @toggle-advanced-inputs="toggleAdvancedInputs"
+        @submit-consultation="submitConsultation"
+        @toggle-demo-mode="toggleDemoMode"
+        @patient-selected="handlePatientSelected"
+        @insights-loaded="handleInsightsLoaded"
+      />
+    </div>
 
-    <div class="splitter" @mousedown="startDragging">
+    <div
+      class="splitter"
+      :class="{ dragging: isDragging }"
+      role="separator"
+      tabindex="0"
+      aria-label="调整输入与结果面板宽度"
+      aria-orientation="vertical"
+      :aria-valuemin="SPLIT_PANE_MIN_RATIO"
+      :aria-valuemax="SPLIT_PANE_MAX_RATIO"
+      :aria-valuenow="Math.round(leftRatio)"
+      @pointerdown="startDragging"
+      @dblclick="resetRatio"
+      @keydown="handleSplitterKeydown"
+    >
       <span class="splitter-grip" />
     </div>
 
@@ -595,10 +689,25 @@ onBeforeUnmount(() => {
         class="mission-hero"
         :class="[`risk-${riskSignal}`, `state-${visualizationState}`]"
       >
-        <div class="mission-copy">
-          <p class="mission-kicker">Clinical Mission Control</p>
-          <h2>会诊指挥舱</h2>
-          <p>{{ coordinatorActiveTaskHint }}</p>
+        <div class="mission-layout">
+          <div class="mission-copy">
+            <p class="mission-kicker">Clinical Mission Control</p>
+            <h2>会诊指挥舱</h2>
+            <p>{{ coordinatorActiveTaskHint }}</p>
+          </div>
+          <aside class="mission-priority-card">
+            <small>下一步动作</small>
+            <p>{{ nextActionText }}</p>
+            <button
+              v-if="showMissionEmptyState"
+              class="ghost-btn mission-priority-action"
+              type="button"
+              @click="applyQuickInput(QUICK_INPUTS[0])"
+            >
+              快速填入示例病例
+            </button>
+            <span class="mission-priority-meta">推理来源：{{ coordinatorSourceText }}</span>
+          </aside>
         </div>
         <div class="mission-tags">
           <span class="status-chip">{{ currentStageInfo.label }}</span>
@@ -620,11 +729,25 @@ onBeforeUnmount(() => {
             <strong>{{ blockedStageCount }}</strong>
           </article>
           <article class="kpi-card">
-            <small>推理来源</small>
-            <strong>{{ coordinatorSourceText }}</strong>
+            <small>执行时长</small>
+            <strong>{{ runtimeDurationLabel }}</strong>
           </article>
         </div>
       </header>
+
+      <div class="mobile-dock" role="toolbar" aria-label="移动端快捷操作">
+        <button class="ghost-btn" type="button" @click="scrollToInputPanel">
+          返回输入
+        </button>
+        <button
+          class="ghost-btn"
+          type="button"
+          :disabled="!hasResultPanel"
+          @click="scrollToResultPanel"
+        >
+          定位结果
+        </button>
+      </div>
 
       <section v-if="showMissionEmptyState" class="panel-card mission-empty-state">
         <div class="mission-empty-head">
@@ -699,25 +822,13 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <div class="two-col-grid metrics-grid">
-        <div class="panel-card">
-          <ComplexityRoutingTree
-            :routing="routeInfo ?? routingPreview"
-            :has-red-flag="status === 'ESCALATE_TO_OFFLINE'"
-            :current-stage="currentStageInfo.stage"
-            :state="visualizationState"
-            :density="chartDensity"
-          />
-        </div>
-
-        <ConsultationExecutionMetricsCard
-          :current-stage-label="currentStageInfo.label"
-          :progress-percent="progressPercent"
-          :done-stage-count="doneStageCount"
-          :running-stage-count="runningStageCount"
-          :blocked-stage-count="blockedStageCount"
-          :stage-legend="stageLegend"
-          :format-stage-duration="formatStageDuration"
+      <div class="panel-card">
+        <ComplexityRoutingTree
+          :routing="routeInfo ?? routingPreview"
+          :has-red-flag="status === 'ESCALATE_TO_OFFLINE'"
+          :current-stage="currentStageInfo.stage"
+          :state="visualizationState"
+          :density="chartDensity"
         />
       </div>
 
@@ -735,21 +846,23 @@ onBeforeUnmount(() => {
         <pre class="typewriter-output">{{ typedOutput || '等待模型输出...' }}<span v-if="loading" class="typing-caret">|</span></pre>
       </div>
 
-      <ConsultationResultPanel
-        v-if="routeInfo || triageResult || finalConsensus"
-        :route-info="routeInfo"
-        :triage-result="triageResult"
-        :explainable-report="explainableReport"
-        :final-consensus="finalConsensus"
-        :result-notes="resultNotes"
-        :is-safety-blocked="isSafetyBlocked"
-        :safety-block-note="safetyBlockNote"
-        :can-export-report="canExportReport"
-        :exporting-report="exportingReport"
-        :report-export-error="reportExportError"
-        :report-export-success="reportExportSuccess"
-        @export="handleExportReport"
-      />
+      <div ref="resultPanelAnchorRef">
+        <ConsultationResultPanel
+          v-if="hasResultPanel"
+          :route-info="routeInfo"
+          :triage-result="triageResult"
+          :explainable-report="explainableReport"
+          :final-consensus="finalConsensus"
+          :result-notes="resultNotes"
+          :is-safety-blocked="isSafetyBlocked"
+          :safety-block-note="safetyBlockNote"
+          :can-export-report="canExportReport"
+          :exporting-report="exportingReport"
+          :report-export-error="reportExportError"
+          :report-export-success="reportExportSuccess"
+          @export="handleExportReport"
+        />
+      </div>
 
       <div v-if="rounds.length > 0" class="panel-card">
         <h3>会诊轮次</h3>
@@ -790,11 +903,18 @@ onBeforeUnmount(() => {
   --ink: var(--cc-text-strong);
   --muted: var(--cc-text-muted);
   --line: var(--cc-border-body);
-  --surface-left: color-mix(in srgb, var(--cc-surface-1) 92%, #f6ead6);
-  --surface-right: color-mix(in srgb, var(--cc-surface-1) 88%, #edf5fd);
-  --card: var(--cc-surface-1);
+  --surface-left: var(--color-surface-elevated);
+  --surface-right: var(--color-surface-soft);
+  --card: var(--color-card-bg);
   --accent: var(--cc-accent-teal-500);
   --danger: var(--cc-danger-500);
+  --scene-glow-active: color-mix(in srgb, var(--color-info) 24%, transparent);
+  --scene-glow-critical: color-mix(in srgb, var(--color-danger) 24%, transparent);
+  --scene-glow-right: color-mix(in srgb, var(--color-info) 20%, transparent);
+  --mission-glow-info: color-mix(in srgb, var(--color-info) 20%, transparent);
+  --mission-glow-support: color-mix(in srgb, var(--color-success) 18%, transparent);
+  --map-glow-info: color-mix(in srgb, var(--color-info) 18%, transparent);
+  --map-glow-support: color-mix(in srgb, var(--color-success) 22%, transparent);
   height: 100vh;
   display: flex;
   color: var(--ink);
@@ -808,14 +928,19 @@ onBeforeUnmount(() => {
 
 .split-layout.scene-active {
   background:
-    radial-gradient(circle at 100% 0%, rgba(45, 122, 166, 0.22), transparent 40%),
+    radial-gradient(circle at 100% 0%, var(--scene-glow-active), transparent 40%),
     var(--cc-scene-consultation);
 }
 
 .split-layout.scene-critical {
   background:
-    radial-gradient(circle at 96% 2%, rgba(193, 74, 53, 0.22), transparent 42%),
+    radial-gradient(circle at 96% 2%, var(--scene-glow-critical), transparent 42%),
     var(--cc-scene-consultation);
+}
+
+.input-panel-anchor {
+  min-width: 0;
+  flex: 0 0 auto;
 }
 
 .right-pane {
@@ -825,8 +950,8 @@ onBeforeUnmount(() => {
   box-sizing: border-box;
   flex: 1;
   background:
-    radial-gradient(circle at 100% -4%, rgba(32, 114, 161, 0.22), transparent 42%),
-    linear-gradient(180deg, var(--surface-right) 0%, color-mix(in srgb, #f9fcff 90%, var(--surface-right)) 100%);
+    radial-gradient(circle at 100% -4%, var(--scene-glow-right), transparent 42%),
+    linear-gradient(180deg, var(--surface-right) 0%, var(--surface-left) 100%);
 }
 
 .mission-hero {
@@ -837,10 +962,10 @@ onBeforeUnmount(() => {
   border: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
   padding: 16px;
   background:
-    radial-gradient(circle at 100% 0%, rgba(58, 140, 186, 0.2), transparent 42%),
-    radial-gradient(circle at 0% 100%, rgba(51, 163, 148, 0.17), transparent 46%),
+    radial-gradient(circle at 100% 0%, var(--mission-glow-info), transparent 42%),
+    radial-gradient(circle at 0% 100%, var(--mission-glow-support), transparent 46%),
     color-mix(in srgb, var(--card) 93%, transparent);
-  box-shadow: 0 12px 26px rgba(14, 56, 93, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
 .mission-hero::after {
@@ -874,6 +999,44 @@ onBeforeUnmount(() => {
   margin: 0;
   color: var(--muted);
   font-size: 13px;
+}
+
+.mission-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+  gap: 12px;
+  align-items: start;
+}
+
+.mission-priority-card {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 24%, var(--line));
+  background: color-mix(in srgb, var(--color-surface-elevated) 84%, transparent);
+}
+
+.mission-priority-card small {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.mission-priority-card p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.mission-priority-action {
+  justify-self: start;
+}
+
+.mission-priority-meta {
+  font-size: 11px;
+  color: var(--muted);
 }
 
 .mission-tags {
@@ -926,9 +1089,7 @@ onBeforeUnmount(() => {
 
 .mission-empty-state {
   border-style: dashed;
-  background:
-    linear-gradient(150deg, rgba(236, 245, 254, 0.78), rgba(241, 250, 247, 0.76)),
-    var(--card);
+  background: color-mix(in srgb, var(--color-surface-elevated) 88%, transparent);
 }
 
 .mission-empty-head {
@@ -941,12 +1102,12 @@ onBeforeUnmount(() => {
 .mission-empty-head h3 {
   margin: 0;
   font-size: 18px;
-  color: #214a67;
+  color: var(--color-text-primary);
 }
 
 .mission-empty-desc {
   margin: 8px 0 0;
-  color: #446681;
+  color: var(--color-text-secondary);
   font-size: 13px;
   line-height: 1.5;
 }
@@ -955,7 +1116,7 @@ onBeforeUnmount(() => {
   margin-top: 10px;
   display: grid;
   gap: 6px;
-  color: #2f5878;
+  color: var(--color-text-secondary);
   font-size: 12px;
 }
 
@@ -969,35 +1130,59 @@ onBeforeUnmount(() => {
 }
 
 .mission-empty-actions small {
-  color: #557691;
+  color: var(--color-text-muted);
   font-size: 12px;
 }
 
-.two-col-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  align-items: start;
-}
-
-.metrics-grid {
-  margin-bottom: 12px;
-}
-
 .splitter {
-  width: 10px;
+  width: 12px;
   cursor: col-resize;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, #dae3ed 0%, #c6d3e0 100%);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-border-light) 72%, transparent) 0%,
+    color-mix(in srgb, var(--color-border) 76%, transparent) 100%
+  );
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease;
+  touch-action: none;
 }
 
 .splitter-grip {
   width: 3px;
   height: 60px;
   border-radius: 99px;
-  background: #73889d;
+  background: color-mix(in srgb, var(--color-text-muted) 74%, transparent);
+  transition:
+    background 180ms ease,
+    height 180ms ease;
+}
+
+.splitter:hover,
+.splitter:focus-visible,
+.splitter.dragging {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-primary) 22%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary) 28%, transparent) 100%
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-primary) 35%, transparent);
+}
+
+.splitter:hover .splitter-grip,
+.splitter:focus-visible .splitter-grip,
+.splitter.dragging .splitter-grip {
+  height: 76px;
+  background: color-mix(in srgb, var(--color-primary) 66%, var(--color-text-muted));
+}
+
+:global(body.splitter-drag-active) {
+  cursor: col-resize;
+  user-select: none;
 }
 
 .pane-header h2 {
@@ -1017,7 +1202,7 @@ onBeforeUnmount(() => {
   border-radius: 12px;
   padding: 14px;
   margin-bottom: 12px;
-  box-shadow: 0 8px 20px rgba(17, 44, 72, 0.08);
+  box-shadow: var(--shadow-sm);
 }
 
 .panel-head-row {
@@ -1035,7 +1220,7 @@ onBeforeUnmount(() => {
 
 .status-chip {
   font-size: 12px;
-  color: color-mix(in srgb, var(--cc-accent-teal-600) 88%, #1f4157);
+  color: color-mix(in srgb, var(--cc-accent-teal-600) 68%, var(--color-text-primary));
   background: color-mix(in srgb, var(--cc-accent-teal-500) 10%, var(--card));
   border: 1px solid color-mix(in srgb, var(--cc-accent-teal-500) 28%, var(--line));
   border-radius: 999px;
@@ -1043,9 +1228,9 @@ onBeforeUnmount(() => {
 }
 
 .ghost-btn {
-  border: 1px solid #9eb6cc;
-  background: #f8fcff;
-  color: #2f5878;
+  border: 1px solid var(--color-border-interactive);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-secondary);
   border-radius: 8px;
   font-size: 12px;
   padding: 4px 9px;
@@ -1053,19 +1238,28 @@ onBeforeUnmount(() => {
 }
 
 .ghost-btn:hover {
-  border-color: #79a1c2;
-  background: #eef7ff;
+  border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border-interactive));
+  background: color-mix(in srgb, var(--color-surface-soft) 90%, transparent);
+}
+
+.ghost-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.mobile-dock {
+  display: none;
 }
 
 .reasoning-map-chart {
   width: 100%;
   height: 300px;
-  border: 1px solid #d7e1ec;
+  border: 1px solid var(--color-border-light);
   border-radius: 10px;
   background:
-    radial-gradient(circle at 0% 0%, rgba(234, 245, 255, 0.8), transparent 45%),
-    radial-gradient(circle at 100% 100%, rgba(230, 250, 244, 0.7), transparent 45%),
-    #fbfdff;
+    radial-gradient(circle at 0% 0%, var(--map-glow-info), transparent 45%),
+    radial-gradient(circle at 100% 100%, var(--map-glow-support), transparent 45%),
+    var(--color-surface-elevated);
 }
 
 .map-caption {
@@ -1076,22 +1270,22 @@ onBeforeUnmount(() => {
 
 .map-detail-card {
   margin-top: 10px;
-  border: 1px solid #d3deea;
+  border: 1px solid var(--color-border-light);
   border-radius: 9px;
-  background: #f9fcff;
+  background: var(--color-surface-elevated);
   padding: 10px;
 }
 
 .map-detail-card h4 {
   margin: 0 0 6px;
   font-size: 14px;
-  color: #244764;
+  color: var(--color-text-primary);
 }
 
 .map-detail-summary {
   margin: 0;
   font-size: 13px;
-  color: #385a75;
+  color: var(--color-text-secondary);
   line-height: 1.5;
 }
 
@@ -1099,14 +1293,14 @@ onBeforeUnmount(() => {
   margin: 8px 0 0;
   max-height: 120px;
   overflow-y: auto;
-  background: #ffffff;
-  border: 1px dashed #c2d1e0;
+  background: var(--color-bg-primary);
+  border: 1px dashed var(--color-border);
   border-radius: 8px;
   padding: 8px;
   font-size: 12px;
   white-space: pre-wrap;
   line-height: 1.45;
-  color: #32506a;
+  color: var(--color-text-secondary);
 }
 
 .status-line {
@@ -1122,8 +1316,8 @@ onBeforeUnmount(() => {
   overflow-y: auto;
   white-space: pre-wrap;
   line-height: 1.6;
-  background: #fbfeff;
-  border: 1px dashed #c0d0df;
+  background: var(--color-surface-elevated);
+  border: 1px dashed var(--color-border);
   border-radius: 8px;
   padding: 10px;
   font-size: 14px;
@@ -1132,7 +1326,7 @@ onBeforeUnmount(() => {
 .typing-caret {
   display: inline-block;
   margin-left: 2px;
-  color: #0e8d8f;
+  color: var(--color-primary);
   animation: blink 1s step-end infinite;
 }
 
@@ -1148,11 +1342,11 @@ onBeforeUnmount(() => {
 }
 
 .round-card {
-  border: 1px solid #d3deea;
+  border: 1px solid var(--color-border-light);
   border-radius: 8px;
   padding: 10px;
   margin-top: 8px;
-  background: #fcfdff;
+  background: var(--color-surface-elevated);
 }
 
 .round-meta {
@@ -1168,12 +1362,12 @@ onBeforeUnmount(() => {
     min-height: 100vh;
   }
 
-  .mission-kpis {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .mission-layout {
+    grid-template-columns: 1fr;
   }
 
-  .two-col-grid {
-    grid-template-columns: 1fr;
+  .mission-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .panel-head-row {
@@ -1192,14 +1386,11 @@ onBeforeUnmount(() => {
   }
 
   .splitter {
-    width: 100%;
-    height: 10px;
-    cursor: row-resize;
+    display: none;
   }
 
-  .splitter-grip {
-    width: 64px;
-    height: 3px;
+  .input-panel-anchor {
+    width: 100% !important;
   }
 }
 
@@ -1214,6 +1405,27 @@ onBeforeUnmount(() => {
 
   .right-pane {
     padding: 12px;
+  }
+
+  .mobile-dock {
+    position: sticky;
+    top: 8px;
+    z-index: 12;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-surface-elevated) 90%, transparent);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .mobile-dock .ghost-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 7px 8px;
   }
 }
 

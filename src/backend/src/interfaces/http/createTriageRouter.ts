@@ -16,6 +16,7 @@ import {
   CoordinatorSnapshotContext,
   CoordinatorSnapshotService,
 } from '../../infrastructure/orchestration/CoordinatorSnapshotService';
+import { GovernanceRuntimeTelemetry } from '../../infrastructure/governance/GovernanceRuntimeTelemetry';
 
 interface RuntimeArchitectureView {
   experts: Record<
@@ -205,10 +206,23 @@ function parseRequestBody(body: unknown): TriageRequest {
   };
 }
 
+function toRuntimeStageStatus(
+  status: 'done' | 'failed' | 'skipped',
+): TriageStreamStageStatus {
+  if (status === 'done') {
+    return 'done';
+  }
+  if (status === 'failed') {
+    return 'failed';
+  }
+  return 'skipped';
+}
+
 export function createTriageRouter(
   useCase: RunTriageSessionUseCase,
   architecture?: RuntimeArchitectureView,
   coordinatorSnapshotService?: CoordinatorSnapshotService,
+  governanceRuntimeTelemetry?: GovernanceRuntimeTelemetry,
 ): Router {
   const router = Router();
 
@@ -224,13 +238,130 @@ export function createTriageRouter(
     );
   });
 
+  router.get('/governance/runtime', (_request: Request, response: Response) => {
+    response.status(200).json(
+      governanceRuntimeTelemetry?.getSnapshot() ?? {
+        generatedAt: nowIso(),
+        source: 'runtime',
+        queueOverview: {
+          pending: 0,
+          reviewing: 0,
+          approved: 0,
+          rejected: 0,
+        },
+        performance: {
+          latencyHeat: 0,
+          retryPressure: 0,
+          consensusConvergence: 100,
+          dissentSpread: 0,
+          routingComplexity: 0,
+        },
+        totals: {
+          totalSessions: 0,
+          successSessions: 0,
+          escalatedSessions: 0,
+          errorSessions: 0,
+          activeSessions: 0,
+        },
+        recentSessions: [],
+        stageRuntime: {
+          START: {
+            status: 'pending',
+            message: 'START waiting',
+            active: 0,
+            transitions: 0,
+            updatedAt: nowIso(),
+          },
+          INFO_GATHER: {
+            status: 'pending',
+            message: 'INFO_GATHER waiting',
+            active: 0,
+            transitions: 0,
+            updatedAt: nowIso(),
+          },
+          RISK_ASSESS: {
+            status: 'pending',
+            message: 'RISK_ASSESS waiting',
+            active: 0,
+            transitions: 0,
+            updatedAt: nowIso(),
+          },
+          ROUTING: {
+            status: 'pending',
+            message: 'ROUTING waiting',
+            active: 0,
+            transitions: 0,
+            updatedAt: nowIso(),
+          },
+          DEBATE: {
+            status: 'pending',
+            message: 'DEBATE waiting',
+            active: 0,
+            transitions: 0,
+            updatedAt: nowIso(),
+          },
+          CONSENSUS: {
+            status: 'pending',
+            message: 'CONSENSUS waiting',
+            active: 0,
+            transitions: 0,
+            updatedAt: nowIso(),
+          },
+          REVIEW: {
+            status: 'pending',
+            message: 'REVIEW waiting',
+            active: 0,
+            transitions: 0,
+            updatedAt: nowIso(),
+          },
+          OUTPUT: {
+            status: 'pending',
+            message: 'OUTPUT waiting',
+            active: 0,
+            transitions: 0,
+            updatedAt: nowIso(),
+          },
+          ESCALATION: {
+            status: 'pending',
+            message: 'ESCALATION waiting',
+            active: 0,
+            transitions: 0,
+            updatedAt: nowIso(),
+          },
+        },
+        currentStage: 'START',
+      },
+    );
+  });
+
   router.post(
     '/orchestrate_triage',
     async (request: Request, response: Response<TriageApiResponse>) => {
+      let telemetryTrackingId: string | null = null;
       try {
         const input = parseRequestBody(request.body);
+        telemetryTrackingId =
+          governanceRuntimeTelemetry?.startSession(input) ?? null;
         const result = await useCase.execute(input);
         const payload = toApiResponse(result);
+
+        if (telemetryTrackingId && governanceRuntimeTelemetry) {
+          for (const trace of result.workflowTrace ?? []) {
+            governanceRuntimeTelemetry.recordStageTransition(
+              telemetryTrackingId,
+              trace.stage,
+              toRuntimeStageStatus(trace.status),
+              trace.detail,
+            );
+          }
+          governanceRuntimeTelemetry.completeSession(
+            telemetryTrackingId,
+            payload,
+            Date.now(),
+          );
+          telemetryTrackingId = null;
+        }
+
         if (payload.status === 'ERROR') {
           response.status(400).json(payload);
           return;
@@ -238,6 +369,19 @@ export function createTriageRouter(
 
         response.status(200).json(payload);
       } catch (error) {
+        if (telemetryTrackingId && governanceRuntimeTelemetry) {
+          const telemetryErrorCode =
+            error instanceof RequestValidationError
+              ? error.errorCode
+              : 'ERR_CONFLICT_UNRESOLVED';
+          governanceRuntimeTelemetry.failSession(
+            telemetryTrackingId,
+            telemetryErrorCode,
+            Date.now(),
+          );
+          telemetryTrackingId = null;
+        }
+
         if (error instanceof RequestValidationError) {
           response
             .status(400)
@@ -291,6 +435,42 @@ export function createTriageRouter(
       let lastModelSnapshotAt = 0;
       let modelSnapshotInFlight = false;
       let snapshotRuntimeRevision = 0;
+      let telemetryTrackingId: string | null = null;
+      let telemetryCompleted = false;
+
+      const completeTelemetry = (payload: TriageApiResponse): void => {
+        if (
+          !governanceRuntimeTelemetry
+          || !telemetryTrackingId
+          || telemetryCompleted
+        ) {
+          return;
+        }
+
+        governanceRuntimeTelemetry.completeSession(
+          telemetryTrackingId,
+          payload,
+          Date.now(),
+        );
+        telemetryCompleted = true;
+      };
+
+      const failTelemetry = (errorCode: ErrorCode): void => {
+        if (
+          !governanceRuntimeTelemetry
+          || !telemetryTrackingId
+          || telemetryCompleted
+        ) {
+          return;
+        }
+
+        governanceRuntimeTelemetry.failSession(
+          telemetryTrackingId,
+          errorCode,
+          Date.now(),
+        );
+        telemetryCompleted = true;
+      };
 
       const buildSnapshotContext = (): CoordinatorSnapshotContext | null => {
         if (!inputForSnapshot) {
@@ -400,6 +580,14 @@ export function createTriageRouter(
           status,
           message,
         };
+        if (governanceRuntimeTelemetry && telemetryTrackingId) {
+          governanceRuntimeTelemetry.recordStageTransition(
+            telemetryTrackingId,
+            stage,
+            status,
+            message,
+          );
+        }
         snapshotRuntimeRevision += 1;
         if (status === 'running') {
           activeStage = stage;
@@ -442,6 +630,8 @@ export function createTriageRouter(
       try {
         const input = parseRequestBody(request.body);
         inputForSnapshot = input;
+        telemetryTrackingId =
+          governanceRuntimeTelemetry?.startSession(input) ?? null;
 
         emitStageUpdate('START', 'running', '会诊流程启动');
         emitStageUpdate('INFO_GATHER', 'running', '正在校验授权并收集最小信息集');
@@ -543,6 +733,7 @@ export function createTriageRouter(
             timestamp: nowIso(),
             result: payload,
           });
+          completeTelemetry(payload);
           response.end();
           return;
         }
@@ -562,6 +753,7 @@ export function createTriageRouter(
           timestamp: nowIso(),
           result: payload,
         });
+        completeTelemetry(payload);
         response.end();
       } catch (error) {
         const validationError =
@@ -590,6 +782,7 @@ export function createTriageRouter(
           timestamp: nowIso(),
           result: errorPayload,
         });
+        failTelemetry(errorPayload.errorCode);
         response.end();
       } finally {
         if (heartbeatTimer) {

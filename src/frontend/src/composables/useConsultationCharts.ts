@@ -1,10 +1,11 @@
-﻿import type {
+import type {
   OrchestrationGraphEdge,
   OrchestrationGraphNode,
   OrchestrationSnapshot,
   TriageStreamStageStatus,
   WorkflowStage,
 } from '@copilot-care/shared/types';
+import { resolveCopilotChartTheme } from '../features/chart/theme';
 
 export type ConsultationReasoningKind =
   | 'system'
@@ -72,12 +73,17 @@ const FLOW_NODE_POSITIONS: Record<WorkflowStage, [number, number]> = {
   ESCALATION: [680, 170],
 };
 
-function stageColor(statusValue: TriageStreamStageStatus): string {
-  if (statusValue === 'running') return '#0e8d8f';
-  if (statusValue === 'done') return '#2e9156';
-  if (statusValue === 'failed' || statusValue === 'blocked') return '#c3472a';
-  if (statusValue === 'skipped') return '#bf8c1f';
-  return '#9aa8b8';
+function stageColor(
+  statusValue: TriageStreamStageStatus,
+  chartTheme: ReturnType<typeof resolveCopilotChartTheme>,
+): string {
+  if (statusValue === 'running') return chartTheme.flow.running;
+  if (statusValue === 'done') return chartTheme.flow.done;
+  if (statusValue === 'failed' || statusValue === 'blocked') {
+    return chartTheme.flow.blocked;
+  }
+  if (statusValue === 'skipped') return chartTheme.flow.skipped;
+  return chartTheme.flow.pending;
 }
 
 function formatNodeText(text: string, maxLength: number = 22): string {
@@ -87,20 +93,23 @@ function formatNodeText(text: string, maxLength: number = 22): string {
   return `${text.slice(0, maxLength - 1)}…`;
 }
 
-function resolveSnapshotNodeColor(node: OrchestrationGraphNode): string {
+function resolveSnapshotNodeColor(
+  node: OrchestrationGraphNode,
+  chartTheme: ReturnType<typeof resolveCopilotChartTheme>,
+): string {
   if (node.color) {
     return node.color;
   }
   const colorByKind: Record<OrchestrationGraphNode['kind'], string> = {
-    input: '#406c9d',
-    stage: '#1f7b80',
-    decision: '#2a6f93',
-    evidence: '#2e9156',
-    risk: '#bf8c1f',
-    output: '#276566',
-    agent: '#5d6f8d',
+    input: chartTheme.graphNode.input,
+    stage: chartTheme.graphNode.stage,
+    decision: chartTheme.graphNode.decision,
+    evidence: chartTheme.graphNode.evidence,
+    risk: chartTheme.graphNode.risk,
+    output: chartTheme.graphNode.output,
+    agent: chartTheme.graphNode.agent,
   };
-  return colorByKind[node.kind] ?? '#6b7f96';
+  return colorByKind[node.kind] ?? chartTheme.graphNode.fallback;
 }
 
 function mapSnapshotNodeCategory(
@@ -135,6 +144,7 @@ function buildSnapshotReasoningMapModel(
     return null;
   }
 
+  const chartTheme = resolveCopilotChartTheme();
   const details: Record<string, ConsultationReasoningMapNodeDetail> = {};
   const chartNodes = snapshot.graph.nodes.map((node) => {
     details[node.id] = {
@@ -150,12 +160,12 @@ function buildSnapshotReasoningMapModel(
       name: formatNodeText(node.label, 20),
       symbolSize: 52 + (node.emphasis ? Math.min(16, node.emphasis * 10) : 0),
       itemStyle: {
-        color: resolveSnapshotNodeColor(node),
-        borderColor: '#102738',
+        color: resolveSnapshotNodeColor(node, chartTheme),
+        borderColor: chartTheme.border,
         borderWidth: 1,
       },
       label: {
-        color: '#ffffff',
+        color: chartTheme.textInverse,
         fontSize: 11,
       },
       tooltip: {
@@ -178,13 +188,13 @@ function buildSnapshotReasoningMapModel(
         type: edge.style === 'dashed' ? 'dashed' : 'solid',
         width: edge.weight ? Math.max(1, Math.min(5, edge.weight)) : 2,
         opacity: 0.85,
-        color: '#7392ad',
+        color: chartTheme.flow.linkDefault,
       },
       label: edge.label
         ? {
             show: true,
             formatter: edge.label,
-            color: '#42627c',
+            color: chartTheme.textSecondary,
             fontSize: 11,
           }
         : undefined,
@@ -195,9 +205,9 @@ function buildSnapshotReasoningMapModel(
       animationDurationUpdate: 260,
       tooltip: {
         trigger: 'item',
-        backgroundColor: '#102738',
-        borderColor: '#2f4f68',
-        textStyle: { color: '#f7fbff' },
+        backgroundColor: chartTheme.tooltipBackground,
+        borderColor: chartTheme.tooltipBorder,
+        textStyle: { color: chartTheme.tooltipText },
       },
       series: [
         {
@@ -215,7 +225,7 @@ function buildSnapshotReasoningMapModel(
           data: chartNodes,
           links: chartLinks,
           lineStyle: {
-            color: '#7392ad',
+            color: chartTheme.flow.linkDefault,
             width: 2,
             opacity: 0.85,
           },
@@ -231,12 +241,13 @@ function buildSnapshotReasoningMapModel(
 function buildFallbackReasoningMapModel(
   input: BuildFallbackReasoningMapModelInput,
 ): ConsultationReasoningMapModel {
+  const chartTheme = resolveCopilotChartTheme();
   const kindColor: Record<ConsultationReasoningKind, string> = {
-    system: '#5d7893',
-    evidence: '#2e9156',
-    decision: '#0e8d8f',
-    warning: '#c3472a',
-    query: '#bf8c1f',
+    system: chartTheme.graphNode.agent,
+    evidence: chartTheme.graphNode.evidence,
+    decision: chartTheme.flow.running,
+    warning: chartTheme.flow.blocked,
+    query: chartTheme.flow.skipped,
   };
 
   const evidenceCandidates = input.reasoningItems
@@ -263,10 +274,10 @@ function buildFallbackReasoningMapModel(
 
   const statusColor =
     input.statusValue === 'ERROR'
-      ? '#c3472a'
+      ? chartTheme.flow.blocked
       : input.statusValue === 'ESCALATE_TO_OFFLINE'
-        ? '#bf8c1f'
-        : '#2e9156';
+        ? chartTheme.flow.skipped
+        : chartTheme.flow.done;
 
   const nodes: Array<Record<string, unknown>> = [
     {
@@ -275,8 +286,8 @@ function buildFallbackReasoningMapModel(
       x: 70,
       y: 120,
       symbolSize: 74,
-      itemStyle: { color: '#406c9d' },
-      label: { color: '#ffffff', fontSize: 12, lineHeight: 16 },
+      itemStyle: { color: chartTheme.graphNode.input },
+      label: { color: chartTheme.textInverse, fontSize: 12, lineHeight: 16 },
     },
     {
       id: 'dept',
@@ -284,8 +295,8 @@ function buildFallbackReasoningMapModel(
       x: 280,
       y: 60,
       symbolSize: 68,
-      itemStyle: { color: '#1f7b80' },
-      label: { color: '#ffffff', fontSize: 12, lineHeight: 16 },
+      itemStyle: { color: chartTheme.graphNode.stage },
+      label: { color: chartTheme.textInverse, fontSize: 12, lineHeight: 16 },
     },
     {
       id: 'route',
@@ -293,8 +304,8 @@ function buildFallbackReasoningMapModel(
       x: 500,
       y: 60,
       symbolSize: 68,
-      itemStyle: { color: '#2a6f93' },
-      label: { color: '#ffffff', fontSize: 12, lineHeight: 16 },
+      itemStyle: { color: chartTheme.graphNode.decision },
+      label: { color: chartTheme.textInverse, fontSize: 12, lineHeight: 16 },
     },
     {
       id: 'collab',
@@ -302,8 +313,8 @@ function buildFallbackReasoningMapModel(
       x: 720,
       y: 60,
       symbolSize: 68,
-      itemStyle: { color: '#5d6f8d' },
-      label: { color: '#ffffff', fontSize: 12, lineHeight: 16 },
+      itemStyle: { color: chartTheme.graphNode.agent },
+      label: { color: chartTheme.textInverse, fontSize: 12, lineHeight: 16 },
     },
     {
       id: 'status',
@@ -312,7 +323,7 @@ function buildFallbackReasoningMapModel(
       y: 60,
       symbolSize: 68,
       itemStyle: { color: statusColor },
-      label: { color: '#ffffff', fontSize: 12, lineHeight: 16 },
+      label: { color: chartTheme.textInverse, fontSize: 12, lineHeight: 16 },
     },
     {
       id: 'conclusion',
@@ -320,8 +331,8 @@ function buildFallbackReasoningMapModel(
       x: 930,
       y: 210,
       symbolSize: 74,
-      itemStyle: { color: '#276566' },
-      label: { color: '#ffffff', fontSize: 12, lineHeight: 16 },
+      itemStyle: { color: chartTheme.graphNode.output },
+      label: { color: chartTheme.textInverse, fontSize: 12, lineHeight: 16 },
     },
   ];
 
@@ -386,7 +397,7 @@ function buildFallbackReasoningMapModel(
         y: 220,
         symbolSize: 58,
         itemStyle: { color: kindColor[item.kind] },
-        label: { color: '#ffffff', fontSize: 11, lineHeight: 15 },
+        label: { color: chartTheme.textInverse, fontSize: 11, lineHeight: 15 },
       });
       registerNodeDetail({
         id: nodeId,
@@ -417,8 +428,8 @@ function buildFallbackReasoningMapModel(
       x: 570,
       y: 220,
       symbolSize: 62,
-      itemStyle: { color: '#6b7f96' },
-      label: { color: '#ffffff', fontSize: 11, lineHeight: 15 },
+      itemStyle: { color: chartTheme.graphNode.fallback },
+      label: { color: chartTheme.textInverse, fontSize: 11, lineHeight: 15 },
     });
     registerNodeDetail({
       id: collapsedId,
@@ -444,9 +455,9 @@ function buildFallbackReasoningMapModel(
       animationDurationUpdate: 240,
       tooltip: {
         trigger: 'item',
-        backgroundColor: '#102738',
-        borderColor: '#2f4f68',
-        textStyle: { color: '#f7fbff' },
+        backgroundColor: chartTheme.tooltipBackground,
+        borderColor: chartTheme.tooltipBorder,
+        textStyle: { color: chartTheme.tooltipText },
       },
       series: [
         {
@@ -457,7 +468,7 @@ function buildFallbackReasoningMapModel(
           edgeSymbol: ['none', 'arrow'],
           edgeSymbolSize: 8,
           lineStyle: {
-            color: '#7392ad',
+            color: chartTheme.flow.linkDefault,
             width: 2,
             opacity: 0.85,
           },
@@ -479,6 +490,7 @@ function buildFallbackReasoningMapModel(
 export function buildFlowChartOption(
   input: BuildFlowChartOptionInput,
 ): Record<string, unknown> {
+  const chartTheme = resolveCopilotChartTheme();
   const nodes = input.flowStages.map((stage) => {
     const runtime = input.stageRuntime[stage];
     const isRunning = runtime.status === 'running';
@@ -489,14 +501,16 @@ export function buildFlowChartOption(
       y: FLOW_NODE_POSITIONS[stage][1],
       symbolSize: isRunning ? 72 : stage === 'ESCALATION' ? 56 : 62,
       itemStyle: {
-        color: stageColor(runtime.status),
-        borderColor: '#102738',
+        color: stageColor(runtime.status, chartTheme),
+        borderColor: chartTheme.border,
         borderWidth: 1,
         shadowBlur: isRunning ? 18 : 0,
-        shadowColor: isRunning ? 'rgba(14,141,143,0.45)' : 'transparent',
+        shadowColor: isRunning
+          ? chartTheme.flow.running
+          : 'transparent',
       },
       label: {
-        color: '#ffffff',
+        color: chartTheme.textInverse,
         fontSize: 12,
         fontWeight: 600,
       },
@@ -525,7 +539,11 @@ export function buildFlowChartOption(
       source,
       target,
       lineStyle: {
-        color: running ? '#0e8d8f' : active ? '#2e9156' : '#7e92a8',
+        color: running
+          ? chartTheme.flow.running
+          : active
+            ? chartTheme.flow.done
+            : chartTheme.flow.linkInactive,
         width: running ? 4 : active ? 3 : 2,
         opacity: active ? 0.95 : 0.45,
         curveness: target === 'ESCALATION' || source === 'ESCALATION' ? 0.2 : 0,
@@ -537,9 +555,9 @@ export function buildFlowChartOption(
     animationDurationUpdate: 300,
     tooltip: {
       trigger: 'item',
-      backgroundColor: '#102738',
-      borderColor: '#2f4f68',
-      textStyle: { color: '#f7fbff' },
+      backgroundColor: chartTheme.tooltipBackground,
+      borderColor: chartTheme.tooltipBorder,
+      textStyle: { color: chartTheme.tooltipText },
     },
     series: [
       {

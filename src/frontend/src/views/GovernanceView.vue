@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import type { WorkflowStage } from '@copilot-care/shared/types';
 import GovernanceDashboard from '../components/GovernanceDashboard.vue';
 import ReviewQueue from '../components/ReviewQueue.vue';
 import EvidenceDrawer from '../components/EvidenceDrawer.vue';
+import {
+  fetchGovernanceRuntime,
+  type GovernanceRuntimeResponse,
+  type GovernanceRuntimeSession,
+} from '../services/triageApi';
 import {
   buildEvidenceBundle,
   createMockReviewQueue,
@@ -19,6 +24,7 @@ type QueueFilter = 'all' | 'pending' | 'reviewing' | 'approved' | 'rejected';
 type QueueUpdateStatus = Extract<ReviewStatus, 'approved' | 'rejected'>;
 type BackendFactorState = 'normal' | 'warning' | 'critical';
 type BackendFactorKey = 'latency-retry' | 'consensus' | 'routing-waterfall';
+type GovernanceActionPriority = 'low' | 'medium' | 'high';
 
 interface BackendFactorCard {
   key: BackendFactorKey;
@@ -29,6 +35,34 @@ interface BackendFactorCard {
   hint: string;
 }
 
+interface GovernanceSignalCard {
+  key: string;
+  title: string;
+  value: string;
+  context: string;
+  trend: string;
+  state: BackendFactorState;
+}
+
+interface GovernanceStagePulse {
+  key: string;
+  label: string;
+  value: number;
+  benchmark: string;
+  hint: string;
+  state: BackendFactorState;
+}
+
+interface GovernanceActionItem {
+  id: string;
+  title: string;
+  trigger: string;
+  action: string;
+  owner: string;
+  eta: string;
+  priority: GovernanceActionPriority;
+}
+
 const FILTER_LABELS: Record<QueueFilter, string> = {
   all: '全部',
   pending: '待复核',
@@ -37,40 +71,150 @@ const FILTER_LABELS: Record<QueueFilter, string> = {
   rejected: '已驳回',
 };
 
+const PRIORITY_LABELS: Record<GovernanceActionPriority, string> = {
+  high: '高优先',
+  medium: '中优先',
+  low: '低优先',
+};
+
+const GOVERNANCE_RUNTIME_POLL_MS = 12000;
+const allowDemoFallback = import.meta.env.MODE === 'test';
+
 const activeTab = ref<GovernanceTab>('dashboard');
 const showEvidenceDrawer = ref<boolean>(false);
 const selectedEvidences = ref<EvidenceItem[]>([]);
-const reviewItems = ref<ReviewItem[]>(createMockReviewQueue());
+const reviewItems = ref<ReviewItem[]>(
+  allowDemoFallback ? createMockReviewQueue() : [],
+);
 const queueFilter = ref<QueueFilter>('all');
 const dashboardFocusStage = ref<WorkflowStage | null>(null);
+const runtimeSnapshot = ref<GovernanceRuntimeResponse | null>(null);
+const runtimeLoading = ref<boolean>(false);
+const runtimeLoadError = ref<string>('');
+let runtimePollTimer: ReturnType<typeof setInterval> | null = null;
 
-const pendingCount = computed<number>(
+const localPendingCount = computed<number>(
   () => reviewItems.value.filter((item) => item.status === 'pending').length,
 );
 
-const reviewingCount = computed<number>(
+const localReviewingCount = computed<number>(
   () => reviewItems.value.filter((item) => item.status === 'reviewing').length,
 );
 
-const approvedCount = computed<number>(
+const localApprovedCount = computed<number>(
   () => reviewItems.value.filter((item) => item.status === 'approved').length,
 );
 
-const rejectedCount = computed<number>(
+const localRejectedCount = computed<number>(
   () => reviewItems.value.filter((item) => item.status === 'rejected').length,
 );
 
-const filteredReviewItems = computed<ReviewItem[]>(() => {
-  if (queueFilter.value === 'all') {
+function mapRuntimeSessionStatus(session: GovernanceRuntimeSession): ReviewStatus {
+  if (session.outcome === 'RUNNING') {
+    return 'pending';
+  }
+  if (session.outcome === 'ABSTAIN') {
+    return 'reviewing';
+  }
+  if (session.outcome === 'OUTPUT') {
+    return 'approved';
+  }
+  return 'rejected';
+}
+
+const runtimeReviewItems = computed<ReviewItem[]>(() => {
+  if (!runtimeSnapshot.value) {
+    return [];
+  }
+  return runtimeSnapshot.value.recentSessions.map((session) => {
+    const status = mapRuntimeSessionStatus(session);
+    const summaryParts = [
+      session.routeMode ? `路由 ${session.routeMode}` : '',
+      typeof session.complexityScore === 'number'
+        ? `复杂度 ${session.complexityScore.toFixed(1)}`
+        : '',
+      session.destination ? `去向 ${session.destination}` : '',
+      typeof session.durationMs === 'number'
+        ? `耗时 ${Math.max(1, Math.round(session.durationMs))}ms`
+        : '',
+    ].filter(Boolean);
+    return {
+      id: session.id,
+      patientId: session.patientId,
+      status,
+      triageLevel: session.triageLevel ?? (status === 'rejected' ? '高风险' : '常规'),
+      createdAt: session.startedAt,
+      summary: summaryParts.length > 0
+        ? summaryParts.join(' · ')
+        : '运行会诊会话记录',
+    };
+  });
+});
+
+const queueSourceItems = computed<ReviewItem[]>(() => {
+  if (runtimeSnapshot.value) {
+    return runtimeReviewItems.value;
+  }
+  if (allowDemoFallback) {
     return reviewItems.value;
   }
-  return reviewItems.value.filter((item) => item.status === queueFilter.value);
+  return [];
+});
+
+const pendingCount = computed<number>(() => {
+  if (runtimeSnapshot.value) {
+    return runtimeSnapshot.value.queueOverview.pending;
+  }
+  if (allowDemoFallback) {
+    return localPendingCount.value;
+  }
+  return 0;
+});
+
+const reviewingCount = computed<number>(() => {
+  if (runtimeSnapshot.value) {
+    return runtimeSnapshot.value.queueOverview.reviewing;
+  }
+  if (allowDemoFallback) {
+    return localReviewingCount.value;
+  }
+  return 0;
+});
+
+const approvedCount = computed<number>(() => {
+  if (runtimeSnapshot.value) {
+    return runtimeSnapshot.value.queueOverview.approved;
+  }
+  if (allowDemoFallback) {
+    return localApprovedCount.value;
+  }
+  return 0;
+});
+
+const rejectedCount = computed<number>(() => {
+  if (runtimeSnapshot.value) {
+    return runtimeSnapshot.value.queueOverview.rejected;
+  }
+  if (allowDemoFallback) {
+    return localRejectedCount.value;
+  }
+  return 0;
+});
+
+const filteredReviewItems = computed<ReviewItem[]>(() => {
+  if (queueFilter.value === 'all') {
+    return queueSourceItems.value;
+  }
+  return queueSourceItems.value.filter((item) => item.status === queueFilter.value);
 });
 
 const governanceScore = computed<number>(() => {
-  const total = reviewItems.value.length;
+  const total = pendingCount.value
+    + reviewingCount.value
+    + approvedCount.value
+    + rejectedCount.value;
   if (total === 0) {
-    return 100;
+    return 0;
   }
   return Math.round((approvedCount.value / total) * 100);
 });
@@ -85,8 +229,37 @@ const governanceSignal = computed<'normal' | 'warning' | 'critical'>(() => {
   return 'normal';
 });
 
+const totalCaseCount = computed<number>(() => {
+  return pendingCount.value
+    + reviewingCount.value
+    + approvedCount.value
+    + rejectedCount.value;
+});
+
+const backlogCount = computed<number>(() => {
+  return pendingCount.value + reviewingCount.value;
+});
+
 function clampMetric(value: number, min = 0, max = 100): number {
   return Math.min(max, Math.max(min, value));
+}
+
+function formatSignedValue(value: number): string {
+  const rounded = Math.round(value);
+  if (rounded > 0) {
+    return `+${rounded}`;
+  }
+  return String(rounded);
+}
+
+function resolveActionPriority(score: number): GovernanceActionPriority {
+  if (score >= 68) {
+    return 'high';
+  }
+  if (score >= 48) {
+    return 'medium';
+  }
+  return 'low';
 }
 
 function resolveFactorState(
@@ -104,6 +277,9 @@ function resolveFactorState(
 }
 
 const latencyRetryHeat = computed<number>(() => {
+  if (runtimeSnapshot.value) {
+    return runtimeSnapshot.value.performance.latencyHeat;
+  }
   return clampMetric(
     22
       + reviewingCount.value * 18
@@ -113,10 +289,16 @@ const latencyRetryHeat = computed<number>(() => {
 });
 
 const retryPressure = computed<number>(() => {
+  if (runtimeSnapshot.value) {
+    return runtimeSnapshot.value.performance.retryPressure;
+  }
   return pendingCount.value + reviewingCount.value * 2 + rejectedCount.value * 3;
 });
 
 const consensusConvergence = computed<number>(() => {
+  if (runtimeSnapshot.value) {
+    return runtimeSnapshot.value.performance.consensusConvergence;
+  }
   return clampMetric(
     governanceScore.value
       - reviewingCount.value * 14
@@ -127,6 +309,9 @@ const consensusConvergence = computed<number>(() => {
 });
 
 const dissentSpread = computed<number>(() => {
+  if (runtimeSnapshot.value) {
+    return runtimeSnapshot.value.performance.dissentSpread;
+  }
   return clampMetric(
     8
       + reviewingCount.value * 17
@@ -137,6 +322,9 @@ const dissentSpread = computed<number>(() => {
 });
 
 const routingComplexity = computed<number>(() => {
+  if (runtimeSnapshot.value) {
+    return runtimeSnapshot.value.performance.routingComplexity;
+  }
   return clampMetric(
     28
       + pendingCount.value * 14
@@ -154,6 +342,226 @@ const routingDecision = computed<string>(() => {
     return '标准会诊 + 条件复核';
   }
   return '快速通道 + 轻量复核';
+});
+
+const backlogRatio = computed<number>(() => {
+  if (totalCaseCount.value === 0) {
+    return 0;
+  }
+  return clampMetric((backlogCount.value / totalCaseCount.value) * 100);
+});
+
+const escalationExposure = computed<number>(() => {
+  if (totalCaseCount.value === 0) {
+    return 0;
+  }
+  return clampMetric((rejectedCount.value / totalCaseCount.value) * 100);
+});
+
+const routingStability = computed<number>(() => {
+  return clampMetric(
+    100
+      - routingComplexity.value
+      + approvedCount.value * 4
+      - rejectedCount.value * 5,
+  );
+});
+
+const throughputVelocity = computed<number>(() => {
+  return clampMetric(
+    35
+      + approvedCount.value * 15
+      - pendingCount.value * 10
+      - reviewingCount.value * 8
+      - rejectedCount.value * 6,
+  );
+});
+
+const qualityMomentum = computed<number>(() => {
+  return approvedCount.value * 12
+    - rejectedCount.value * 16
+    - pendingCount.value * 6;
+});
+
+const governanceSignalCards = computed<GovernanceSignalCard[]>(() => {
+  const backlogPercent = Math.round(backlogRatio.value);
+  const convergencePercent = Math.round(consensusConvergence.value);
+  const stabilityPercent = Math.round(routingStability.value);
+  const escalationPercent = Math.round(escalationExposure.value);
+
+  return [
+    {
+      key: 'backlog-load',
+      title: '复核积压负载',
+      value: `${backlogPercent}%`,
+      context: `待处理 ${backlogCount.value} / ${totalCaseCount.value}`,
+      trend: backlogPercent >= 55 ? '压力升高' : backlogPercent >= 35 ? '持续观察' : '处于安全区',
+      state: resolveFactorState(backlogPercent, 35, 55),
+    },
+    {
+      key: 'consensus-health',
+      title: '共识健康度',
+      value: `${convergencePercent}%`,
+      context: `动量 ${formatSignedValue(qualityMomentum.value)}`,
+      trend: convergencePercent >= 75 ? '收敛健康' : convergencePercent >= 58 ? '存在波动' : '需要干预',
+      state: resolveFactorState(100 - convergencePercent, 28, 45),
+    },
+    {
+      key: 'routing-stability',
+      title: '路由稳定度',
+      value: `${stabilityPercent}%`,
+      context: `决策速率 ${Math.round(throughputVelocity.value)}%`,
+      trend: stabilityPercent >= 74 ? '路径稳定' : stabilityPercent >= 52 ? '偶发偏移' : '决策抖动',
+      state: resolveFactorState(100 - stabilityPercent, 24, 42),
+    },
+    {
+      key: 'escalation-exposure',
+      title: '升级暴露率',
+      value: `${escalationPercent}%`,
+      context: `驳回 ${rejectedCount.value} 例`,
+      trend: escalationPercent >= 30 ? '高暴露' : escalationPercent >= 18 ? '可控预警' : '低暴露',
+      state: resolveFactorState(escalationPercent, 18, 30),
+    },
+  ];
+});
+
+const governanceStagePulse = computed<GovernanceStagePulse[]>(() => {
+  const routingPulse = Math.round(clampMetric(routingComplexity.value));
+  const debatePulse = Math.round(
+    clampMetric(dissentSpread.value + reviewingCount.value * 6),
+  );
+  const reviewPulse = Math.round(
+    clampMetric(backlogRatio.value + pendingCount.value * 8 + rejectedCount.value * 6),
+  );
+
+  return [
+    {
+      key: 'routing',
+      label: '路由判定阶段',
+      value: routingPulse,
+      benchmark: '< 55',
+      hint: '复杂度越高，越需要会诊路径解释与二次确认。',
+      state: resolveFactorState(routingPulse, 55, 72),
+    },
+    {
+      key: 'debate',
+      label: '分歧辩论阶段',
+      value: debatePulse,
+      benchmark: '< 50',
+      hint: '分歧脉冲持续偏高时，建议提前触发主持 Agent 收敛。',
+      state: resolveFactorState(debatePulse, 50, 68),
+    },
+    {
+      key: 'review',
+      label: '复核交接阶段',
+      value: reviewPulse,
+      benchmark: '< 45',
+      hint: '复核债务累积会直接影响临床交接时效与风险。',
+      state: resolveFactorState(reviewPulse, 45, 62),
+    },
+  ];
+});
+
+const governanceActionItems = computed<GovernanceActionItem[]>(() => {
+  const candidates = [
+    {
+      id: 'action-consensus',
+      title: '加速共识收敛',
+      trigger: `收敛指数 ${Math.round(consensusConvergence.value)}%`,
+      action: '对分歧最高病例启用双人复核，并记录驳回原因模板。',
+      owner: '复核负责人',
+      eta: '45 分钟',
+      score: clampMetric(
+        (100 - consensusConvergence.value)
+          + reviewingCount.value * 6
+          + rejectedCount.value * 8,
+      ),
+    },
+    {
+      id: 'action-backlog',
+      title: '削峰复核积压',
+      trigger: `积压率 ${Math.round(backlogRatio.value)}%`,
+      action: '将待复核病例按红旗信号和复杂度排序，优先处理 Top 30%。',
+      owner: '审核协调员',
+      eta: '30 分钟',
+      score: clampMetric(backlogRatio.value + pendingCount.value * 4),
+    },
+    {
+      id: 'action-latency',
+      title: '压降时延重试热力',
+      trigger: `热度 ${Math.round(latencyRetryHeat.value)} / 100`,
+      action: '限制高频重试会话并切换到简化编排路径，降低系统抖动。',
+      owner: '平台值班',
+      eta: '20 分钟',
+      score: clampMetric(latencyRetryHeat.value + retryPressure.value * 2),
+    },
+    {
+      id: 'action-routing',
+      title: '强化路由可解释复核',
+      trigger: `复杂度 ${Math.round(routingComplexity.value)} / 100`,
+      action: '对高复杂路由补充因果依据摘要后再进入临床交接。',
+      owner: '路由审校',
+      eta: '60 分钟',
+      score: clampMetric(routingComplexity.value + (100 - routingStability.value) * 0.5),
+    },
+    {
+      id: 'action-escalation',
+      title: '降低升级暴露',
+      trigger: `升级暴露率 ${Math.round(escalationExposure.value)}%`,
+      action: '对驳回病例回溯触发规则，补齐高风险案例的前置筛查。',
+      owner: '风险治理',
+      eta: '90 分钟',
+      score: clampMetric(escalationExposure.value * 1.8 + rejectedCount.value * 6),
+    },
+  ]
+    .filter((candidate) => candidate.score >= 45)
+    .map((candidate) => {
+      return {
+        ...candidate,
+        priority: resolveActionPriority(candidate.score),
+      };
+    })
+    .sort((left, right) => right.score - left.score);
+
+  if (candidates.length === 0) {
+    return [
+      {
+        id: 'action-routine',
+        title: '维持抽样审计节奏',
+        trigger: '系统态势稳定',
+        action: '按小时抽检已通过样本，持续校验证据完整性与可追溯性。',
+        owner: '治理运营',
+        eta: '持续执行',
+        priority: 'low',
+      },
+    ];
+  }
+
+  return candidates.slice(0, 3).map((candidate) => {
+    return {
+      id: candidate.id,
+      title: candidate.title,
+      trigger: candidate.trigger,
+      action: candidate.action,
+      owner: candidate.owner,
+      eta: candidate.eta,
+      priority: candidate.priority,
+    };
+  });
+});
+
+const missionNarratives = computed<string[]>(() => {
+  const signalText = governanceSignal.value === 'critical'
+    ? '当前处于告警态势，建议启动强制复核。'
+    : governanceSignal.value === 'warning'
+      ? '当前处于观察态势，建议优先压降积压与分歧。'
+      : '当前处于稳定态势，可维持抽样审计。';
+
+  return [
+    `复核池规模 ${totalCaseCount.value}，待处理 ${backlogCount.value}，积压率 ${Math.round(backlogRatio.value)}%。`,
+    `收敛指数 ${Math.round(consensusConvergence.value)}%，路由稳定度 ${Math.round(routingStability.value)}%，升级暴露率 ${Math.round(escalationExposure.value)}%。`,
+    signalText,
+  ];
 });
 
 const backendFactorCards = computed<BackendFactorCard[]>(() => {
@@ -189,12 +597,23 @@ const backendFactorCards = computed<BackendFactorCard[]>(() => {
 
 const pageSummary = computed<string>(() => {
   if (activeTab.value === 'dashboard') {
-    return '聚焦推理时延与重试热力、分歧收敛曲线、路由因果瀑布三类核心执行因素。';
+    return '聚焦治理信号面板、阶段执行脉冲与行动清单，形成可执行的复核闭环。';
   }
   return `对分诊输出进行复核与裁决后再进入临床交接（当前过滤：${FILTER_LABELS[queueFilter.value]}）。`;
 });
 
+const governanceUpgradeTip = computed<string>(() => {
+  if (runtimeSnapshot.value) {
+    return '已连接后端实时治理快照，当前展示为运行态可视化。';
+  }
+  return '治理看板为后端运行态可视化，请保持后端服务可用。';
+});
+
 function updateQueueStatus(itemId: string, status: QueueUpdateStatus): void {
+  if (runtimeSnapshot.value || !allowDemoFallback) {
+    return;
+  }
+
   reviewItems.value = reviewItems.value.map((item) => {
     if (item.id !== itemId) {
       return item;
@@ -236,6 +655,59 @@ function handleDashboardQueueFilterChange(filter: QueueFilter): void {
 function clearQueueFilter(): void {
   queueFilter.value = 'all';
 }
+
+function formatRuntimeUpdatedAt(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return '--';
+  }
+  return date.toLocaleTimeString('zh-CN', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+const runtimeUpdatedAtText = computed<string>(() => {
+  if (!runtimeSnapshot.value) {
+    return '--';
+  }
+  return formatRuntimeUpdatedAt(runtimeSnapshot.value.generatedAt);
+});
+
+const isRuntimeLinked = computed<boolean>(() => {
+  return runtimeSnapshot.value !== null;
+});
+
+async function refreshRuntimeSnapshot(): Promise<void> {
+  runtimeLoading.value = true;
+  try {
+    runtimeSnapshot.value = await fetchGovernanceRuntime();
+    runtimeLoadError.value = '';
+  } catch {
+    runtimeSnapshot.value = null;
+    runtimeLoadError.value = '后端治理实时数据不可用，请确认后端服务与 /governance/runtime 接口。';
+  } finally {
+    runtimeLoading.value = false;
+  }
+}
+
+onMounted(() => {
+  if (import.meta.env.MODE === 'test') {
+    return;
+  }
+
+  void refreshRuntimeSnapshot();
+  runtimePollTimer = setInterval(() => {
+    void refreshRuntimeSnapshot();
+  }, GOVERNANCE_RUNTIME_POLL_MS);
+});
+
+onBeforeUnmount(() => {
+  if (runtimePollTimer) {
+    clearInterval(runtimePollTimer);
+    runtimePollTimer = null;
+  }
+});
 </script>
 
 <template>
@@ -252,7 +724,13 @@ function clearQueueFilter(): void {
           <span class="mission-chip" :data-signal="governanceSignal">
             {{ governanceSignal === 'critical' ? '告警态势' : governanceSignal === 'warning' ? '观察态势' : '稳定态势' }}
           </span>
+          <span class="mission-chip" :data-source="isRuntimeLinked ? 'runtime' : 'offline'">
+            {{ isRuntimeLinked ? `实时数据 ${runtimeUpdatedAtText}` : '后端未连接' }}
+          </span>
         </div>
+        <ul class="mission-narratives" data-testid="governance-mission-narratives">
+          <li v-for="line in missionNarratives" :key="line">{{ line }}</li>
+        </ul>
         <section
           class="backend-factor-strip"
           aria-label="后端执行因素总览"
@@ -279,8 +757,9 @@ function clearQueueFilter(): void {
         <div class="hero-actions">
           <a class="fhir-link" href="/fhir">前往 FHIR 资源浏览</a>
           <span class="governance-upgrade-tip">
-            已聚焦推理时延与重试热力、分歧收敛矩阵、路由因果瀑布，并联动审计溯源流与编排依赖图。
+            {{ governanceUpgradeTip }}
           </span>
+          <span v-if="runtimeLoadError" class="runtime-error-tip">{{ runtimeLoadError }}</span>
         </div>
       </div>
 
@@ -315,6 +794,79 @@ function clearQueueFilter(): void {
 
     <main class="view-content">
       <section v-if="activeTab === 'dashboard'" class="tab-content">
+        <section class="dashboard-intelligence-grid" data-testid="governance-intelligence-grid">
+          <article class="intel-panel">
+            <header class="intel-head">
+              <h3>治理信号面板</h3>
+              <span>跨队列关键风险</span>
+            </header>
+            <div class="intel-signal-grid">
+              <article
+                v-for="card in governanceSignalCards"
+                :key="card.key"
+                class="intel-signal-card"
+                :data-state="card.state"
+              >
+                <div class="intel-signal-head">
+                  <strong>{{ card.title }}</strong>
+                  <span>{{ card.trend }}</span>
+                </div>
+                <p class="intel-signal-value">{{ card.value }}</p>
+                <p class="intel-signal-context">{{ card.context }}</p>
+              </article>
+            </div>
+          </article>
+
+          <article class="intel-panel">
+            <header class="intel-head">
+              <h3>阶段执行脉冲</h3>
+              <span>按阶段识别波动</span>
+            </header>
+            <ul class="stage-pulse-list">
+              <li
+                v-for="stage in governanceStagePulse"
+                :key="stage.key"
+                class="stage-pulse-item"
+                :data-state="stage.state"
+              >
+                <div class="stage-pulse-head">
+                  <strong>{{ stage.label }}</strong>
+                  <span>{{ stage.value }}%</span>
+                </div>
+                <div class="stage-pulse-track">
+                  <span :style="{ width: `${stage.value}%` }" />
+                </div>
+                <p>{{ stage.hint }}</p>
+                <small>目标阈值：{{ stage.benchmark }}</small>
+              </li>
+            </ul>
+          </article>
+
+          <article class="intel-panel action-panel" data-testid="governance-action-list">
+            <header class="intel-head">
+              <h3>治理行动清单</h3>
+              <span>按优先级闭环执行</span>
+            </header>
+            <ol class="action-items">
+              <li
+                v-for="action in governanceActionItems"
+                :key="action.id"
+                class="action-item"
+                :data-priority="action.priority"
+              >
+                <div class="action-item-head">
+                  <strong>{{ action.title }}</strong>
+                  <span>{{ PRIORITY_LABELS[action.priority] }}</span>
+                </div>
+                <p>{{ action.action }}</p>
+                <small>
+                  触发：{{ action.trigger }} ｜ 责任：{{ action.owner }} ｜ 时限：{{ action.eta }}
+                </small>
+              </li>
+            </ol>
+          </article>
+        </section>
+
         <GovernanceDashboard
           :queue-overview="{
             pending: pendingCount,
@@ -323,6 +875,8 @@ function clearQueueFilter(): void {
             rejected: rejectedCount,
           }"
           :external-focus-stage="dashboardFocusStage"
+          :runtime-stage-runtime="runtimeSnapshot?.stageRuntime ?? null"
+          :runtime-current-stage="runtimeSnapshot?.currentStage ?? null"
           @queue-filter-change="handleDashboardQueueFilterChange"
         />
       </section>
@@ -335,6 +889,7 @@ function clearQueueFilter(): void {
           </div>
           <ReviewQueue
             :items="filteredReviewItems"
+            :loading="runtimeLoading"
             @select="handleSelectReview"
             @approve="handleApproveReview"
             @reject="handleRejectReview"
@@ -368,6 +923,8 @@ function clearQueueFilter(): void {
 }
 
 .hero {
+  --hero-glow-warm: color-mix(in srgb, var(--color-warning) 22%, transparent);
+  --hero-glow-cool: color-mix(in srgb, var(--color-info) 18%, transparent);
   display: grid;
   grid-template-columns: minmax(260px, 1fr) auto;
   gap: 16px;
@@ -376,8 +933,8 @@ function clearQueueFilter(): void {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background:
-    radial-gradient(circle at 0% 0%, rgba(223, 187, 118, 0.22), transparent 44%),
-    radial-gradient(circle at 100% 100%, rgba(46, 134, 149, 0.16), transparent 42%),
+    radial-gradient(circle at 0% 0%, var(--hero-glow-warm), transparent 44%),
+    radial-gradient(circle at 100% 100%, var(--hero-glow-cool), transparent 42%),
     var(--color-bg-primary);
   box-shadow: var(--shadow-md);
 }
@@ -403,6 +960,16 @@ function clearQueueFilter(): void {
   flex-wrap: wrap;
 }
 
+.mission-narratives {
+  margin: 12px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 .mission-chip {
   border: 1px solid var(--color-border);
   background: color-mix(in srgb, var(--color-bg-primary) 88%, transparent);
@@ -413,21 +980,33 @@ function clearQueueFilter(): void {
 }
 
 .mission-chip[data-signal='normal'] {
-  color: #1d7f68;
-  border-color: rgba(34, 149, 113, 0.28);
-  background: rgba(34, 149, 113, 0.11);
+  color: var(--color-risk-normal-fg);
+  border-color: var(--color-risk-normal-border);
+  background: var(--color-risk-normal-bg);
 }
 
 .mission-chip[data-signal='warning'] {
-  color: #916413;
-  border-color: rgba(208, 145, 41, 0.3);
-  background: rgba(208, 145, 41, 0.12);
+  color: var(--color-risk-warning-fg);
+  border-color: var(--color-risk-warning-border);
+  background: var(--color-risk-warning-bg);
 }
 
 .mission-chip[data-signal='critical'] {
-  color: #b14f34;
-  border-color: rgba(208, 87, 56, 0.34);
-  background: rgba(208, 87, 56, 0.12);
+  color: var(--color-risk-critical-fg);
+  border-color: var(--color-risk-critical-border);
+  background: var(--color-risk-critical-bg);
+}
+
+.mission-chip[data-source='runtime'] {
+  color: var(--color-primary-dark);
+  border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.mission-chip[data-source='offline'] {
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+  background: color-mix(in srgb, var(--color-bg-tertiary) 82%, transparent);
 }
 
 .backend-factor-strip {
@@ -487,17 +1066,17 @@ function clearQueueFilter(): void {
 }
 
 .factor-card[data-state='normal'] {
-  border-color: rgba(34, 149, 113, 0.34);
+  border-color: var(--color-risk-normal-border);
 }
 
 .factor-card[data-state='warning'] {
-  border-color: rgba(208, 145, 41, 0.32);
-  background: rgba(208, 145, 41, 0.09);
+  border-color: var(--color-risk-warning-border);
+  background: var(--color-risk-warning-bg);
 }
 
 .factor-card[data-state='critical'] {
-  border-color: rgba(208, 87, 56, 0.34);
-  background: rgba(208, 87, 56, 0.08);
+  border-color: var(--color-risk-critical-border);
+  background: var(--color-risk-critical-bg);
 }
 
 .hero-actions {
@@ -530,6 +1109,15 @@ function clearQueueFilter(): void {
 .governance-upgrade-tip {
   font-size: 13px;
   color: var(--color-text-muted);
+}
+
+.runtime-error-tip {
+  font-size: 12px;
+  color: var(--color-risk-warning-fg);
+  border: 1px solid var(--color-risk-warning-border);
+  background: var(--color-risk-warning-bg);
+  border-radius: 999px;
+  padding: 4px 10px;
 }
 
 .eyebrow {
@@ -599,9 +1187,13 @@ function clearQueueFilter(): void {
 }
 
 .tab-nav button.active {
-  color: #ffffff;
-  background: linear-gradient(130deg, #1d8d88 0%, #156777 100%);
-  box-shadow: 0 10px 20px rgba(21, 84, 99, 0.24);
+  color: var(--cc-text-inverse);
+  background: linear-gradient(
+    130deg,
+    var(--color-primary) 0%,
+    var(--color-primary-dark) 100%
+  );
+  box-shadow: var(--shadow-sm);
 }
 
 .badge {
@@ -609,12 +1201,247 @@ function clearQueueFilter(): void {
   line-height: 1;
   padding: 4px 6px;
   border-radius: 999px;
-  color: #ffffff;
-  background: #d05738;
+  color: var(--cc-text-inverse);
+  background: var(--color-danger);
 }
 
 .view-content {
   min-height: 440px;
+}
+
+.dashboard-intelligence-grid {
+  margin-bottom: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.intel-panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-bg-primary) 90%, transparent);
+  padding: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.intel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.intel-head h3 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--color-text-primary);
+}
+
+.intel-head span {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.intel-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.intel-signal-card {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  background: color-mix(in srgb, var(--color-surface-elevated) 88%, transparent);
+  display: grid;
+  gap: 5px;
+}
+
+.intel-signal-card[data-state='normal'] {
+  border-color: var(--color-risk-normal-border);
+}
+
+.intel-signal-card[data-state='warning'] {
+  border-color: var(--color-risk-warning-border);
+  background: var(--color-risk-warning-bg);
+}
+
+.intel-signal-card[data-state='critical'] {
+  border-color: var(--color-risk-critical-border);
+  background: var(--color-risk-critical-bg);
+}
+
+.intel-signal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.intel-signal-head strong {
+  font-size: 12px;
+  color: var(--color-text-primary);
+}
+
+.intel-signal-head span {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.intel-signal-value {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.05;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.intel-signal-context {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.stage-pulse-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.stage-pulse-item {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  background: color-mix(in srgb, var(--color-surface-elevated) 88%, transparent);
+  display: grid;
+  gap: 6px;
+}
+
+.stage-pulse-item[data-state='normal'] {
+  border-color: var(--color-risk-normal-border);
+}
+
+.stage-pulse-item[data-state='warning'] {
+  border-color: var(--color-risk-warning-border);
+  background: var(--color-risk-warning-bg);
+}
+
+.stage-pulse-item[data-state='critical'] {
+  border-color: var(--color-risk-critical-border);
+  background: var(--color-risk-critical-bg);
+}
+
+.stage-pulse-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.stage-pulse-head strong {
+  font-size: 12px;
+  color: var(--color-text-primary);
+}
+
+.stage-pulse-head span {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.stage-pulse-track {
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-border-light) 86%, transparent);
+  overflow: hidden;
+}
+
+.stage-pulse-track span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    var(--color-info) 100%
+  );
+}
+
+.stage-pulse-item p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.stage-pulse-item small {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.action-items {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.action-item {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-surface-elevated) 90%, transparent);
+  padding: 8px;
+  list-style-position: inside;
+  display: grid;
+  gap: 5px;
+}
+
+.action-item[data-priority='high'] {
+  border-color: var(--color-risk-critical-border);
+  background: var(--color-risk-critical-bg);
+}
+
+.action-item[data-priority='medium'] {
+  border-color: var(--color-risk-warning-border);
+  background: var(--color-risk-warning-bg);
+}
+
+.action-item[data-priority='low'] {
+  border-color: var(--color-risk-normal-border);
+  background: var(--color-risk-normal-bg);
+}
+
+.action-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.action-item-head strong {
+  font-size: 13px;
+  color: var(--color-text-primary);
+}
+
+.action-item-head span {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.action-item p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+}
+
+.action-item small {
+  font-size: 11px;
+  color: var(--color-text-muted);
 }
 
 .tab-content {
@@ -646,10 +1473,10 @@ function clearQueueFilter(): void {
 }
 
 .queue-filter-bar button {
-  border: 1px solid #b5c7d9;
+  border: 1px solid var(--color-border-interactive);
   border-radius: var(--radius-sm);
-  background: #f7fbff;
-  color: #2f5878;
+  background: var(--color-surface-elevated);
+  color: var(--color-text-secondary);
   font-size: 12px;
   padding: 4px 8px;
   cursor: pointer;
@@ -705,6 +1532,10 @@ function clearQueueFilter(): void {
   .backend-factor-strip {
     grid-template-columns: 1fr;
   }
+
+  .dashboard-intelligence-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 680px) {
@@ -739,5 +1570,19 @@ function clearQueueFilter(): void {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .mission-narratives {
+    padding-left: 16px;
+    font-size: 12px;
+  }
+
+  .intel-panel {
+    padding: 10px;
+  }
+
+  .intel-signal-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
+

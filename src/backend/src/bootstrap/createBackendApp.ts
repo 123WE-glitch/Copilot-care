@@ -16,6 +16,7 @@ export function createBackendApp(runtime: BackendRuntime): Express {
       runtime.triageUseCase,
       runtime.architecture,
       runtime.coordinatorSnapshotService,
+      runtime.governanceRuntimeTelemetry,
     ),
   );
 

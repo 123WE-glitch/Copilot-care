@@ -10,6 +10,7 @@ import { RunTriageSessionUseCase } from '../application/usecases/RunTriageSessio
 import { DebateEngine } from '../core/DebateEngine';
 import { ComplexityRoutedOrchestrator } from '../infrastructure/orchestration/ComplexityRoutedOrchestrator';
 import { CoordinatorSnapshotService } from '../infrastructure/orchestration/CoordinatorSnapshotService';
+import { GovernanceRuntimeTelemetry } from '../infrastructure/governance/GovernanceRuntimeTelemetry';
 import { createPatientContextEnricher } from '../infrastructure/mcp/PatientContextEnricher';
 import {
   createClinicalExpertLLMClients,
@@ -58,6 +59,7 @@ export interface BackendRuntime {
   triageUseCase: RunTriageSessionUseCase;
   architecture: RuntimeArchitectureSnapshot;
   coordinatorSnapshotService: CoordinatorSnapshotService;
+  governanceRuntimeTelemetry: GovernanceRuntimeTelemetry;
 }
 
 const PANEL_PROVIDER_DEFAULTS: Record<
@@ -256,6 +258,7 @@ export function createRuntime(): BackendRuntime {
   const assignments = resolveClinicalExpertProviderAssignments();
   const patientContextEnricher = createPatientContextEnricher(env);
   const coordinatorSnapshotService = new CoordinatorSnapshotService(env);
+  const governanceRuntimeTelemetry = new GovernanceRuntimeTelemetry();
   const panelProviders = resolvePanelProviders(env);
   const cardioPanel = buildPanelProviderStates(panelProviders.cardiology, env);
   const gpPanel = buildPanelProviderStates(panelProviders.generalPractice, env);
@@ -358,6 +361,7 @@ export function createRuntime(): BackendRuntime {
     triageUseCase,
     architecture,
     coordinatorSnapshotService,
+    governanceRuntimeTelemetry,
   };
 }
 

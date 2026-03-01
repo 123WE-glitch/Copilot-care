@@ -171,4 +171,44 @@ describe('GovernanceView interactions', () => {
     expect(wrapper.text()).toContain('分歧收敛曲线');
     expect(wrapper.text()).toContain('路由因果瀑布');
   });
+
+  it('renders intelligence grid with governance signals and actionable items', () => {
+    const wrapper = mount(GovernanceView, {
+      global: {
+        stubs: {
+          GovernanceDashboard: GovernanceDashboardStub,
+          ReviewQueue: ReviewQueueStub,
+          EvidenceDrawer: EvidenceDrawerStub,
+        },
+      },
+    });
+
+    const intelligenceGrid = wrapper.find('[data-testid="governance-intelligence-grid"]');
+    const actionList = wrapper.find('[data-testid="governance-action-list"]');
+    const signalCards = wrapper.findAll('.intel-signal-card');
+    const actionItems = wrapper.findAll('.action-item');
+
+    expect(intelligenceGrid.exists()).toBe(true);
+    expect(actionList.exists()).toBe(true);
+    expect(signalCards.length).toBe(4);
+    expect(actionItems.length).toBeGreaterThan(0);
+    expect(wrapper.text()).toContain('治理信号面板');
+    expect(wrapper.text()).toContain('治理行动清单');
+  });
+
+  it('sorts action list by computed urgency and keeps high-priority actions first', () => {
+    const wrapper = mount(GovernanceView, {
+      global: {
+        stubs: {
+          GovernanceDashboard: GovernanceDashboardStub,
+          ReviewQueue: ReviewQueueStub,
+          EvidenceDrawer: EvidenceDrawerStub,
+        },
+      },
+    });
+
+    const actionItems = wrapper.findAll('.action-item');
+    expect(actionItems.length).toBeGreaterThan(0);
+    expect(actionItems[0]?.attributes('data-priority')).toBe('high');
+  });
 });

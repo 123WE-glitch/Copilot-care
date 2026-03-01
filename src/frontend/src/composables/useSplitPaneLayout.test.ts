@@ -74,6 +74,25 @@ describe('useSplitPaneLayout', () => {
     expect(state.leftPaneStyle.value.width).toBe('65%');
   });
 
+  it('nudges ratio and resets to default ratio', () => {
+    window.localStorage.clear();
+
+    const state = useSplitPaneLayout({
+      storageKey: 'split-nudge',
+      minRatio: 30,
+      maxRatio: 70,
+      defaultRatio: 44,
+    });
+
+    state.nudgeRatio(5);
+    expect(state.leftRatio.value).toBe(49);
+    expect(window.localStorage.getItem('split-nudge')).toBe('49');
+
+    state.resetRatio();
+    expect(state.leftRatio.value).toBe(44);
+    expect(window.localStorage.getItem('split-nudge')).toBe('44');
+  });
+
   it('ignores move events when not dragging', () => {
     window.localStorage.clear();
 

@@ -27,6 +27,27 @@
   --cc-warning-500: #b7801e;
   --cc-danger-500: #b84a38;
   --cc-info-500: #2d73b1;
+  --cc-risk-normal-fg: #1d7f68;
+  --cc-risk-normal-border: color-mix(
+    in srgb,
+    var(--cc-success-500) 34%,
+    var(--cc-border-body)
+  );
+  --cc-risk-normal-bg: color-mix(in srgb, var(--cc-success-500) 12%, transparent);
+  --cc-risk-warning-fg: #916413;
+  --cc-risk-warning-border: color-mix(
+    in srgb,
+    var(--cc-warning-500) 36%,
+    var(--cc-border-body)
+  );
+  --cc-risk-warning-bg: color-mix(in srgb, var(--cc-warning-500) 14%, transparent);
+  --cc-risk-critical-fg: #b14f34;
+  --cc-risk-critical-border: color-mix(
+    in srgb,
+    var(--cc-danger-500) 38%,
+    var(--cc-border-body)
+  );
+  --cc-risk-critical-bg: color-mix(in srgb, var(--cc-danger-500) 14%, transparent);
 
   --cc-text-strong: #122638;
   --cc-text-body: #334b61;
@@ -42,6 +63,17 @@
   --cc-border-strong: #b8cbe0;
   --cc-border-body: #c9d8e7;
   --cc-border-soft: #dbe7f2;
+  --cc-border-interactive: color-mix(
+    in srgb,
+    var(--cc-accent-cyan-500) 34%,
+    var(--cc-border-body)
+  );
+
+  --cc-surface-elevated: color-mix(in srgb, var(--cc-surface-1) 92%, #f7fbff);
+  --cc-surface-soft: color-mix(in srgb, var(--cc-surface-2) 90%, transparent);
+  --cc-chart-tooltip-bg: #102738;
+  --cc-chart-tooltip-border: #2f4f68;
+  --cc-chart-tooltip-text: #f7fbff;
 
   --cc-shadow-sm: 0 2px 8px rgba(11, 39, 64, 0.08);
   --cc-shadow-md: 0 10px 28px rgba(11, 39, 64, 0.14);
@@ -109,6 +141,27 @@
   --cc-warning-500: #f0b654;
   --cc-danger-500: #f18068;
   --cc-info-500: #74b0df;
+  --cc-risk-normal-fg: #78d7ad;
+  --cc-risk-normal-border: color-mix(
+    in srgb,
+    var(--cc-success-500) 40%,
+    var(--cc-border-body)
+  );
+  --cc-risk-normal-bg: color-mix(in srgb, var(--cc-success-500) 16%, transparent);
+  --cc-risk-warning-fg: #f3c473;
+  --cc-risk-warning-border: color-mix(
+    in srgb,
+    var(--cc-warning-500) 42%,
+    var(--cc-border-body)
+  );
+  --cc-risk-warning-bg: color-mix(in srgb, var(--cc-warning-500) 18%, transparent);
+  --cc-risk-critical-fg: #f59b87;
+  --cc-risk-critical-border: color-mix(
+    in srgb,
+    var(--cc-danger-500) 44%,
+    var(--cc-border-body)
+  );
+  --cc-risk-critical-bg: color-mix(in srgb, var(--cc-danger-500) 18%, transparent);
 
   --cc-text-strong: #d7e5f4;
   --cc-text-body: #b8ccde;
@@ -124,6 +177,17 @@
   --cc-border-strong: #345067;
   --cc-border-body: #2d465d;
   --cc-border-soft: #253b4d;
+  --cc-border-interactive: color-mix(
+    in srgb,
+    var(--cc-accent-cyan-500) 42%,
+    var(--cc-border-body)
+  );
+
+  --cc-surface-elevated: color-mix(in srgb, var(--cc-surface-1) 90%, #1a3144);
+  --cc-surface-soft: color-mix(in srgb, var(--cc-surface-2) 86%, transparent);
+  --cc-chart-tooltip-bg: #13283a;
+  --cc-chart-tooltip-border: #3f6281;
+  --cc-chart-tooltip-text: #f4f9ff;
 
   --cc-shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.25);
   --cc-shadow-md: 0 12px 30px rgba(0, 0, 0, 0.36);
@@ -158,6 +222,15 @@
   --color-warning: var(--cc-warning-500);
   --color-danger: var(--cc-danger-500);
   --color-info: var(--cc-info-500);
+  --color-risk-normal-fg: var(--cc-risk-normal-fg);
+  --color-risk-normal-border: var(--cc-risk-normal-border);
+  --color-risk-normal-bg: var(--cc-risk-normal-bg);
+  --color-risk-warning-fg: var(--cc-risk-warning-fg);
+  --color-risk-warning-border: var(--cc-risk-warning-border);
+  --color-risk-warning-bg: var(--cc-risk-warning-bg);
+  --color-risk-critical-fg: var(--cc-risk-critical-fg);
+  --color-risk-critical-border: var(--cc-risk-critical-border);
+  --color-risk-critical-bg: var(--cc-risk-critical-bg);
   --color-text-primary: var(--cc-text-strong);
   --color-text-secondary: var(--cc-text-body);
   --color-text-muted: var(--cc-text-muted);
@@ -166,8 +239,14 @@
   --color-bg-tertiary: var(--cc-surface-2);
   --color-border: var(--cc-border-body);
   --color-border-light: var(--cc-border-soft);
+  --color-border-interactive: var(--cc-border-interactive);
   --color-card-bg: var(--cc-surface-1);
   --color-card-border: var(--cc-border-body);
+  --color-surface-elevated: var(--cc-surface-elevated);
+  --color-surface-soft: var(--cc-surface-soft);
+  --color-chart-tooltip-bg: var(--cc-chart-tooltip-bg);
+  --color-chart-tooltip-border: var(--cc-chart-tooltip-border);
+  --color-chart-tooltip-text: var(--cc-chart-tooltip-text);
   --shadow-sm: var(--cc-shadow-sm);
   --shadow-md: var(--cc-shadow-md);
   --shadow-lg: var(--cc-shadow-lg);
@@ -296,4 +375,11 @@ select:disabled,
 textarea:disabled {
   background: var(--color-bg-tertiary);
   cursor: not-allowed;
+}
+
+:where(button, [role='button'], a, input, select, textarea):focus-visible {
+  outline: none;
+  border-color: var(--color-border-interactive);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--cc-accent-cyan-500) 24%, transparent);
 }

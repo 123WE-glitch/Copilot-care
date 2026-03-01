@@ -1,4 +1,5 @@
-﻿import type { EChartsCoreOption } from 'echarts/core';
+import type { EChartsCoreOption } from 'echarts/core';
+import { resolveCopilotChartTheme } from '../chart/theme';
 import type { PatientVitalsRecord } from './model';
 
 function formatAxisLabel(value: string): string {
@@ -13,15 +14,29 @@ function formatAxisLabel(value: string): string {
 export function buildVitalsChartOption(
   records: PatientVitalsRecord[],
 ): EChartsCoreOption {
+  const chartTheme = resolveCopilotChartTheme();
   const timeline = records.map((record) => formatAxisLabel(record.timestamp));
 
   return {
+    color: [
+      chartTheme.vitalsSeries.systolic,
+      chartTheme.vitalsSeries.diastolic,
+      chartTheme.vitalsSeries.heartRate,
+    ],
     tooltip: {
       trigger: 'axis',
+      backgroundColor: chartTheme.tooltipBackground,
+      borderColor: chartTheme.tooltipBorder,
+      textStyle: {
+        color: chartTheme.tooltipText,
+      },
     },
     legend: {
       data: ['收缩压', '舒张压', '心率'],
       bottom: 0,
+      textStyle: {
+        color: chartTheme.textSecondary,
+      },
     },
     grid: {
       top: 24,
@@ -32,6 +47,19 @@ export function buildVitalsChartOption(
     xAxis: {
       type: 'category',
       data: timeline,
+      axisLine: {
+        lineStyle: {
+          color: chartTheme.border,
+        },
+      },
+      axisTick: {
+        lineStyle: {
+          color: chartTheme.borderSoft,
+        },
+      },
+      axisLabel: {
+        color: chartTheme.textSecondary,
+      },
     },
     yAxis: [
       {
@@ -39,12 +67,40 @@ export function buildVitalsChartOption(
         name: '血压 (mmHg)',
         min: 50,
         max: 200,
+        nameTextStyle: {
+          color: chartTheme.textSecondary,
+        },
+        axisLine: {
+          lineStyle: {
+            color: chartTheme.border,
+          },
+        },
+        axisLabel: {
+          color: chartTheme.textSecondary,
+        },
+        splitLine: {
+          lineStyle: {
+            color: chartTheme.borderSoft,
+            opacity: 0.55,
+          },
+        },
       },
       {
         type: 'value',
         name: '心率 (bpm)',
         min: 40,
         max: 140,
+        nameTextStyle: {
+          color: chartTheme.textSecondary,
+        },
+        axisLine: {
+          lineStyle: {
+            color: chartTheme.border,
+          },
+        },
+        axisLabel: {
+          color: chartTheme.textSecondary,
+        },
         splitLine: {
           show: false,
         },
@@ -56,7 +112,13 @@ export function buildVitalsChartOption(
         type: 'line',
         smooth: true,
         symbolSize: 6,
-        lineStyle: { width: 2 },
+        lineStyle: {
+          width: 2,
+          color: chartTheme.vitalsSeries.systolic,
+        },
+        itemStyle: {
+          color: chartTheme.vitalsSeries.systolic,
+        },
         data: records.map((record) => record.systolicBP ?? null),
       },
       {
@@ -64,7 +126,13 @@ export function buildVitalsChartOption(
         type: 'line',
         smooth: true,
         symbolSize: 6,
-        lineStyle: { width: 2 },
+        lineStyle: {
+          width: 2,
+          color: chartTheme.vitalsSeries.diastolic,
+        },
+        itemStyle: {
+          color: chartTheme.vitalsSeries.diastolic,
+        },
         data: records.map((record) => record.diastolicBP ?? null),
       },
       {
@@ -73,7 +141,13 @@ export function buildVitalsChartOption(
         smooth: true,
         symbolSize: 6,
         yAxisIndex: 1,
-        lineStyle: { width: 2 },
+        lineStyle: {
+          width: 2,
+          color: chartTheme.vitalsSeries.heartRate,
+        },
+        itemStyle: {
+          color: chartTheme.vitalsSeries.heartRate,
+        },
         data: records.map((record) => record.heartRate ?? null),
       },
     ],

@@ -42,7 +42,9 @@ const ExecutionNeuralTopologyStub = defineComponent({
   `,
 });
 
-function mountDashboard() {
+function mountDashboard(
+  propOverrides: Record<string, unknown> = {},
+) {
   return mount(GovernanceDashboard, {
     props: {
       queueOverview: {
@@ -51,6 +53,7 @@ function mountDashboard() {
         approved: 1,
         rejected: 1,
       },
+      ...propOverrides,
     },
     global: {
       stubs: {
@@ -131,5 +134,25 @@ describe('GovernanceDashboard queue navigation behavior', () => {
     const after = wrapper.find('[data-testid="evidence-detail"]').text();
 
     expect(after).not.toBe(before);
+  });
+
+  it('prefers runtime stage snapshot for workflow detail message and current stage', async () => {
+    const wrapper = mountDashboard({
+      runtimeCurrentStage: 'DEBATE',
+      runtimeStageRuntime: {
+        START: { status: 'done', message: 'runtime start done', active: 0, transitions: 1, updatedAt: '2026-02-25T10:00:00.000Z' },
+        INFO_GATHER: { status: 'done', message: 'runtime gather done', active: 0, transitions: 1, updatedAt: '2026-02-25T10:00:01.000Z' },
+        RISK_ASSESS: { status: 'done', message: 'runtime risk done', active: 0, transitions: 1, updatedAt: '2026-02-25T10:00:02.000Z' },
+        ROUTING: { status: 'done', message: 'runtime routing done', active: 0, transitions: 1, updatedAt: '2026-02-25T10:00:03.000Z' },
+        DEBATE: { status: 'running', message: 'runtime debate running', active: 1, transitions: 2, updatedAt: '2026-02-25T10:00:04.000Z' },
+        CONSENSUS: { status: 'pending', message: 'runtime consensus pending', active: 0, transitions: 0, updatedAt: '2026-02-25T10:00:05.000Z' },
+        REVIEW: { status: 'pending', message: 'runtime review pending', active: 0, transitions: 0, updatedAt: '2026-02-25T10:00:06.000Z' },
+        OUTPUT: { status: 'pending', message: 'runtime output pending', active: 0, transitions: 0, updatedAt: '2026-02-25T10:00:07.000Z' },
+        ESCALATION: { status: 'pending', message: 'runtime escalation pending', active: 0, transitions: 0, updatedAt: '2026-02-25T10:00:08.000Z' },
+      },
+    });
+    await flushPromises();
+
+    expect(wrapper.text()).toContain('runtime debate running');
   });
 });

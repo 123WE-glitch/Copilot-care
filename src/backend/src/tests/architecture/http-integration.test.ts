@@ -40,6 +40,41 @@ describe('Architecture Smoke - HTTP integration', () => {
     expect(payload.experts.safety).toBeDefined();
   });
 
+  it('returns governance runtime snapshot for GET /governance/runtime', async () => {
+    const response = await fetch(`${baseUrl}/governance/runtime`);
+    const payload = await response.json() as {
+      generatedAt: string;
+      source: string;
+      queueOverview: Record<string, number>;
+      performance: Record<string, number>;
+      totals: Record<string, number>;
+      recentSessions: unknown[];
+      stageRuntime: Record<
+        string,
+        {
+          status: string;
+          message: string;
+          active: number;
+          transitions: number;
+          updatedAt: string;
+        }
+      >;
+      currentStage: string;
+    };
+
+    expect(response.status).toBe(200);
+    expect(payload.source).toBe('runtime');
+    expect(payload.generatedAt).toBeTruthy();
+    expect(payload.queueOverview).toBeDefined();
+    expect(payload.performance).toBeDefined();
+    expect(payload.totals).toBeDefined();
+    expect(Array.isArray(payload.recentSessions)).toBe(true);
+    expect(payload.stageRuntime).toBeDefined();
+    expect(payload.stageRuntime.START).toBeDefined();
+    expect(payload.stageRuntime.START.status).toBeDefined();
+    expect(payload.currentStage).toBeTruthy();
+  });
+
   it('returns 400 for POST /orchestrate_triage when profile is missing', async () => {
     const response = await fetch(`${baseUrl}/orchestrate_triage`, {
       method: 'POST',
@@ -80,6 +115,55 @@ describe('Architecture Smoke - HTTP integration', () => {
     expect(['OUTPUT', 'ESCALATE_TO_OFFLINE', 'ABSTAIN', 'ERROR']).toContain(
       payload.status,
     );
+  });
+
+  it('updates governance runtime totals after POST /orchestrate_triage', async () => {
+    const beforeResponse = await fetch(`${baseUrl}/governance/runtime`);
+    const beforePayload = await beforeResponse.json() as {
+      totals: { totalSessions: number };
+    };
+
+    const executeResponse = await fetch(`${baseUrl}/orchestrate_triage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        requestId: 'http-governance-runtime-001',
+        consentToken: 'consent_local_demo',
+        symptomText: 'headache',
+        profile: {
+          patientId: 'http-governance-runtime-001',
+          age: 47,
+          sex: 'female',
+          symptoms: ['headache'],
+          chronicDiseases: ['Hypertension'],
+          medicationHistory: ['amlodipine'],
+          vitals: {
+            systolicBP: 142,
+            diastolicBP: 90,
+          },
+        },
+      }),
+    });
+
+    expect(executeResponse.status).toBe(200);
+
+    const afterResponse = await fetch(`${baseUrl}/governance/runtime`);
+    const afterPayload = await afterResponse.json() as {
+      totals: { totalSessions: number };
+      recentSessions: Array<{ requestId?: string }>;
+      stageRuntime: Record<string, { transitions: number; status: string }>;
+      currentStage: string;
+    };
+
+    expect(afterResponse.status).toBe(200);
+    expect(afterPayload.totals.totalSessions).toBeGreaterThanOrEqual(
+      beforePayload.totals.totalSessions + 1,
+    );
+    expect(
+      afterPayload.recentSessions.some((session) => session.requestId === 'http-governance-runtime-001'),
+    ).toBe(true);
+    expect(afterPayload.stageRuntime.START.transitions).toBeGreaterThan(0);
+    expect(afterPayload.currentStage).toBeTruthy();
   });
 
   it('replays the same result for repeated sessionId requests', async () => {

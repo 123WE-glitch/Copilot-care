@@ -29,6 +29,14 @@ interface StageRuntimeState {
   durationMs?: number;
 }
 
+interface RuntimeStageRuntimeState {
+  status: TriageStreamStageStatus;
+  message: string;
+  active: number;
+  transitions: number;
+  updatedAt: string;
+}
+
 type QueueFilter = 'all' | 'pending' | 'reviewing' | 'approved' | 'rejected';
 type AgentStance = 'support' | 'caution' | 'oppose';
 type RoutingSignalLevel = 'positive' | 'neutral' | 'negative';
@@ -102,6 +110,8 @@ interface ScenarioEvidence {
 interface Props {
   queueOverview?: QueueOverview;
   externalFocusStage?: WorkflowStage | null;
+  runtimeStageRuntime?: Record<WorkflowStage, RuntimeStageRuntimeState> | null;
+  runtimeCurrentStage?: WorkflowStage | null;
 }
 
 interface Emits {
@@ -116,6 +126,8 @@ const props = withDefaults(defineProps<Props>(), {
     rejected: 0,
   }),
   externalFocusStage: null,
+  runtimeStageRuntime: null,
+  runtimeCurrentStage: null,
 });
 
 const emit = defineEmits<Emits>();
@@ -356,7 +368,26 @@ const governanceScore = computed<number>(() => {
   );
 });
 
+const runtimeStageRuntime = computed<Record<WorkflowStage, StageRuntimeState> | null>(() => {
+  if (!props.runtimeStageRuntime) {
+    return null;
+  }
+
+  return ORDERED_STAGES.reduce((acc, stage) => {
+    const runtime = props.runtimeStageRuntime?.[stage];
+    acc[stage] = {
+      status: runtime?.status ?? 'pending',
+      message: runtime?.message?.trim() || `${stage} waiting`,
+    };
+    return acc;
+  }, {} as Record<WorkflowStage, StageRuntimeState>);
+});
+
 const governanceStageRuntime = computed<Record<WorkflowStage, StageRuntimeState>>(() => {
+  if (runtimeStageRuntime.value) {
+    return runtimeStageRuntime.value;
+  }
+
   const hasBreachedMetric = metrics.value.some((item) => item.status === 'breached');
   const hasAtRiskMetric = metrics.value.some((item) => item.status === 'at_risk');
   const reviewPressure = props.queueOverview.pending + props.queueOverview.reviewing;
@@ -447,6 +478,10 @@ const governanceStageRuntime = computed<Record<WorkflowStage, StageRuntimeState>
 });
 
 const governanceCurrentStage = computed<WorkflowStage>(() => {
+  if (props.runtimeCurrentStage) {
+    return props.runtimeCurrentStage;
+  }
+
   const blocked = ORDERED_STAGES.find((stage) => {
     const status = governanceStageRuntime.value[stage].status;
     return status === 'blocked' || status === 'failed';

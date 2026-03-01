@@ -4,6 +4,7 @@ import { TreeChart } from 'echarts/charts';
 import { TooltipComponent, TitleComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import { ECharts, init, use } from 'echarts/core';
+import { resolveCopilotChartTheme } from '../features/chart/theme';
 import {
   COLLABORATION_LABELS,
   DEPARTMENT_LABELS,
@@ -57,20 +58,28 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const chartRef = ref<HTMLElement | null>(null);
+const themeRevision = ref(0);
 let chart: ECharts | null = null;
+let themeObserver: MutationObserver | null = null;
+
+function getChartTheme() {
+  themeRevision.value;
+  return resolveCopilotChartTheme();
+}
 
 function getRouteModeColor(mode: string | undefined): string {
+  const chartTheme = getChartTheme();
   switch (mode) {
     case 'FAST_CONSENSUS':
-      return '#10b981';
+      return chartTheme.flow.done;
     case 'LIGHT_DEBATE':
-      return '#f59e0b';
+      return chartTheme.flow.skipped;
     case 'DEEP_DEBATE':
-      return '#f97316';
+      return chartTheme.graphNode.decision;
     case 'ESCALATE_TO_OFFLINE':
-      return '#ef4444';
+      return chartTheme.flow.blocked;
     default:
-      return '#6b7280';
+      return chartTheme.flow.pending;
   }
 }
 
@@ -107,13 +116,14 @@ const complexityLevel = computed(() => {
 const treeData = computed(() => {
   const routing = props.routing;
   const hasResult = routing?.routeMode !== undefined;
+  const chartTheme = getChartTheme();
 
   const root: TreeNode = {
     name: '分诊入口',
     value: 'start',
     itemStyle: {
-      color: '#3b82f6',
-      borderColor: '#2563eb',
+      color: chartTheme.graphNode.input,
+      borderColor: chartTheme.border,
       borderWidth: 2,
     },
     label: {
@@ -127,8 +137,8 @@ const treeData = computed(() => {
     name: '红旗检查',
     value: 'redflag',
     itemStyle: {
-      color: props.hasRedFlag ? '#ef4444' : '#10b981',
-      borderColor: props.hasRedFlag ? '#dc2626' : '#059669',
+      color: props.hasRedFlag ? chartTheme.flow.blocked : chartTheme.flow.done,
+      borderColor: chartTheme.border,
       borderWidth: 2,
     },
     label: {
@@ -140,8 +150,8 @@ const treeData = computed(() => {
             name: '线下上转',
             value: 'escalation',
             itemStyle: {
-              color: '#ef4444',
-              borderColor: '#dc2626',
+              color: chartTheme.flow.blocked,
+              borderColor: chartTheme.border,
               borderWidth: 2,
             },
             label: {
@@ -163,13 +173,13 @@ const treeData = computed(() => {
       itemStyle: {
         color:
           complexityLevel.value === 'low'
-            ? '#10b981'
+            ? chartTheme.flow.done
             : complexityLevel.value === 'medium'
-              ? '#f59e0b'
+              ? chartTheme.flow.skipped
               : complexityLevel.value === 'high'
-                ? '#f97316'
-                : '#d1d5db',
-        borderColor: '#374151',
+                ? chartTheme.graphNode.decision
+                : chartTheme.flow.pending,
+        borderColor: chartTheme.border,
         borderWidth: 2,
       },
       label: {
@@ -188,7 +198,7 @@ const treeData = computed(() => {
         value: routeMode,
         itemStyle: {
           color: getRouteModeColor(routeMode),
-          borderColor: '#374151',
+          borderColor: chartTheme.border,
           borderWidth: 2,
         },
         label: {
@@ -205,8 +215,8 @@ const treeData = computed(() => {
           name: `${getDepartmentIcon(routing.department)} ${DEPARTMENT_LABELS[routing.department] ?? routing.department}`,
           value: routing.department,
           itemStyle: {
-            color: '#2f5ea7',
-            borderColor: '#284f8c',
+            color: chartTheme.graphNode.input,
+            borderColor: chartTheme.border,
             borderWidth: 2,
           },
           label: {
@@ -225,8 +235,8 @@ const treeData = computed(() => {
               ?? routing.collaborationMode,
             value: routing.collaborationMode,
             itemStyle: {
-              color: '#0ea5a8',
-              borderColor: '#0e7f81',
+              color: chartTheme.graphNode.stage,
+              borderColor: chartTheme.border,
               borderWidth: 2,
             },
             label: {
@@ -260,10 +270,16 @@ const {
 
 const chartOption = computed(() => {
   const dense = props.density === 'compact';
+  const chartTheme = getChartTheme();
   return {
   tooltip: {
     trigger: 'item',
     triggerOn: 'mousemove',
+    backgroundColor: chartTheme.tooltipBackground,
+    borderColor: chartTheme.tooltipBorder,
+    textStyle: {
+      color: chartTheme.tooltipText,
+    },
     formatter: (params: { name: string; value: string }) => {
       return `<strong>${params.name.replace('\n', '<br/>')}</strong><br/>节点: ${params.value}`;
     },
@@ -286,7 +302,7 @@ const chartOption = computed(() => {
         verticalAlign: 'middle',
         align: 'center',
         fontSize: 11,
-        color: '#fff',
+        color: chartTheme.textInverse,
       },
       leaves: {
         label: {
@@ -298,13 +314,13 @@ const chartOption = computed(() => {
       lineStyle: {
         width: 2,
         curveness: 0.45,
-        color: '#97a9bd',
+        color: chartTheme.flow.linkDefault,
       },
       emphasis: {
         focus: 'descendant',
         itemStyle: {
           shadowBlur: 10,
-          shadowColor: 'rgba(0, 0, 0, 0.25)',
+          shadowColor: chartTheme.flow.linkDefault,
         },
       },
     },
@@ -329,17 +345,40 @@ function resizeChart(): void {
 }
 
 watch(
-  [() => props.routing, () => props.hasRedFlag, () => props.density],
+  [
+    () => props.routing,
+    () => props.hasRedFlag,
+    () => props.density,
+    () => themeRevision.value,
+  ],
   updateChart,
   { deep: true },
 );
 
 onMounted(() => {
+  if (typeof MutationObserver !== 'undefined') {
+    themeObserver = new MutationObserver((mutations) => {
+      const hasThemeMutation = mutations.some(
+        (mutation) => mutation.type === 'attributes'
+          && mutation.attributeName === 'data-theme',
+      );
+      if (!hasThemeMutation) {
+        return;
+      }
+      themeRevision.value += 1;
+    });
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+  }
   initChart();
   window.addEventListener('resize', resizeChart);
 });
 
 onBeforeUnmount(() => {
+  themeObserver?.disconnect();
+  themeObserver = null;
   chart?.dispose();
   chart = null;
   window.removeEventListener('resize', resizeChart);
@@ -429,27 +468,36 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .routing-tree-container {
+  --rt-surface: var(--color-surface-elevated);
+  --rt-surface-soft: var(--color-surface-soft);
+  --rt-border: var(--color-border);
+  --rt-border-soft: var(--color-border-light);
+  --rt-text-strong: var(--color-text-primary);
+  --rt-text-body: var(--color-text-secondary);
+  --rt-text-muted: var(--color-text-muted);
+  --rt-glow-cool: color-mix(in srgb, var(--color-info) 24%, transparent);
+  --rt-glow-warm: color-mix(in srgb, var(--color-warning) 26%, transparent);
   background:
-    radial-gradient(circle at 6% 8%, rgba(221, 243, 255, 0.65), transparent 52%),
-    radial-gradient(circle at 92% 92%, rgba(255, 239, 210, 0.7), transparent 45%),
-    #ffffff;
+    radial-gradient(circle at 6% 8%, var(--rt-glow-cool), transparent 52%),
+    radial-gradient(circle at 92% 92%, var(--rt-glow-warm), transparent 45%),
+    var(--rt-surface);
   border-radius: 10px;
   padding: 16px;
-  border: 1px solid #d3deea;
+  border: 1px solid var(--rt-border);
   position: relative;
   overflow: hidden;
 }
 
 .routing-tree-container.state-running {
-  border-color: rgba(39, 137, 169, 0.5);
+  border-color: var(--color-risk-warning-border);
 }
 
 .routing-tree-container.state-done {
-  border-color: rgba(31, 139, 97, 0.45);
+  border-color: var(--color-risk-normal-border);
 }
 
 .routing-tree-container.state-blocked {
-  border-color: rgba(184, 74, 56, 0.45);
+  border-color: var(--color-risk-critical-border);
 }
 
 .routing-tree-container::before {
@@ -459,7 +507,12 @@ onBeforeUnmount(() => {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+  background: linear-gradient(
+    90deg,
+    var(--color-info),
+    var(--cc-accent-violet-500),
+    var(--color-success)
+  );
 }
 
 .header {
@@ -472,7 +525,7 @@ onBeforeUnmount(() => {
 .header h3 {
   margin: 0;
   font-size: 15px;
-  color: #183d58;
+  color: var(--rt-text-strong);
 }
 
 .routing-summary {
@@ -492,19 +545,19 @@ onBeforeUnmount(() => {
 }
 
 .score-badge {
-  background: #ecf4fb;
-  color: #2a4e6c;
-  border: 1px solid #c7d7e8;
+  background: color-mix(in srgb, var(--rt-surface-soft) 92%, transparent);
+  color: var(--rt-text-body);
+  border: 1px solid var(--rt-border-soft);
 }
 
 .route-badge {
-  color: #fff;
+  color: var(--cc-text-inverse);
 }
 
 .expected-badge {
-  background: #fff3df;
-  color: #775415;
-  border: 1px solid #f2d094;
+  background: var(--color-risk-warning-bg);
+  color: var(--color-risk-warning-fg);
+  border: 1px solid var(--color-risk-warning-border);
 }
 
 .tree-chart {
@@ -517,7 +570,7 @@ onBeforeUnmount(() => {
 .corridor-section,
 .reasons-section {
   margin-top: 12px;
-  border-top: 1px solid #dbe5ef;
+  border-top: 1px solid var(--rt-border-soft);
   padding-top: 12px;
 }
 
@@ -527,7 +580,7 @@ onBeforeUnmount(() => {
 .routing-rules h4 {
   margin: 0;
   font-size: 12px;
-  color: #5a7188;
+  color: var(--rt-text-muted);
 }
 
 .factor-grid {
@@ -546,9 +599,9 @@ onBeforeUnmount(() => {
 }
 
 .factor-card {
-  border: 1px solid #ccdae8;
+  border: 1px solid var(--rt-border-soft);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.92);
+  background: color-mix(in srgb, var(--rt-surface) 92%, transparent);
   padding: 8px;
 }
 
@@ -558,12 +611,12 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: #214a6a;
+  color: var(--rt-text-body);
 }
 
 .factor-head span {
   font-weight: 700;
-  color: #0e8d8f;
+  color: var(--color-primary);
 }
 
 .factor-track {
@@ -571,19 +624,23 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 6px;
   border-radius: 999px;
-  background: #dbe7f2;
+  background: var(--rt-border-soft);
   overflow: hidden;
 }
 
 .factor-fill {
   height: 100%;
-  background: linear-gradient(90deg, #1f7b80 0%, #2f90b1 100%);
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    var(--color-info) 100%
+  );
 }
 
 .factor-card p {
   margin: 8px 0 0;
   font-size: 11px;
-  color: #3b5d78;
+  color: var(--rt-text-body);
   line-height: 1.4;
 }
 
@@ -593,13 +650,13 @@ onBeforeUnmount(() => {
   display: flex;
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid #cad8e6;
+  border: 1px solid var(--rt-border);
 }
 
 .corridor-segment {
   padding: 8px 4px;
-  background: #eef3f9;
-  border-right: 1px solid #d6e0ea;
+  background: color-mix(in srgb, var(--rt-surface-soft) 88%, transparent);
+  border-right: 1px solid var(--rt-border-soft);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -611,17 +668,17 @@ onBeforeUnmount(() => {
 }
 
 .corridor-segment.active {
-  background: linear-gradient(180deg, #dcf2f2 0%, #d7ecfa 100%);
+  background: color-mix(in srgb, var(--color-primary) 14%, var(--rt-surface));
 }
 
 .corridor-segment small {
   font-size: 10px;
-  color: #3a5c78;
+  color: var(--rt-text-muted);
 }
 
 .corridor-segment strong {
   font-size: 11px;
-  color: #163b57;
+  color: var(--rt-text-strong);
 }
 
 .corridor-pointer {
@@ -629,7 +686,7 @@ onBeforeUnmount(() => {
   top: -4px;
   width: 0;
   height: calc(100% + 8px);
-  border-left: 2px solid #c3472a;
+  border-left: 2px solid var(--color-danger);
   transform: translateX(-1px);
 }
 
@@ -641,17 +698,17 @@ onBeforeUnmount(() => {
   width: 10px;
   height: 10px;
   border-radius: 999px;
-  background: #c3472a;
+  background: var(--color-danger);
 }
 
 .corridor-note {
   margin: 8px 0 0;
   font-size: 12px;
-  color: #365878;
+  color: var(--rt-text-body);
 }
 
 .corridor-note.boundary {
-  color: #0f6e70;
+  color: var(--color-primary);
 }
 
 .reasons-section ul,
@@ -665,14 +722,14 @@ onBeforeUnmount(() => {
 .reasons-section li,
 .routing-rules li {
   font-size: 12px;
-  color: #355677;
+  color: var(--rt-text-body);
   line-height: 1.45;
 }
 
 .routing-rules {
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid #dbe5ef;
+  border-top: 1px solid var(--rt-border-soft);
 }
 
 @media (max-width: 900px) {

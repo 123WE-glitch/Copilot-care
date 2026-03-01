@@ -4,7 +4,9 @@ import type {
   TriageApiResponse,
   TriageErrorResponse,
   TriageRequest,
+  TriageStreamStageStatus,
   TriageStreamEvent,
+  WorkflowStage,
 } from '@copilot-care/shared/types';
 
 const configuredBaseURLRaw = import.meta.env.VITE_API_BASE_URL;
@@ -145,6 +147,64 @@ export interface ExpertArchitectureResponse {
   };
 }
 
+export type GovernanceRuntimeOutcome =
+  | 'OUTPUT'
+  | 'ESCALATE_TO_OFFLINE'
+  | 'ABSTAIN'
+  | 'ERROR'
+  | 'RUNNING';
+
+export interface GovernanceRuntimeSession {
+  id: string;
+  requestId?: string;
+  patientId: string;
+  outcome: GovernanceRuntimeOutcome;
+  routeMode?: string;
+  triageLevel?: string;
+  destination?: string;
+  complexityScore?: number;
+  durationMs?: number;
+  startedAt: string;
+  endedAt?: string;
+  errorCode?: string;
+}
+
+export interface GovernanceRuntimeResponse {
+  generatedAt: string;
+  source: 'runtime';
+  queueOverview: {
+    pending: number;
+    reviewing: number;
+    approved: number;
+    rejected: number;
+  };
+  performance: {
+    latencyHeat: number;
+    retryPressure: number;
+    consensusConvergence: number;
+    dissentSpread: number;
+    routingComplexity: number;
+  };
+  totals: {
+    totalSessions: number;
+    successSessions: number;
+    escalatedSessions: number;
+    errorSessions: number;
+    activeSessions: number;
+  };
+  recentSessions: GovernanceRuntimeSession[];
+  stageRuntime: Record<WorkflowStage, GovernanceRuntimeStageState>;
+  currentStage: WorkflowStage;
+}
+
+export interface GovernanceRuntimeStageState {
+  status: TriageStreamStageStatus;
+  message: string;
+  active: number;
+  transitions: number;
+  updatedAt: string;
+}
+
 export async function orchestrateTriage(
   payload: TriageRequest,
 ): Promise<TriageApiResponse> {
@@ -153,6 +213,10 @@ export async function orchestrateTriage(
 
 export async function fetchExpertArchitecture(): Promise<ExpertArchitectureResponse> {
   return getWithBaseFallback<ExpertArchitectureResponse>('/architecture/experts');
+}
+
+export async function fetchGovernanceRuntime(): Promise<GovernanceRuntimeResponse> {
+  return getWithBaseFallback<GovernanceRuntimeResponse>('/governance/runtime');
 }
 
 export interface StreamOptions {

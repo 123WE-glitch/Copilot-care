@@ -1,4 +1,4 @@
-﻿import { computed, ref, type Ref } from 'vue';
+import { computed, ref, type Ref } from 'vue';
 
 interface UseSplitPaneLayoutOptions {
   storageKey: string;
@@ -43,10 +43,13 @@ function persistRatio(storageKey: string, ratio: number): void {
 export interface SplitPaneLayoutState {
   layoutRef: Ref<HTMLElement | null>;
   leftRatio: Ref<number>;
+  isDragging: Ref<boolean>;
   leftPaneStyle: Ref<{ width: string }>;
-  startDragging: (event: MouseEvent) => void;
-  handleDragging: (event: MouseEvent) => void;
+  startDragging: (event: MouseEvent | PointerEvent) => void;
+  handleDragging: (event: MouseEvent | PointerEvent) => void;
   stopDragging: () => void;
+  nudgeRatio: (delta: number) => void;
+  resetRatio: () => void;
 }
 
 export function useSplitPaneLayout(
@@ -54,12 +57,12 @@ export function useSplitPaneLayout(
 ): SplitPaneLayoutState {
   const minRatio = options.minRatio ?? 30;
   const maxRatio = options.maxRatio ?? 70;
-  const defaultRatio = options.defaultRatio ?? 42;
+  const defaultRatio = clampRatio(options.defaultRatio ?? 42, minRatio, maxRatio);
 
   const initialRatio = (() => {
     const saved = readPersistedRatio(options.storageKey);
     if (saved === null) {
-      return clampRatio(defaultRatio, minRatio, maxRatio);
+      return defaultRatio;
     }
     return clampRatio(saved, minRatio, maxRatio);
   })();
@@ -72,12 +75,22 @@ export function useSplitPaneLayout(
     return { width: `${leftRatio.value}%` };
   });
 
-  function startDragging(event: MouseEvent): void {
-    event.preventDefault();
-    dragging.value = true;
+  function setLeftRatio(nextRatio: number): void {
+    const clamped = clampRatio(nextRatio, minRatio, maxRatio);
+    if (clamped === leftRatio.value) {
+      return;
+    }
+    leftRatio.value = clamped;
+    persistRatio(options.storageKey, clamped);
   }
 
-  function handleDragging(event: MouseEvent): void {
+  function startDragging(event: MouseEvent | PointerEvent): void {
+    event.preventDefault();
+    dragging.value = true;
+    handleDragging(event);
+  }
+
+  function handleDragging(event: MouseEvent | PointerEvent): void {
     if (!dragging.value || !layoutRef.value) {
       return;
     }
@@ -88,21 +101,30 @@ export function useSplitPaneLayout(
     }
 
     const ratio = ((event.clientX - rect.left) / rect.width) * 100;
-    const clamped = clampRatio(ratio, minRatio, maxRatio);
-    leftRatio.value = clamped;
-    persistRatio(options.storageKey, clamped);
+    setLeftRatio(ratio);
   }
 
   function stopDragging(): void {
     dragging.value = false;
   }
 
+  function nudgeRatio(delta: number): void {
+    setLeftRatio(leftRatio.value + delta);
+  }
+
+  function resetRatio(): void {
+    setLeftRatio(defaultRatio);
+  }
+
   return {
     layoutRef,
     leftRatio,
+    isDragging: dragging,
     leftPaneStyle,
     startDragging,
     handleDragging,
     stopDragging,
+    nudgeRatio,
+    resetRatio,
   };
 }
