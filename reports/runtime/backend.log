@@ -1,6 +1,0 @@
-
-> @copilot-care/backend@1.0.0 start
-> node dist/index.js
-
-[copilot-care] backend listening on :3001
-^C^C
