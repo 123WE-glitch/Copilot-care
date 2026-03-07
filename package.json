@@ -7,6 +7,9 @@
     "src/frontend",
     "src/shared"
   ],
+  "dependencies": {
+    "serverless-http": "^3.2.0"
+  },
   "scripts": {
     "build:deploy": "npm run build --workspace=@copilot-care/frontend && npm run build --workspace=@copilot-care/backend",
     "start:deploy": "npm run start:prod --workspace=@copilot-care/backend",
