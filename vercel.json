@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm install && npm run build --workspace=@copilot-care/frontend",
+  "buildCommand": "npm install && cd src/frontend && npm install && npm run build",
   "outputDirectory": "src/frontend/dist",
   "installCommand": "npm install",
   "version": 2
