@@ -1,8 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "npm run build --workspace=@copilot-care/frontend",
+  "buildCommand": "npm install && npm run build --workspace=@copilot-care/frontend",
   "outputDirectory": "src/frontend/dist",
-  "installCommand": "npm ci",
   "rewrites": [
     {
       "source": "/api/(.*)",
